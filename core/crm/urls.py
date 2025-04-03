@@ -1,8 +1,9 @@
 from django.urls import path, include
-from .views import LoginView, ClientAPIView
+from .views import LoginView, client_list
 
 
 urlpatterns = [
     path('api/v1/login/', LoginView.as_view(), name='custom-login'),
-    path('clients/', ClientAPIView.as_view(), name='client-list'),
+    path('clients/', client_list, name='client_list'),
+
 ]
