@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Custom Login</title>
+</head>
+<body>
+    <h1>Login</h1>
+    <form id="loginForm">
+        {% csrf_token %}
+        <div>
+            <label>Username:</label>
+            <input type="text" name="username" required>
+        </div>
+        <div>
+            <label>Password:</label>
+            <input type="password" name="password" required>
+        </div>
+        <button type="submit">Login</button>
+    </form>
+
+    <!-- Добавляем блок для вывода ответа -->
+    <div id="responseContainer" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc; display: none;">
+        <h3>Response:</h3>
+        <pre id="responseText"></pre>
+    </div>
+    
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const responseContainer = document.getElementById('responseContainer');
+            const responseText = document.getElementById('responseText');
+            
+            try {
+                const response = await fetch('/api/v1/login/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+                    },
+                    body: JSON.stringify({
+                        username: formData.get('username'),
+                        password: formData.get('password')
+                    })
+                });
+                
+                const data = await response.json();
+                
+                // Показываем блок с ответом
+                responseContainer.style.display = 'block';
+                
+                if (response.ok) {
+                    // Сохраняем токен в localStorage
+                    localStorage.setItem('access_token', data.access);
+                    localStorage.setItem('refresh_token', data.refresh);
+                    
+                    // Форматируем и выводим JSON красиво
+                    responseText.innerHTML = JSON.stringify(data, null, 2);
+                    alert('Login successful!');
+                } else {
+                    responseText.innerHTML = JSON.stringify(data, null, 2);
+                    alert('Login failed: ' + (data.error || 'Unknown error'));
+                }
+            } catch (error) {
+                responseContainer.style.display = 'block';
+                responseText.innerHTML = 'Error: ' + error.message;
+                console.error('Error:', error);
+            }
+        });
+    </script>
+</body>
+</html>
