@@ -1,7 +1,7 @@
-<!-- Форма поиска и сортировки -->
+<!-- поиск и сортировка -->
 <form method="get" class="mb-4">
     <div class="row g-3 align-items-center">
-        <!-- Поле поиска -->
+        <!--  поиска -->
         <div class="col-md-8">
             <input 
                 type="text" 
@@ -48,7 +48,7 @@
     </tbody>
 </table>
 
-<!-- Пагинация с учётом поискового запроса -->
+<!-- Пагинация -->
 <div class="pagination">
     {% if page_obj.has_previous %}
         <a href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}">предыдущая</a>
