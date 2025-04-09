@@ -40,7 +40,7 @@ class Specialization(models.Model):
 
 class Doctor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='doctor_profile')
-    specialization = models.ForeignKey(Specialization, on_delete=models.CASCADE, related_name='doctors')
+    specialization = models.ForeignKey(Specialization, on_delete=models.CASCADE, db_column='specializations_id', related_name='doctors')
 
     class Meta:
         db_table = 'doctor'
@@ -73,9 +73,8 @@ class Status(models.Model):
         managed = False
 
 class Application(models.Model):
-    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='applications')
-    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name='applications')
-    date_requests = models.CharField(max_length=100, null=True)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, db_column='id_client', related_name='applications')
+    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, db_column='id_doctor', related_name='applications')
     date_recording = models.CharField(max_length=100, null=True)
     date_call = models.CharField(max_length=100, null=True)
     date_next_call = models.CharField(max_length=100, null=True)
@@ -89,8 +88,8 @@ class Application(models.Model):
 
 
 class Comment(models.Model):
-    application = models.ForeignKey(Application, on_delete=models.CASCADE, related_name='comments')
-    manager = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
+    application = models.ForeignKey(Application, on_delete=models.CASCADE, db_column='applications_id', related_name='comments')
+    manager = models.ForeignKey(User, on_delete=models.CASCADE, db_column='manager_id', related_name='comments')
     comment = models.TextField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
