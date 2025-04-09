@@ -18,8 +18,7 @@
         <button type="submit">Login</button>
     </form>
 
-    <!-- Добавляем блок для вывода ответа -->
-    <div id="responseContainer" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc; display: none;">
+    <div id="responseContainer" >
         <h3>Response:</h3>
         <pre id="responseText"></pre>
     </div>
@@ -47,15 +46,14 @@
                 
                 const data = await response.json();
                 
-                // Показываем блок с ответом
+                
                 responseContainer.style.display = 'block';
                 
                 if (response.ok) {
-                    // Сохраняем токен в localStorage
+
                     localStorage.setItem('access_token', data.access);
                     localStorage.setItem('refresh_token', data.refresh);
                     
-                    // Форматируем и выводим JSON красиво
                     responseText.innerHTML = JSON.stringify(data, null, 2);
                     alert('Login successful!');
                 } else {

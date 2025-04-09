@@ -34,7 +34,7 @@ class LoginView(APIView):
 def client_list(request):
     clients = Client.objects.all()
     
-    search_query = request.GET.get('search', '')
+    search_query = request.GET.get('search')
     if search_query:
         clients = clients.filter(
             Q(last_name__icontains=search_query) |
