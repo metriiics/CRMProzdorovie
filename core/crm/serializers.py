@@ -44,7 +44,6 @@ class ApplicationSerializer(serializers.ModelSerializer):
     status_id = serializers.CharField(source='status.status', read_only=True)
     id_doctor = DoctorSerializer(source='doctor', read_only=True)
 
-    
     class Meta:
         model = Application
         fields = ['id_doctor', 'date_next_call', 'status_id']
@@ -62,19 +61,17 @@ class CombineSerializer(serializers.Serializer):
     manager_id = serializers.SerializerMethodField()
     
     def get_id_doctor(self, obj):
-        doctor = obj.doctor
-        user = doctor.user
-        return f"{user.last_name} {user.first_name} {user.surname}"
+        doctor = obj.doctor #Врач из app
+        user = doctor.user #пользователь связ. с врачем
+        return f"{user.last_name} {user.first_name} {user.surname}" # фио врача
 
     def get_comment(self, obj):
-        # Берем последний комментарий
-        last_comment = obj.comments.order_by('-created_at').first()
+        last_comment = obj.comments.order_by('-created_at').first() #все коменты с заявки
         return last_comment.comment if last_comment else None
 
     def get_manager_id(self, obj):
-        # Берем менеджера из последнего комментария
-        last_comment = obj.comments.order_by('-created_at').first()
+        last_comment = obj.comments.order_by('-created_at').first() #последний коммент
         if last_comment:
-            manager = last_comment.manager
-            return f"{manager.last_name} {manager.first_name} {manager.surname}"
+            manager = last_comment.manager # manager in comment
+            return f"{manager.last_name} {manager.first_name} {manager.surname}" #фио манагера
         return None

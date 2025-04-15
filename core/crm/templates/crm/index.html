@@ -1,0 +1,118 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Создать запись</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'crm/css/indexStyle.css' %}"/>
+</head>
+<body>
+  <header>
+    <img class="logo" src="{% static 'crm/img/logo.svg' %}" alt="Медицинский центр ProЗдоровье" />
+    <nav class="navbar">
+      <ul class="links">
+        <li>
+          <a href="#"><img src="{% static 'crm/img/create.svg' %}" alt="">Создать запись</a>
+        </li>
+        <li>
+          <a href="#"><img src="{% static 'crm/img/add.svg' %}" alt="">Добавить клиента</a>
+        </li>
+        <li>
+          <a href="#"><img src="{% static 'crm/img/edit.svg' %}" alt="">Изменить клиента</a>
+        </li>
+        <li>
+          <a href="#">Выйти</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="main-container">
+    <div class="filters">
+      <div class="filter-section">
+        <ul class="filter-options">
+          <li>Фильтры</li>
+          <li>
+            <input type="text" class="search-input" placeholder="Поиск...">
+          </li>
+          <li>Статус</li>
+          <li>Оказана</li>
+          <li>Перенесена</li>
+          <li>Удалена</li>
+          <li>Врач</li>
+          <li>
+            <input type="text" class="search-input" placeholder="Поиск...">
+          </li>
+          <li>Врач 1</li>
+          <li>Врач 2</li>
+          <li>Врач 3</li>
+          <li>Показать все...</li>
+          <li>Услуга</li>
+          <li>
+            <input type="text" class="search-input" placeholder="Поиск...">
+          </li>
+          <li>Услуга 2</li>
+          <li>Услуга 1</li>
+          <li>Услуга 3</li>
+          <li>Показать все...</li>
+          <li>Дата</li>
+          <li>
+            <input type="text" class="search-input" placeholder="Поиск...">
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="records-table">
+      <div class="column-labels">
+        <span>Дата</span>
+        <span>Имя</span>
+        <span>Номер</span>
+        <span>Статус</span>
+        <span>Врач</span>
+        <span>Услуга</span>
+        <span>Комментарий</span>
+        <span>Записи*</span>
+        <span>Следующая заявка</span>
+      </div>
+      
+      <div class="record-row">
+        <span>24.05.2025</span>
+        <span>Kенешбеков И.Д.</span>
+        <span>+7 924 738 63 02</span>
+        <span class="status-moved">Перенесена</span>
+        <span>Найдина З.В.</span>
+        <span>Массаж</span>
+        <span>04.04 Валера Какой-то крутой текст напряме...</span>
+        <span>12:28 04.04.2025</span>
+        <span>04.04.2025</span>
+      </div>
+
+      <div class="record-row">
+        <span>24.05.2025</span>
+        <span>Kенешбеков И.Д.</span>
+        <span>+7 924 738 63 02</span>
+        <span class="status-delete">Удалена</span>
+        <span>Найдина З.В.</span>
+        <span>Массаж</span>
+        <span>04.04 Валера Какой-то крутой текст напряме...</span>
+        <span>12:28 04.04.2025</span>
+        <span>04.04.2025</span>
+      </div>
+      <div class="record-row">
+        <span>24.05.2025</span>
+        <span>Kенешбеков И.Д.</span>
+        <span>+7 924 738 63 02</span>
+        <span class="status-done">Оказана</span>
+        <span>Найдина З.В.</span>
+        <span>Массаж</span>
+        <span>04.04 Валера Какой-то крутой текст напряме...</span>
+        <span>12:28 04.04.2025</span>
+        <span>04.04.2025</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

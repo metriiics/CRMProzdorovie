@@ -70,9 +70,11 @@ class ApplicationsView(APIView):
                 'status',
                 'doctor',
                 'doctor__user',
-            ).prefetch_related(Prefetch(
-                'comments', queryset=Comment.objects.select_related('manager')
-            )).order_by('-id')
+            ).prefetch_related(
+                Prefetch(
+                    'comments', 
+                    queryset=Comment.objects.select_related('manager')
+            )).order_by('id')
             
             paginator = self.pagination_class()
             paginator_page = paginator.paginate_queryset(queryset, request)
@@ -83,3 +85,8 @@ class ApplicationsView(APIView):
                 {'error': str(e)},
                 status=400
             )
+        
+
+
+def respHome(request):
+    return render(request, "crm/index.html")
