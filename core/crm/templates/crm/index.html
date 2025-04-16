@@ -7,6 +7,7 @@
   <title>Создать запись</title>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="{% static 'crm/css/indexStyle.css' %}"/>
+  <link rel="stylesheet" href="{% static 'crm/css/modal.css' %}"/>
 </head>
 <body>
   <header>
@@ -14,13 +15,13 @@
     <nav class="navbar">
       <ul class="links">
         <li>
-          <a href="#"><img src="{% static 'crm/img/create.svg' %}" alt="">Создать запись</a>
+          <a href="#" id="create-record-btn"><img src="{% static 'crm/img/create.svg' %}" alt="">Создать запись</a>
         </li>
         <li>
-          <a href="#"><img src="{% static 'crm/img/add.svg' %}" alt="">Добавить клиента</a>
+          <a href="#" id="add-client-btn"><img src="{% static 'crm/img/add.svg' %}" alt="">Добавить клиента</a>
         </li>
         <li>
-          <a href="#"><img src="{% static 'crm/img/edit.svg' %}" alt="">Изменить клиента</a>
+          <a href="#" id="edit-client-btn"><img src="{% static 'crm/img/edit.svg' %}" alt="">Изменить клиента</a>
         </li>
         <li>
           <a href="#">Выйти</a>
@@ -66,53 +67,185 @@
     </div>
 
     <div class="records-table">
-      <div class="column-labels">
-        <span>Дата</span>
-        <span>Имя</span>
-        <span>Номер</span>
-        <span>Статус</span>
-        <span>Врач</span>
-        <span>Услуга</span>
-        <span>Комментарий</span>
-        <span>Записи*</span>
-        <span>Следующая заявка</span>
-      </div>
-      
-      <div class="record-row">
-        <span>24.05.2025</span>
-        <span>Kенешбеков И.Д.</span>
-        <span>+7 924 738 63 02</span>
-        <span class="status-moved">Перенесена</span>
-        <span>Найдина З.В.</span>
-        <span>Массаж</span>
-        <span>04.04 Валера Какой-то крутой текст напряме...</span>
-        <span>12:28 04.04.2025</span>
-        <span>04.04.2025</span>
-      </div>
+        <div class="column-labels">
+            <span>Дата</span>
+            <span>Имя</span>
+            <span>Номер</span>
+            <span>Статус</span>
+            <span>Врач</span>
+            <span>Услуга</span>
+            <span>Комментарий</span>
+            <span>Записи*</span>
+            <span>Следующая заявка</span>
+        </div>
 
-      <div class="record-row">
-        <span>24.05.2025</span>
-        <span>Kенешбеков И.Д.</span>
-        <span>+7 924 738 63 02</span>
-        <span class="status-delete">Удалена</span>
-        <span>Найдина З.В.</span>
-        <span>Массаж</span>
-        <span>04.04 Валера Какой-то крутой текст напряме...</span>
-        <span>12:28 04.04.2025</span>
-        <span>04.04.2025</span>
-      </div>
-      <div class="record-row">
-        <span>24.05.2025</span>
-        <span>Kенешбеков И.Д.</span>
-        <span>+7 924 738 63 02</span>
-        <span class="status-done">Оказана</span>
-        <span>Найдина З.В.</span>
-        <span>Массаж</span>
-        <span>04.04 Валера Какой-то крутой текст напряме...</span>
-        <span>12:28 04.04.2025</span>
-        <span>04.04.2025</span>
-      </div>
+        
+        <div class="table-rows">
+            {% for app in applications %}
+            <div class="record-row">
+            <span>{{ app.client.created_at|date:"d.m.Y" }}</span>
+            <span>
+              {{ app.client.last_name }}
+              {% if app.client.first_name %}
+                {{ app.client.first_name|slice:":1" }}.
+              {% endif %}
+              {% if app.client.surname %}
+                {{ app.client.surname|slice:":1" }}.
+              {% endif %}
+            </span>
+            <span>{{ app.client.phone_number|default:"-" }}</span>
+            <span class="status-done">{{ app.status.status }}</span>
+            <span>{{ app.doctor.user.last_name|default:"-" }}</span>
+            <span>{{ None }}</span>
+            <span>{{ app.comments.first.comment|truncatechars:50 }}</span>
+            <span>{{ None }}</span>
+            <span>{{ app.date_next_call|date:"d.m.Y"|default:None }}</span>
+            </div>
+            {% empty %}
+            {% endfor %}
+        </div>
     </div>
   </div>
+    <!-- Модальное окно добавления клиента -->
+    <div id="add-client-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1>Добавить клиента</h1>
+          <button class="close-btn">&times;</button>
+        </div>
+        
+        <div class="form-group">
+          <label>Фамилия</label>
+          <input type="text" placeholder="Введите фамилию">
+        </div>
+        
+        <div class="form-group">
+          <label>Имя</label>
+          <input type="text" placeholder="Введите имя">
+        </div>
+        
+        <div class="form-group">
+          <label>Отчество</label>
+          <input type="text" placeholder="Введите отчество">
+        </div>
+        
+        <div class="form-group">
+          <label>Номер телефона</label>
+          <input type="text" placeholder="Введите номер телефона">
+        </div>
+        
+        <div class="comments-container">
+          <div class="comments-scroll">
+            <div class="comment">04.04 Валера Какой-то крутой текст например</div>
+          </div>
+        </div>
+        
+        <div class="comment-input-group">
+          <input type="text" placeholder="Введите комментарий..." id="comment-input">
+        </div>
+        
+        <button class="save-btn">Сохранить</button>
+      </div>
+    </div>
+  
+    <!-- Модальное окно создания записи -->
+    <div id="create-record-modal" class="modal">
+      <div class="modal-content">
+        <h1 class="title">Создать запись</h1>
+        <button class="close-btn">&times;</button>
+  
+        <div class="form-group" style="position: relative;">
+          <label for="client-search">Клиент</label>
+          <input type="text" id="client-search" placeholder="Введите ФИО клиента">
+          <div id="client-suggestions" class="suggestions-list hidden"></div>
+        </div>
+  
+        <div class="form-group">
+          <label for="phone">Номер телефона</label>
+          <input type="text" id="phone" placeholder="Введите номер телефона">
+        </div>
+  
+        <div class="form-group" style="position: relative;">
+          <label>Врач</label>
+          <input type="text" id="doctor-search" placeholder="Введите ФИО врача">
+          <div id="doctor-suggestions" class="suggestions-list"></div>
+       </div>       
+  
+        <div class="form-group">
+          <label>Услуга</label>
+          <div class="dropdown-container">
+            <div class="dropdown-btn" onclick="toggleDropdown('service-dropdown')">
+              <span id="selected-service">Выберите услугу</span>
+              <span>▼</span>
+            </div>
+          </div>
+        </div>
+  
+        <div class="datetime-row">
+          <div class="form-group date-group">
+            <label>Дата</label>
+            <div class="dropdown-container">
+              <div class="dropdown-btn" onclick="toggleCalendar('date-calendar')">
+                <span id="selected-date">Выберите дату</span>
+                <span>▼</span>
+              </div>
+              <div id="date-calendar" class="calendar small">
+                <div class="calendar-header">
+                  <button onclick="prevMonth()">←</button>
+                  <h3 id="calendar-month-year">Май 2025</h3>
+                  <button onclick="nextMonth()">→</button>
+                </div>
+                <div class="calendar-grid" id="calendar-days"></div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="form-group time-group">
+            <label>Время</label>
+            <div class="dropdown-container">
+              <div class="dropdown-btn" onclick="toggleDropdown('time-dropdown')">
+                <span id="selected-time">Выберите время</span>
+                <span>▼</span>
+              </div>
+              <div id="time-dropdown" class="dropdown-content">
+                <div onclick="selectItem('selected-time', 'time-dropdown', '09:00')">09:00</div>
+                <div onclick="selectItem('selected-time', 'time-dropdown', '10:30')">10:30</div>
+                <div onclick="selectItem('selected-time', 'time-dropdown', '12:00')">12:00</div>
+                <div onclick="selectItem('selected-time', 'time-dropdown', '14:00')">14:00</div>
+                <div onclick="selectItem('selected-time', 'time-dropdown', '15:30')">15:30</div>
+                <div onclick="selectItem('selected-time', 'time-dropdown', '17:00')">17:00</div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="form-group call-group">
+            <label>Следующий звонок</label>
+            <div class="dropdown-container">
+              <div class="dropdown-btn" onclick="toggleCalendar('call-calendar')">
+                <span id="selected-call-date">Выберите дату</span>
+                <span>▼</span>
+              </div>
+              <div id="call-calendar" class="calendar small">
+                <div class="calendar-header">
+                  <button onclick="prevCallMonth()">←</button>
+                  <h3 id="call-calendar-month-year">Май 2025</h3>
+                  <button onclick="nextCallMonth()">→</button>
+                </div>
+                <div class="calendar-grid" id="call-calendar-days"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div class="form-group">
+          <label for="comment">Введите комментарий</label>
+          <textarea id="comment" placeholder="Введите комментарий..."></textarea>
+        </div>
+  
+        <button class="save-btn" onclick="saveClient()">Сохранить</button>
+        <p id="success-message" style="display: none; color: green; text-align: center;">Клиент сохранён!</p>
+      </div>
+    </div>
+    <script src="{% static 'crm/js/script.js' %}"></script>
 </body>
 </html>

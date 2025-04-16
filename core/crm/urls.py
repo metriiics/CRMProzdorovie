@@ -1,10 +1,13 @@
 from django.urls import path, include, re_path
-from .views import LoginView, client_list, ApplicationsView, respHome
+from .views import LoginView, client_list, ApplicationsView, respHome, SearchDoctorAPIView, SearchClientAPIView, StatusListAPIView
 
 
 urlpatterns = [
     path('api/v1/login/', LoginView.as_view(), name='custom-login'),
     path('clients/', client_list, name='client_list'),
-    re_path(r'^api/v1/applications/?$', ApplicationsView.as_view(), name='applications-list'), 
-    path('api/v1/home/', respHome, name='')
+    path('api/v1/applications/', ApplicationsView.as_view(), name='applications-list'), 
+    path('search-doctor/', SearchDoctorAPIView.as_view(), name='search_doctor'),
+    path('search-client/', SearchClientAPIView.as_view(), name='search-client'),
+    path('api/status/', StatusListAPIView.as_view(), name='status-list'),
+    path('home', respHome, name='')
 ]
