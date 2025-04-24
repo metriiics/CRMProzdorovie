@@ -1,0 +1,74 @@
+<div class="modal">
+  <!-- Кнопка закрытия -->
+  <span class="close-btn">&times;</span>
+
+  <!-- Заголовок -->
+  <h1>Изменить клиента</h1>
+
+  <!-- Поиск клиента -->
+  <div class="search-container">
+    <label for="phone">Клиент</label>
+    <input type="text" class="search-input" placeholder="Поиск клиента..." />
+    <div class="suggestions">
+      <div class="suggestion-item">Кенешбеков Иван Дмитриевич</div>
+      <div class="suggestion-item">Иванов Петр Сергеевич</div>
+      <div class="suggestion-item">Сидорова Анна Владимировна</div>
+    </div>
+  </div>
+
+  <!-- Поля ввода данных клиента -->
+  <div class="form-group">
+    <label for="surname">Фамилия</label>
+    <input id="surname" type="text" class="search-input" />
+  </div>
+
+  <div class="form-group">
+    <label for="name">Имя</label>
+    <input id="name" type="text" class="search-input" />
+  </div>
+
+  <div class="form-group">
+    <label for="patronymic">Отчество</label>
+    <input id="patronymic" type="text" class="search-input" />
+  </div>
+
+  <div class="form-group">
+    <label for="phone">Номер телефона</label>
+    <input id="phone" type="text" class="search-input" />
+  </div>
+
+  <!-- Комментарии -->
+  <div class="comments-container">
+    <div class="comments-scroll">
+      <div class="comment">04.04 Валера Какой-то крутой текст например</div>
+    </div>
+  </div>
+
+  <!-- Поле для добавления комментария -->
+  <div class="comment-input-group">
+    <input
+      type="text"
+      class="search-input"
+      placeholder="Добавить комментарий..."
+    />
+  </div>
+
+  <!-- Кнопки действий -->
+  <div class="button-container">
+    <div class="success-message" style="display: none">
+      Клиент успешно сохранен
+    </div>
+    <button class="save-btn">Сохранить</button>
+    <span class="delete-link">Удалить клиента</span>
+  </div>
+  <!-- Модальное окно подтверждения удаления -->
+  <div class="confirmation-modal">
+    <div class="confirmation-content">
+      <p>Вы уверены, что хотите удалить клиента?</p>
+      <div class="confirmation-buttons">
+        <button class="confirmation-btn confirm-btn">Да</button>
+        <button class="confirmation-btn cancel-btn">Нет</button>
+      </div>
+    </div>
+  </div>
+</div>

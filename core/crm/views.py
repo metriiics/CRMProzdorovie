@@ -117,28 +117,58 @@ class StatusListAPIView(APIView):
         return Response({'statuses': serializer.data}, status=status.HTTP_200_OK)
 
 def respHome(request):
-    return render(request, "crm/editClientView.html")
+    return render(request, "crm/login.html")
 
 
 class NewApplicationsView(View):
     def get(self, request):
 
-        sort_field = request.GET.get('sort_field', 'client__created_at')
-        sort_direction = request.GET.get('sort_direction', 'asc')
+        # Получаем параметры сортировки из GET-запроса
+        sort_field = request.GET.get('sort', 'id')
+        sort_direction = request.GET.get('dir', 'asc')
         
+        # Определяем порядок сортировки
         if sort_direction == 'desc':
             sort_field = f'-{sort_field}'
 
         queryset = Application.objects.select_related(
-            'client', 'status', 'doctor__user'
+            'client',
+            'status',
+            'doctor',
+            'doctor__user',
         ).prefetch_related(
-            Prefetch('comments', queryset=Comment.objects.select_related('manager'))
+            Prefetch(
+                'comments', 
+                queryset=Comment.objects.select_related('manager')
+            )
         ).order_by(sort_field)
-
-        context = {
-            'applications': queryset,
-            'current_sort_field': sort_field.lstrip('-'),
-            'current_sort_direction': sort_direction,
-        }
         
-        return render(request, 'crm/indexMain.html', context)
+        paginator = Paginator(queryset, 30)  # Показывать 10 записей на странице
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        
+        # Передаем параметры сортировки в контекст
+        context = {
+            'page_obj': page_obj,
+            'current_sort': sort_field.lstrip('-'),
+            'current_direction': sort_direction,
+        }
+
+        return render(request, 'crm/index.html', context)
+    
+class ModalViewAddClient(View):
+    def get(self, request):
+        return render(request, 'crm/add_client.html')
+    
+class ModalViewChangeClient(View):
+    def get(self, request):
+        return render(request, 'crm/change_client.html')
+    
+class ModalViewChangeRecord(View):
+    def get(self, request):
+        return render(request, 'crm/change_record.html')
+    
+class ModalViewCreateRecord(View):
+    def get(self, request):
+        return render(request, 'crm/create_record.html')
+

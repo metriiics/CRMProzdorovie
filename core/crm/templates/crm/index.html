@@ -1,251 +1,354 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Создать запись</title>
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="{% static 'crm/css/indexStyle.css' %}"/>
-  <link rel="stylesheet" href="{% static 'crm/css/modal.css' %}"/>
-</head>
-<body>
-  <header>
-    <img class="logo" src="{% static 'crm/img/logo.svg' %}" alt="Медицинский центр ProЗдоровье" />
-    <nav class="navbar">
-      <ul class="links">
-        <li>
-          <a href="#" id="create-record-btn"><img src="{% static 'crm/img/create.svg' %}" alt="">Создать запись</a>
-        </li>
-        <li>
-          <a href="#" id="add-client-btn"><img src="{% static 'crm/img/add.svg' %}" alt="">Добавить клиента</a>
-        </li>
-        <li>
-          <a href="#" id="edit-client-btn"><img src="{% static 'crm/img/edit.svg' %}" alt="">Изменить клиента</a>
-        </li>
-        <li>
-          <a href="#">Выйти</a>
-        </li>
-      </ul>
-    </nav>
-  </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Создать запись</title>
 
-  <div class="main-container">
-    <div class="filters">
-      <div class="filter-section">
-        <ul class="filter-options">
-          <li>Фильтры</li>
+    <!-- Стили -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{% static 'crm/css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'crm/css/styleModal.css' %}" />
+ 
+    <!-- Скрипты -->
+    <script src="{% static 'crm/js/script.js' %}"></script>
+    <script src="{% static 'crm/js/modal_loader.js' %}"></script>
+  </head>
+  <body>
+    <!-- Шапка -->
+    <header>
+      <img
+        class="logo"
+        src="{% static 'crm/img/logo.svg' %}"
+        alt="Медицинский центр ProЗдоровье"
+      />
+
+      <nav class="navbar">
+        <ul class="links">
           <li>
-            <input type="text" class="search-input" placeholder="Поиск...">
+            <a href="" id="create-record-btn">
+              <img src="{% static 'crm/img/create.svg' %}" alt="" />Создать запись
+            </a>
           </li>
-          <li>Статус</li>
-          <li>Оказана</li>
-          <li>Перенесена</li>
-          <li>Удалена</li>
-          <li>Врач</li>
           <li>
-            <input type="text" class="search-input" placeholder="Поиск...">
+            <a href="" id="add-client-btn">
+              <img src="{% static 'crm/img/add.svg' %}" alt="" />Добавить клиента
+            </a>
           </li>
-          <li>Врач 1</li>
-          <li>Врач 2</li>
-          <li>Врач 3</li>
-          <li>Показать все...</li>
-          <li>Услуга</li>
           <li>
-            <input type="text" class="search-input" placeholder="Поиск...">
+            <a href="" id="edit-client-btn">
+              <img src="{% static 'crm/img/edit.svg' %}" alt="" />Изменить клиента
+            </a>
           </li>
-          <li>Услуга 2</li>
-          <li>Услуга 1</li>
-          <li>Услуга 3</li>
-          <li>Показать все...</li>
-          <li>Дата</li>
           <li>
-            <input type="text" class="search-input" placeholder="Поиск...">
+            <a href="{% url 'login' %}">Выйти</a>
           </li>
         </ul>
-      </div>
+      </nav>
+    </header>
+
+    <!-- Основное содержимое -->
+    <div class="main-container">
+      <!-- Блок фильтров -->
+      <div class="filters" id="filters-container">
+        <div class="filter-label">Фильтры</div>
+
+        <!-- Поиск по фильтрам -->
+        <div class="filter-search">
+          <input type="text" id="filter-search-input" placeholder="Поиск..." />
+        </div>
+
+        <!-- Фильтр по статусу -->
+        <div class="filter-section">
+          <div
+            class="filter-header collapsed"
+            onclick="toggleSection('client-options')"
+          >
+            Статус
+          </div>
+          <ul class="filter-items collapsed" id="client-options">
+            <li class="filter-item">Оказана<input type="checkbox" /></li>
+            <li class="filter-item">Перенесена<input type="checkbox" /></li>
+            <li class="filter-item">Удалена<input type="checkbox" /></li>
+          </ul>
+        </div>
+
+        <!-- Фильтр по врачам -->
+<div class="filter-section">
+  <div
+    class="filter-header collapsed"
+    onclick="toggleSection('doctor-options')"
+  >
+    Врач
+  </div>
+  <ul class="filter-items collapsed" id="doctor-options">
+    <div class="filter-search">
+      <input
+        type="text"
+        class="filter-search-input"
+        placeholder="Поиск по врачам..."
+        oninput="filterItems('doctor-options', this.value)"
+      />
     </div>
+    <li class="filter-item">
+      Иванов<input type="checkbox" name="doctor" id="doctor-ivanov" />
+    </li>
+    <li class="filter-item">
+      Петров<input type="checkbox" name="doctor" id="doctor-petrov" />
+    </li>
+    <li class="filter-item">
+      Сидоров<input type="checkbox" name="doctor" id="doctor-sidorov" />
+    </li>
+    <li class="filter-item">
+      Сидоров<input type="checkbox" name="doctor" id="doctor-sidorov" />
+    </li>
+    <li class="filter-item">
+      Сидоров<input type="checkbox" name="doctor" id="doctor-sidorov" />
+    </li>
+    <li class="filter-item">
+      Сидоров<input type="checkbox" name="doctor" id="doctor-sidorov" />
+    </li>
+    <button class="show-all-btn" onclick="toggleShowAll('doctor-options', this)">
+      Показать все
+    </button>
+  </ul>
+</div>
 
-    <div class="records-table">
-        <div class="column-labels">
-            <span>Дата</span>
-            <span>Имя</span>
-            <span>Номер</span>
-            <span>Статус</span>
-            <span>Врач</span>
-            <span>Услуга</span>
-            <span>Комментарий</span>
-            <span>Записи*</span>
-            <span>Следующая заявка</span>
-        </div>
+<!-- Фильтр по услугам -->
+<div class="filter-section">
+  <div
+    class="filter-header collapsed"
+    onclick="toggleSection('service-options')"
+  >
+    Услуга
+  </div>
+  <ul class="filter-items collapsed" id="service-options">
+    <div class="filter-search">
+      <input
+        type="text"
+        class="filter-search-input"
+        placeholder="Поиск по услуге..."
+        oninput="filterItems('service-options', this.value)"
+      />
+    </div>
+    <li class="filter-item">
+      Массаж<input type="checkbox" name="service" id="service-massage" />
+    </li>
+    <li class="filter-item">
+      Консультация<input
+        type="checkbox"
+        name="service"
+        id="service-consultation"
+      />
+    </li>
+    <li class="filter-item">
+      Диагностика<input
+        type="checkbox"
+        name="service"
+        id="service-diagnostics"
+      />
+    </li>
+    <li class="filter-item">
+      Диагностика<input
+        type="checkbox"
+        name="service"
+        id="service-diagnostics"
+      />
+    </li>
+    
+    <button class="show-all-btn" onclick="toggleShowAll('service-options', this)">
+      Показать все
+    </button>
+  </ul>
+</div>
 
-        
-        <div class="table-rows">
-            {% for app in applications %}
-            <div class="record-row">
-            <span>{{ app.client.created_at|date:"d.m.Y" }}</span>
-            <span>
-              {{ app.client.last_name }}
-              {% if app.client.first_name %}
-                {{ app.client.first_name|slice:":1" }}.
-              {% endif %}
-              {% if app.client.surname %}
-                {{ app.client.surname|slice:":1" }}.
-              {% endif %}
-            </span>
-            <span>{{ app.client.phone_number|default:"-" }}</span>
-            <span class="status-done">{{ app.status.status }}</span>
-            <span>{{ app.doctor.user.last_name|default:"-" }}</span>
-            <span>{{ None }}</span>
-            <span>{{ app.comments.first.comment|truncatechars:50 }}</span>
-            <span>{{ None }}</span>
-            <span>{{ app.date_next_call|date:"d.m.Y"|default:None }}</span>
+        <!-- Фильтр по дате -->
+        <div class="filter-section">
+          <div
+            class="filter-header collapsed"
+            onclick="toggleSection('date-range-options')"
+          >
+            Дата
+          </div>
+          <div class="filter-content collapsed" id="date-range-options">
+            <div class="filter-search">
+              <label for="start-date">Начальная дата:</label>
+              <input
+                type="date"
+                class="filter-date-input"
+                id="start-date"
+              />
             </div>
-            {% empty %}
-            {% endfor %}
+            <div class="filter-search">
+              <label for="end-date">Конечная дата:</label>
+              <input
+                type="date"
+                class="filter-date-input"
+                id="end-date"
+              />
+            </div>
+          </div>
         </div>
+
+        <!-- Фильтр по дате записи -->
+<div class="filter-section">
+  <div
+    class="filter-header collapsed"
+    onclick="toggleSection('record-date-options')"
+  >
+    Дата записи
+  </div>
+  <div class="filter-content collapsed" id="record-date-options">
+    <div class="filter-search">
+      <label for="record-start-date">Начальная дата:</label>
+      <input
+        type="date"
+        class="filter-date-input"
+        id="record-start-date"
+      />
+    </div>
+    <div class="filter-search">
+      <label for="record-end-date">Конечная дата:</label>
+      <input
+        type="date"
+        class="filter-date-input"
+        id="record-end-date"
+      />
     </div>
   </div>
-    <!-- Модальное окно добавления клиента -->
-    <div id="add-client-modal" class="modal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1>Добавить клиента</h1>
-          <button class="close-btn">&times;</button>
-        </div>
-        
-        <div class="form-group">
-          <label>Фамилия</label>
-          <input type="text" placeholder="Введите фамилию">
-        </div>
-        
-        <div class="form-group">
-          <label>Имя</label>
-          <input type="text" placeholder="Введите имя">
-        </div>
-        
-        <div class="form-group">
-          <label>Отчество</label>
-          <input type="text" placeholder="Введите отчество">
-        </div>
-        
-        <div class="form-group">
-          <label>Номер телефона</label>
-          <input type="text" placeholder="Введите номер телефона">
-        </div>
-        
-        <div class="comments-container">
-          <div class="comments-scroll">
-            <div class="comment">04.04 Валера Какой-то крутой текст например</div>
-          </div>
-        </div>
-        
-        <div class="comment-input-group">
-          <input type="text" placeholder="Введите комментарий..." id="comment-input">
-        </div>
-        
-        <button class="save-btn">Сохранить</button>
-      </div>
+</div>
+
+<!-- Фильтр по дате звонка -->
+<div class="filter-section">
+  <div
+    class="filter-header collapsed"
+    onclick="toggleSection('call-date-options')">
+    Дата следующего звонка
+  </div>
+  <div class="filter-content collapsed" id="call-date-options">
+    <div class="filter-search">
+      <label for="call-start-date">Начальная дата:</label>
+      <input
+        type="date"
+        class="filter-date-input"
+        id="call-start-date"
+      />
     </div>
-  
-    <!-- Модальное окно создания записи -->
-    <div id="create-record-modal" class="modal">
-      <div class="modal-content">
-        <h1 class="title">Создать запись</h1>
-        <button class="close-btn">&times;</button>
-  
-        <div class="form-group" style="position: relative;">
-          <label for="client-search">Клиент</label>
-          <input type="text" id="client-search" placeholder="Введите ФИО клиента">
-          <div id="client-suggestions" class="suggestions-list hidden"></div>
-        </div>
-  
-        <div class="form-group">
-          <label for="phone">Номер телефона</label>
-          <input type="text" id="phone" placeholder="Введите номер телефона">
-        </div>
-  
-        <div class="form-group" style="position: relative;">
-          <label>Врач</label>
-          <input type="text" id="doctor-search" placeholder="Введите ФИО врача">
-          <div id="doctor-suggestions" class="suggestions-list"></div>
-       </div>       
-  
-        <div class="form-group">
-          <label>Услуга</label>
-          <div class="dropdown-container">
-            <div class="dropdown-btn" onclick="toggleDropdown('service-dropdown')">
-              <span id="selected-service">Выберите услугу</span>
-              <span>▼</span>
-            </div>
-          </div>
-        </div>
-  
-        <div class="datetime-row">
-          <div class="form-group date-group">
-            <label>Дата</label>
-            <div class="dropdown-container">
-              <div class="dropdown-btn" onclick="toggleCalendar('date-calendar')">
-                <span id="selected-date">Выберите дату</span>
-                <span>▼</span>
-              </div>
-              <div id="date-calendar" class="calendar small">
-                <div class="calendar-header">
-                  <button onclick="prevMonth()">←</button>
-                  <h3 id="calendar-month-year">Май 2025</h3>
-                  <button onclick="nextMonth()">→</button>
-                </div>
-                <div class="calendar-grid" id="calendar-days"></div>
-              </div>
-            </div>
-          </div>
-  
-          <div class="form-group time-group">
-            <label>Время</label>
-            <div class="dropdown-container">
-              <div class="dropdown-btn" onclick="toggleDropdown('time-dropdown')">
-                <span id="selected-time">Выберите время</span>
-                <span>▼</span>
-              </div>
-              <div id="time-dropdown" class="dropdown-content">
-                <div onclick="selectItem('selected-time', 'time-dropdown', '09:00')">09:00</div>
-                <div onclick="selectItem('selected-time', 'time-dropdown', '10:30')">10:30</div>
-                <div onclick="selectItem('selected-time', 'time-dropdown', '12:00')">12:00</div>
-                <div onclick="selectItem('selected-time', 'time-dropdown', '14:00')">14:00</div>
-                <div onclick="selectItem('selected-time', 'time-dropdown', '15:30')">15:30</div>
-                <div onclick="selectItem('selected-time', 'time-dropdown', '17:00')">17:00</div>
-              </div>
-            </div>
-          </div>
-  
-          <div class="form-group call-group">
-            <label>Следующий звонок</label>
-            <div class="dropdown-container">
-              <div class="dropdown-btn" onclick="toggleCalendar('call-calendar')">
-                <span id="selected-call-date">Выберите дату</span>
-                <span>▼</span>
-              </div>
-              <div id="call-calendar" class="calendar small">
-                <div class="calendar-header">
-                  <button onclick="prevCallMonth()">←</button>
-                  <h3 id="call-calendar-month-year">Май 2025</h3>
-                  <button onclick="nextCallMonth()">→</button>
-                </div>
-                <div class="calendar-grid" id="call-calendar-days"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-  
-        <div class="form-group">
-          <label for="comment">Введите комментарий</label>
-          <textarea id="comment" placeholder="Введите комментарий..."></textarea>
-        </div>
-  
-        <button class="save-btn" onclick="saveClient()">Сохранить</button>
-        <p id="success-message" style="display: none; color: green; text-align: center;">Клиент сохранён!</p>
-      </div>
+    <div class="filter-search">
+      <label for="call-end-date">Конечная дата:</label>
+      <input
+        type="date"
+        class="filter-date-input"
+        id="call-end-date"
+      />
     </div>
-    <script src="{% static 'crm/js/script.js' %}"></script>
-</body>
+  </div>
+</div>
+      </div>
+
+      <!-- Таблица с записями -->
+      <div class="table">
+        <table>
+          <thead>
+            <tr>
+              <th>
+                <a href="?sort=client__created_at&dir={% if current_sort == 'client__created_at' and current_direction == 'asc' %}desc{% else %}asc{% endif %}&page=1" id="sort-date">
+                  Дата 
+                  <img src="{% static 'crm/img/arrow_sort.svg' %}" 
+                       alt="" 
+                       class="arrow {% if current_sort == 'client__created_at' %}{% if current_direction == 'asc' %}arrow-up{% else %}arrow-down{% endif %}{% endif %}"/>
+                </a>
+              </th>
+              <th>Имя</th>
+              <th>Номер</th>
+              <th>Статус</th>
+              <th>Врач</th>
+              <th>Услуга</th>
+              <th>Комментарий</th>
+              <th>
+                <a href="?sort=record__date&dir={% if current_sort == 'record__date' and current_direction == 'asc' %}desc{% else %}asc{% endif %}&page=1" id="sort-record">
+                  Запись 
+                  <img src="{% static 'crm/img/arrow_sort.svg' %}" 
+                       alt="" 
+                       class="arrow {% if current_sort == 'record__date' %}{% if current_direction == 'asc' %}arrow-up{% else %}arrow-down{% endif %}{% endif %}"/>
+                </a>
+              </th>
+              <th>
+                <a href="?sort=date_next_call&dir={% if current_sort == 'date_next_call' and current_direction == 'asc' %}desc{% else %}asc{% endif %}&page=1" id="sort-next-call">
+                  Следующий звонок
+                  <img src="{% static 'crm/img/arrow_sort.svg' %}" 
+                       alt="" 
+                       class="arrow {% if current_sort == 'date_next_call' %}{% if current_direction == 'asc' %}arrow-up{% else %}arrow-down{% endif %}{% endif %}"/>
+                </a>
+              </th>
+            </tr>
+          </thead>
+          <tbody id="record-container">
+            {% for app in page_obj %}
+            <tr class="record-row">
+              <td>{{ app.client.created_at|date:"d.m.Y"|default:None }}</td>
+              <td>
+                {{ app.client.last_name }}
+                {% if app.client.first_name %}
+                  {{ app.client.first_name|slice:":1" }}.
+                {% endif %}
+                {% if app.client.surname %}
+                  {{ app.client.surname|slice:":1" }}.
+                {% endif %}
+              </td>
+              <td>{{ app.client.phone_number|default:"-" }}</td>
+              <td class="status-done">{{ app.status.status }}</td>
+              <td>
+                {% if app.doctor %}
+                  {{ app.doctor.user.last_name }}
+                  {% if app.doctor.user.first_name %}
+                    {{ app.doctor.user.first_name|slice:":1" }}.
+                  {% endif %}
+                {% else %}
+                  -
+                {% endif %}
+              </td>
+              <td>{{ app.service.name|default:None }}</td>
+              <td>
+                {% if app.comments.first %}
+                  {{ app.comments.first.created_at|date:"d.m" }} {{ app.comments.first.manager.user.last_name }}<br>
+                  {{ app.comments.first.comment|truncatechars:30 }}
+                {% else %}
+                  -
+                {% endif %}
+              </td>
+              <td>{{ app.record.date|date:"d.m.Y"|default:None }}</td>
+              <td>{{ app.date_next_call|date:"d.m.Y"|default:None }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      
+        <!-- Пагинация -->
+        <div class="pagination">
+          {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" class="pagination-btn">Назад</a>
+          {% else %}
+            <button class="pagination-btn" disabled>Назад</button>
+          {% endif %}
+          
+          <span id="pageIndicator">Стр. {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+          
+          {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="pagination-btn">Вперёд</a>
+          {% else %}
+            <button class="pagination-btn" disabled>Вперёд</button>
+          {% endif %}
+        </div>
+      </div>
+
+
+  <!-- Основной скрипт -->
+  <script src="{% static 'crm/js/scriptModal.js' %}"></script>
+  </body>
 </html>
