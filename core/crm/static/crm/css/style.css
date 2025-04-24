@@ -1,0 +1,128 @@
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Open Sans', sans-serif;
+}
+
+body {
+background-color: #f4f4f4;
+}
+/* Header */
+header {
+width: 100%;
+height: 80px;
+background-color: white;
+box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+display: flex;
+align-items: center;
+padding: 0 24px;
+margin: 0 auto;
+justify-content: space-between;
+}
+
+.logo {
+height: 61px;
+width: 158px;
+}
+
+.links {
+display: flex;
+align-items: center;
+list-style: none;
+gap: 32px;
+}
+
+.links a {
+display: flex;
+align-items: center;
+text-decoration: none;
+color: #333;
+font-size: 16px;
+font-weight: 600;
+gap: 8px;
+}
+
+.links a:hover {
+text-decoration: underline;
+}
+
+.links img {
+height: 16px;
+width: 16px;
+}
+
+.main-container {
+display: flex;
+margin-top: 20px;
+}
+/* Filters */
+.filters {
+width: 350px;
+background: white;
+margin-left: 24px;
+padding: 16px;
+box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Record table */
+
+
+.table {
+width: 100%;
+background: white;
+margin-left: 24px;
+margin-right: 24px;
+padding: 16px;
+box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+.table table {
+width: 100%;
+border-collapse: collapse;
+table-layout: fixed; /* Устанавливаем фиксированную ширину колонок */
+}
+
+.table th, .table td {
+text-align: center; /* Центрируем текст в колонках */
+padding: 8px;
+}
+
+.table th {
+border-bottom: none; /* Убираем линию снизу у заголовка */
+background-color: transparent; /* Убираем фон заголовка */
+font-weight: normal; /* Убираем жирность текста */
+padding: 8px;
+text-align: left;
+font-size: 12px;
+font-weight: 400;
+color: #B0B0B0;
+}
+
+.table a {
+text-decoration: none;
+color: #B0B0B0;
+}
+
+.table a:hover {
+border-bottom: #B0B0B0 1px solid;
+}
+
+.arrow {
+transition: transform 0.3s ease; /* Плавный переход */
+}
+
+.arrow-up {
+transform: rotate(180deg); /* Вращение вверх */
+}
+
+.table td {
+border: none; /* Убираем все границы */
+border-bottom: 1px solid #ddd; /* Добавляем только нижнюю границу для ячеек */
+padding: 8px;
+text-align: left;
+font-size: 14px;
+font-weight: 400;
+
+}
+
+

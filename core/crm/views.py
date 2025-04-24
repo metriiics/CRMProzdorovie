@@ -76,7 +76,7 @@ class ApplicationsView(View):
         
         return render(request, 'crm/index.html', {'applications': queryset})
         
-# Класс для поиска врача
+#поиска врача
 class SearchDoctorAPIView(APIView):
     def get(self, request):
         query = request.GET.get('query', '')
@@ -92,7 +92,7 @@ class SearchDoctorAPIView(APIView):
             ]
             return Response({'doctors': doctors_list})
         return Response({'doctors': []})
-
+#поиска клиента
 class SearchClientAPIView(APIView):
     def get(self, request):
         query = request.GET.get('query', '')
@@ -111,10 +111,34 @@ class SearchClientAPIView(APIView):
     
 class StatusListAPIView(APIView):
     def get(self, request):
-        # Получаем все статусы
+
         statuses = Status.objects.all()
         serializer = StatusSerializer(statuses, many=True)
         return Response({'statuses': serializer.data}, status=status.HTTP_200_OK)
 
 def respHome(request):
     return render(request, "crm/editClientView.html")
+
+
+class NewApplicationsView(View):
+    def get(self, request):
+
+        sort_field = request.GET.get('sort_field', 'client__created_at')
+        sort_direction = request.GET.get('sort_direction', 'asc')
+        
+        if sort_direction == 'desc':
+            sort_field = f'-{sort_field}'
+
+        queryset = Application.objects.select_related(
+            'client', 'status', 'doctor__user'
+        ).prefetch_related(
+            Prefetch('comments', queryset=Comment.objects.select_related('manager'))
+        ).order_by(sort_field)
+
+        context = {
+            'applications': queryset,
+            'current_sort_field': sort_field.lstrip('-'),
+            'current_sort_direction': sort_direction,
+        }
+        
+        return render(request, 'crm/indexMain.html', context)

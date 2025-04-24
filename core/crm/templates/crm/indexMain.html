@@ -1,0 +1,119 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Создать запись</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'crm/css/style.css' %}" />
+  <link rel="stylesheet" href="./modal/style.css" />
+</head>
+<body>
+  <header>
+    <img class="logo" src="{% static 'crm/img/logo.svg' %}" alt="Медицинский центр ProЗдоровье" />
+    <nav class="navbar">
+      <ul class="links">
+        <li>
+          <a href="" id="create-record-btn"><img src="{% static 'crm/img/create.svg' %}" alt="">Создать запись</a>
+        </li>
+        <li>
+          <a href="" id="add-client-btn"><img src="{% static 'crm/img/add.svg' %}" alt="">Добавить клиента</a>
+        </li>
+        <li>
+          <a href="" id="edit-client-btn"><img src="{% static 'crm/img/edit.svg' %}" alt="">Изменить клиента</a>
+        </li>
+        <li>
+          <a href="">Выйти</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <div class="main-container">
+    <div class="filters">
+    </div>
+
+    <div class="table">
+      <table>
+        <thead>
+          <tr>
+            <th><a href="?sort_field=client__created_at&sort_direction={% if current_sort_field == 'client__created_at' and current_sort_direction == 'asc' %}desc{% else %}asc{% endif %}">
+              Дата 
+              {% if current_sort_field == 'client__created_at' %}
+                <img src="{% static 'crm/img/arrow_sort.svg' %}" 
+                     class="arrow {% if current_sort_direction == 'desc' %}arrow-up{% endif %}">
+              {% endif %}
+            </a></th>
+            <th>Имя</th>
+            <th>Номер</th>
+            <th>Статус</th>
+            <th>Врач</th>
+            <th>Услуга</th>
+            <th>Комментарий</th>
+            <th>
+              <a href="?sort_field=record__date&sort_direction={% if current_sort_field == 'record__date' and current_sort_direction == 'asc' %}desc{% else %}asc{% endif %}">
+                Запись 
+                {% if current_sort_field == 'record__date' %}
+                  <img src="{% static 'crm/img/arrow_sort.svg' %}" 
+                       class="arrow {% if current_sort_direction == 'desc' %}arrow-up{% endif %}">
+                {% endif %}
+              </a>
+            </th>
+            <th>
+              <a href="?sort_field=date_next_call&sort_direction={% if current_sort_field == 'date_next_call' and current_sort_direction == 'asc' %}desc{% else %}asc{% endif %}">
+                Следующий звонок 
+                {% if current_sort_field == 'date_next_call' %}
+                  <img src="{% static 'crm/img/arrow_sort.svg' %}" 
+                       class="arrow {% if current_sort_direction == 'desc' %}arrow-up{% endif %}">
+                {% endif %}
+              </a>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for app in applications %}
+          <tr>
+            <td>{{ app.client.created_at|date:"d.m.Y" }}</td>
+            <td>
+              {{ app.client.last_name }}
+              {% if app.client.first_name %}
+                {{ app.client.first_name|slice:":1" }}.
+              {% endif %}
+              {% if app.client.surname %}
+                {{ app.client.surname|slice:":1" }}.
+              {% endif %}
+            </td>
+            <td>{{ app.client.phone_number|default:"-" }}</td>
+            <td class="status-done">{{ app.status.status }}</td>
+            <td>
+              {% if app.doctor %}
+                {{ app.doctor.user.last_name }}
+                {% if app.doctor.user.first_name %}
+                  {{ app.doctor.user.first_name|slice:":1" }}.
+                {% endif %}
+              {% else %}
+                -
+              {% endif %}
+            </td>
+            <td>{{ app.service.name|default:None }}</td>
+            <td>
+              {% if app.comments.first %}
+                {{ app.comments.first.created_at|date:"d.m" }} {{ app.comments.first.manager.user.last_name }}<br>
+                {{ app.comments.first.comment|truncatechars:50 }}
+              {% else %}
+                -
+              {% endif %}
+            </td>
+            <td>{{ app.record.date|date:"d.m.Y"|default:None }}</td>
+            <td>{{ app.date_next_call|date:"d.m.Y"|default:None }}</td>
+          </tr>
+          {% empty %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
