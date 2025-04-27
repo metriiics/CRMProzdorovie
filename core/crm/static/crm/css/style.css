@@ -469,8 +469,14 @@ header {
 .filter-header.collapsed::after {
   transform: rotate(0deg);
 }
+/* тут скролл добавил*/
+.filter-items {
+  max-height: 200px; 
+  overflow-y: auto;
+  padding-right: 10px; 
+  margin-bottom: 10px;
+}
 
-.filter-items,
 .filter-content {
   display: block;
   transition: max-height 0.3s ease, opacity 0.3s ease;
@@ -512,3 +518,44 @@ header {
   border-radius: 4px;
   box-sizing: border-box;
 }
+
+.filter-buttons {
+  display: flex;
+  flex-direction: column; /* Сделаем кнопки вертикально */
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.filter-apply-btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  background-color: #00923a; /* Зелёная */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.filter-apply-btn:hover {
+  background-color: #007a2e;
+}
+
+.filter-reset-btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  background-color: white; /* Белый фон */
+  color: #00923a; /* Зелёный текст */
+  border: 1px solid #00923a; /* Зелёная обводка */
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.filter-reset-btn:hover {
+  background-color: #f4f4f4;
+  color: #007a2e;
+  border-color: #007a2e;
+}
+
+

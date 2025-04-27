@@ -144,16 +144,14 @@ function toggleShowAll(sectionId, button) {
   const section = document.getElementById(sectionId);
   if (section) {
     const items = section.querySelectorAll(".filter-item");
-    const isExpanded = button.textContent.trim() === "Скрыть все";
+    const isExpanded = button.dataset.expanded === "true";
 
     items.forEach((item, index) => {
-      // Показываем все элементы, если кнопка "Скрыть все"
-      // Показываем только первые 3, если кнопка "Показать все"
-      item.style.display = !isExpanded || index < 3 ? "flex" : "none";
+      item.style.display = isExpanded && index >= 3 ? "none" : "flex";
     });
 
-    // Переключаем текст кнопки
     button.textContent = isExpanded ? "Показать все" : "Скрыть все";
+    button.dataset.expanded = isExpanded ? "false" : "true";
   }
 }
 
@@ -161,6 +159,84 @@ function toggleShowAll(sectionId, button) {
 document.addEventListener("DOMContentLoaded", () => {
   initializeFilters();
 });
+
+// Включаем функцию при загрузке страницы
+document.addEventListener("DOMContentLoaded", () => {
+  setupGlobalSearch();
+});
+
+
+function applyFilters() {
+  const url = new URL(window.location.href);
+
+  // Очищаем текущие выбранные значения докторов
+  url.searchParams.delete('doctor');
+
+  // Находим все отмеченные чекбоксы врачей
+  document.querySelectorAll('#doctor-options input[type="checkbox"]:checked').forEach((checkbox) => {
+    const doctorName = checkbox.parentElement.textContent.trim(); // Берем текст из label
+    url.searchParams.append('doctor', doctorName);
+  });
+
+  // Сбросить на первую страницу
+  url.searchParams.set('page', 1);
+
+  // Перезагрузка страницы с новыми фильтрами
+  window.location.href = url.toString();
+}
+
+function filterItems(sectionId, query) {
+  const section = document.getElementById(sectionId);
+  if (!section) return;
+
+  const items = section.querySelectorAll('.filter-item');
+  const normalizedQuery = query.toLowerCase().trim();
+
+  items.forEach(item => {
+    const text = item.textContent.toLowerCase();
+    item.style.display = text.includes(normalizedQuery) ? 'flex' : 'none';
+  });
+}
+
+function resetFilters() {
+  // Снимаем все чекбоксы
+  document.querySelectorAll('.filters input[type="checkbox"]').forEach((checkbox) => {
+    checkbox.checked = false;
+  });
+
+  // Очищаем текстовые и календарные инпуты
+  document.querySelectorAll('.filters input[type="text"], .filters input[type="date"]').forEach((input) => {
+    input.value = '';
+  });
+
+  // Очищаем фильтры в URL
+  const url = new URL(window.location.href);
+  url.searchParams.delete('doctor');
+  url.searchParams.delete('page'); // обнуляем страницу тоже
+
+  window.location.href = url.toString();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initializeFilters();
+
+  const url = new URL(window.location.href);
+  const selectedDoctors = url.searchParams.getAll('doctor');
+
+  // При загрузке отмечаем чекбоксы если врач выбран в фильтре
+  if (selectedDoctors.length > 0) {
+    selectedDoctors.forEach((doctorName) => {
+      document.querySelectorAll('#doctor-options .filter-item').forEach((item) => {
+        const label = item.textContent.trim();
+        const checkbox = item.querySelector('input[type="checkbox"]');
+        if (label === doctorName && checkbox) {
+          checkbox.checked = true;
+        }
+      });
+    });
+  }
+});
+
 // ==============================================
 // РАБОТА С КАЛЕНДАРЯМИ
 // ==============================================

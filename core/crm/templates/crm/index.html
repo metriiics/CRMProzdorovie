@@ -80,13 +80,11 @@
 
         <!-- Фильтр по врачам -->
 <div class="filter-section">
-  <div
-    class="filter-header collapsed"
-    onclick="toggleSection('doctor-options')"
-  >
+  <div class="filter-header collapsed" onclick="toggleSection('doctor-options')">
     Врач
   </div>
-  <ul class="filter-items collapsed" id="doctor-options">
+
+  <div class="filter-content collapsed" id="doctor-options">
     <div class="filter-search">
       <input
         type="text"
@@ -95,29 +93,24 @@
         oninput="filterItems('doctor-options', this.value)"
       />
     </div>
-    <li class="filter-item">
-      Иванов<input type="checkbox" name="doctor" id="doctor-ivanov" />
-    </li>
-    <li class="filter-item">
-      Петров<input type="checkbox" name="doctor" id="doctor-petrov" />
-    </li>
-    <li class="filter-item">
-      Сидоров<input type="checkbox" name="doctor" id="doctor-sidorov" />
-    </li>
-    <li class="filter-item">
-      Сидоров<input type="checkbox" name="doctor" id="doctor-sidorov" />
-    </li>
-    <li class="filter-item">
-      Сидоров<input type="checkbox" name="doctor" id="doctor-sidorov" />
-    </li>
-    <li class="filter-item">
-      Сидоров<input type="checkbox" name="doctor" id="doctor-sidorov" />
-    </li>
+
+    <ul class="filter-items">
+      {% for doctor in doctors %}
+        <li class="filter-item">
+          {{ doctor }}
+          <input type="checkbox" name="doctor" id="doctor-{{ doctor|slugify }}" />
+        </li>
+      {% endfor %}
+    </ul>
+
     <button class="show-all-btn" onclick="toggleShowAll('doctor-options', this)">
       Показать все
     </button>
-  </ul>
+  </div>
 </div>
+
+        
+        
 
 <!-- Фильтр по услугам -->
 <div class="filter-section">
@@ -248,6 +241,12 @@
       />
     </div>
   </div>
+
+  <div class="filter-buttons">
+    <button class="filter-apply-btn" onclick="applyFilters()">Применить</button>
+    <button class="filter-reset-btn" onclick="resetFilters()">Сбросить</button>
+  </div>  
+
 </div>
       </div>
 
@@ -330,9 +329,10 @@
         </table>
       
         <!-- Пагинация -->
+        {% with request.GET.urlencode as current_query %}
         <div class="pagination">
           {% if page_obj.has_previous %}
-            <a href="?page={{ page_obj.previous_page_number }}" class="pagination-btn">Назад</a>
+            <a href="?{% if current_query %}{{ current_query }}&{% endif %}page={{ page_obj.previous_page_number }}" class="pagination-btn">Назад</a>
           {% else %}
             <button class="pagination-btn" disabled>Назад</button>
           {% endif %}
@@ -340,12 +340,13 @@
           <span id="pageIndicator">Стр. {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
           
           {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}" class="pagination-btn">Вперёд</a>
+            <a href="?{% if current_query %}{{ current_query }}&{% endif %}page={{ page_obj.next_page_number }}" class="pagination-btn">Вперёд</a>
           {% else %}
             <button class="pagination-btn" disabled>Вперёд</button>
           {% endif %}
         </div>
-      </div>
+        {% endwith %}
+
 
 
   <!-- Основной скрипт -->

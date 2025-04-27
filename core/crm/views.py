@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from rest_framework import status
-from .models import Client, Application, Comment, Doctor, Status
+from .models import Client, Application, Comment, Doctor, Status, User
 from django.core.paginator import Paginator
 from django.db.models import Q, Prefetch
 from .serializers import CombineSerializer, ClientSerializer, StatusSerializer
@@ -119,13 +119,14 @@ class StatusListAPIView(APIView):
 def respHome(request):
     return render(request, "crm/login.html")
 
-
 class NewApplicationsView(View):
     def get(self, request):
-
         # Получаем параметры сортировки из GET-запроса
         sort_field = request.GET.get('sort', 'id')
         sort_direction = request.GET.get('dir', 'asc')
+        
+        # Получаем параметры фильтрации
+        doctor_filter = request.GET.getlist('doctor')  # Получаем список выбранных врачей
         
         # Определяем порядок сортировки
         if sort_direction == 'desc':
@@ -141,17 +142,26 @@ class NewApplicationsView(View):
                 'comments', 
                 queryset=Comment.objects.select_related('manager')
             )
-        ).order_by(sort_field)
+        )
         
-        paginator = Paginator(queryset, 30)  # Показывать 10 записей на странице
+        # Применяем фильтр по врачам, если он задан
+        if doctor_filter:
+            queryset = queryset.filter(doctor__user__last_name__in=doctor_filter)
+        
+        queryset = queryset.order_by(sort_field)
+        
+        paginator = Paginator(queryset, 30)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         
-        # Передаем параметры сортировки в контекст
+        # Получаем список всех врачей для фильтра через Doctor
+        doctors = Doctor.objects.select_related('user').values_list('user__last_name', flat=True).distinct()
+        
         context = {
             'page_obj': page_obj,
             'current_sort': sort_field.lstrip('-'),
             'current_direction': sort_direction,
+            'doctors': doctors,  # Передаем список врачей в шаблон
         }
 
         return render(request, 'crm/index.html', context)
