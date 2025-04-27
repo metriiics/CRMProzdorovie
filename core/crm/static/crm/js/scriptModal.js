@@ -5,24 +5,62 @@ function initModalHandlers() {
     document.querySelectorAll(".search-container").forEach((container) => {
       const input = container.querySelector(".search-input");
       const suggestions = container.querySelector(".suggestions");
-
+  
       if (!input || !suggestions) return;
-
+  
+      input.addEventListener("input", () => {
+        const query = input.value;
+        const placeholder = input.placeholder.toLowerCase();
+  
+        let url = "";
+        if (placeholder.includes("клиент")) {
+          url = `/search-client/?query=${encodeURIComponent(query)}`;
+        } else if (placeholder.includes("врач")) {
+          url = `/search-doctor/?query=${encodeURIComponent(query)}`;
+        }
+  
+        if (!url) return;
+  
+        fetch(url)
+          .then(res => res.json())
+          .then(data => {
+            const items = data.clients || data.doctors || [];
+            suggestions.innerHTML = "";
+  
+            items.forEach(item => {
+              const div = document.createElement("div");
+              div.classList.add("suggestion-item");
+              div.textContent = item.fio;
+              div.dataset.phone = item.phone_number || "";
+              div.dataset.fio = item.fio;
+              suggestions.appendChild(div);
+            });
+  
+            suggestions.style.display = "block";
+            bindSuggestionClicks(container, input, suggestions);
+          });
+      });
+  
       input.addEventListener("focus", () => {
         suggestions.style.display = "block";
       });
-
+  
       input.addEventListener("blur", () => {
-        setTimeout(() => {
-          suggestions.style.display = "none";
-        }, 200);
+        setTimeout(() => suggestions.style.display = "none", 200);
       });
-
-      suggestions.querySelectorAll(".suggestion-item").forEach((item) => {
-        item.addEventListener("click", () => {
-          input.value = item.textContent;
-          suggestions.style.display = "none";
-        });
+    });
+  }
+  
+  function bindSuggestionClicks(container, input, suggestions) {
+    suggestions.querySelectorAll(".suggestion-item").forEach((item) => {
+      item.addEventListener("click", () => {
+        input.value = item.dataset.fio;
+        suggestions.style.display = "none";
+  
+        const phoneField = document.querySelector("#phone");
+        if (item.dataset.phone && phoneField) {
+          phoneField.value = item.dataset.phone;
+        }
       });
     });
   }

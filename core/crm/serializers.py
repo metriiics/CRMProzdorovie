@@ -7,10 +7,15 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['first_name', 'last_name', 'surname']
 
 class ClientSerializer(serializers.ModelSerializer):
+    fio = serializers.SerializerMethodField()
+
     class Meta:
         model = Client
-        fields = ['first_name', 'last_name', 'surname', 'phone_number', 'created_at']
+        fields = ['first_name', 'last_name', 'surname', 'phone_number', 'created_at', 'fio']
         
+    def get_fio(self, obj):
+        return f"{obj.last_name} {obj.first_name} {obj.surname}"
+
 class StatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = Status
