@@ -1,5 +1,5 @@
 from django.urls import path, include, re_path
-from .views import LoginView, client_list, ApplicationsView, respHome, SearchDoctorAPIView, SearchClientAPIView, StatusListAPIView, NewApplicationsView, ModalViewAddClient, ModalViewChangeClient, ModalViewChangeRecord, ModalViewCreateRecord
+from .views import LoginView, client_list, ApplicationsView, respHome, SearchDoctorAPIView, SearchClientAPIView, ModalViewAddClient, ModalViewChangeClient, ModalViewChangeRecord, ModalViewCreateRecord
 
 
 urlpatterns = [
@@ -8,9 +8,7 @@ urlpatterns = [
     path('api/v1/applications/', ApplicationsView.as_view(), name='applications-list'), 
     path('search-doctor/', SearchDoctorAPIView.as_view(), name='search_doctor'),
     path('search-client/', SearchClientAPIView.as_view(), name='search-client'),
-    path('api/status/', StatusListAPIView.as_view(), name='status-list'),
     path('api/v2/login/', respHome, name='login'),
-    path('homie', NewApplicationsView.as_view(), name='homie'), 
     path('modal/add-client/', ModalViewAddClient.as_view(), name='add_client_modal'),
     path('modal/change-client/', ModalViewChangeClient.as_view(), name='change_client_modal'),
     path('modal/change-record/', ModalViewChangeRecord.as_view(), name='change_record_modal'),

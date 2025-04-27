@@ -116,58 +116,65 @@ document.addEventListener("DOMContentLoaded", () => {
 // ==============================================
 // ФИЛЬТРЫ
 // ==============================================
+// ==============================================
+// ФИЛЬТРЫ
+// ==============================================
 
 function toggleSection(sectionId) {
-  const header = document.querySelector(`#${sectionId}`).previousElementSibling;
-  const items = document.getElementById(sectionId);
-
+  const section = document.getElementById(sectionId);
+  const header = section.previousElementSibling;
   header.classList.toggle("collapsed");
-  items.classList.toggle("collapsed");
+  section.classList.toggle("collapsed");
 }
+
 function initializeFilters() {
   document.querySelectorAll(".filter-items").forEach((section) => {
     const items = section.querySelectorAll(".filter-item");
     items.forEach((item, index) => {
-      // Показываем только первые 3 элемента при загрузке
       item.style.display = index < 3 ? "flex" : "none";
     });
 
-    // Устанавливаем текст кнопки "Показать все" и начальное состояние
     const button = section.nextElementSibling;
     if (button && button.classList.contains("show-all-btn")) {
       button.textContent = "Показать все";
-      button.dataset.expanded = "false"; // Устанавливаем начальное состояние
+      button.dataset.expanded = "false";
     }
   });
 }
+
 function toggleShowAll(sectionId, button) {
   const section = document.getElementById(sectionId);
-  if (section) {
-    const items = section.querySelectorAll(".filter-item");
-    const isExpanded = button.dataset.expanded === "true";
+  const items = section.querySelectorAll(".filter-item");
+  const isExpanded = button.dataset.expanded === "true";
 
-    items.forEach((item, index) => {
-      item.style.display = isExpanded && index >= 3 ? "none" : "flex";
-    });
+  items.forEach((item, index) => {
+    item.style.display = isExpanded && index >= 3 ? "none" : "flex";
+  });
 
-    button.textContent = isExpanded ? "Показать все" : "Скрыть все";
-    button.dataset.expanded = isExpanded ? "false" : "true";
-  }
+  button.textContent = isExpanded ? "Показать все" : "Скрыть все";
+  button.dataset.expanded = isExpanded ? "false" : "true";
 }
 
-// Вызов инициализации при загрузке страницы
-document.addEventListener("DOMContentLoaded", () => {
-  initializeFilters();
-});
+let searchQuery = '';  // Храним запрос поиска в переменной
 
-// Включаем функцию при загрузке страницы
-document.addEventListener("DOMContentLoaded", () => {
-  setupGlobalSearch();
-});
+// Функция для инициализации глобального поиска
+function setupGlobalSearch() {
+  const input = document.getElementById("filter-search-input");
+  input.addEventListener("input", function () {
+    searchQuery = this.value.trim();  // Сохраняем значение поиска
+  });
+}
 
-
+// Функция для применения фильтров
 function applyFilters() {
   const url = new URL(window.location.href);
+
+  // Если есть поисковый запрос, добавляем его в параметры URL
+  if (searchQuery) {
+    url.searchParams.set("search", searchQuery);
+  } else {
+    url.searchParams.delete("search");
+  }
 
   // Очищаем текущие выбранные значения докторов
   url.searchParams.delete('doctor');
@@ -185,19 +192,7 @@ function applyFilters() {
   window.location.href = url.toString();
 }
 
-function filterItems(sectionId, query) {
-  const section = document.getElementById(sectionId);
-  if (!section) return;
-
-  const items = section.querySelectorAll('.filter-item');
-  const normalizedQuery = query.toLowerCase().trim();
-
-  items.forEach(item => {
-    const text = item.textContent.toLowerCase();
-    item.style.display = text.includes(normalizedQuery) ? 'flex' : 'none';
-  });
-}
-
+// Функция для сброса всех фильтров
 function resetFilters() {
   // Снимаем все чекбоксы
   document.querySelectorAll('.filters input[type="checkbox"]').forEach((checkbox) => {
@@ -209,21 +204,27 @@ function resetFilters() {
     input.value = '';
   });
 
+  // Очищаем поисковый запрос
+  searchQuery = '';
+
   // Очищаем фильтры в URL
   const url = new URL(window.location.href);
   url.searchParams.delete('doctor');
+  url.searchParams.delete('search');
   url.searchParams.delete('page'); // обнуляем страницу тоже
 
   window.location.href = url.toString();
 }
 
+// Вызов всех инициализаций при загрузке страницы
 document.addEventListener('DOMContentLoaded', () => {
   initializeFilters();
+  setupGlobalSearch();
 
   const url = new URL(window.location.href);
   const selectedDoctors = url.searchParams.getAll('doctor');
 
-  // При загрузке отмечаем чекбоксы если врач выбран в фильтре
+  // При загрузке отмечаем чекбоксы, если врач выбран в фильтре
   if (selectedDoctors.length > 0) {
     selectedDoctors.forEach((doctorName) => {
       document.querySelectorAll('#doctor-options .filter-item').forEach((item) => {
@@ -236,6 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
 
 // ==============================================
 // РАБОТА С КАЛЕНДАРЯМИ

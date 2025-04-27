@@ -55,26 +55,6 @@ def client_list(request):
         'search_query': search_query, 
     }
     return render(request, 'crm/clients_list.html', context)
-
-class StandartPagination(PageNumberPagination):
-    page_size = 5
-    page_size_query_param = 'page_size'
-    max_page_size = 100
-
-class ApplicationsView(View):
-    def get(self, request):
-        queryset = Application.objects.select_related(
-            'client',
-            'status',
-            'doctor',
-            'doctor__user',
-        ).prefetch_related(
-            Prefetch(
-                'comments', 
-                queryset=Comment.objects.select_related('manager')
-        )).order_by('id')
-        
-        return render(request, 'crm/index.html', {'applications': queryset})
         
 #поиска врача
 class SearchDoctorAPIView(APIView):
@@ -92,6 +72,7 @@ class SearchDoctorAPIView(APIView):
             ]
             return Response({'doctors': doctors_list})
         return Response({'doctors': []})
+    
 #поиска клиента
 class SearchClientAPIView(APIView):
     def get(self, request):
@@ -109,17 +90,10 @@ class SearchClientAPIView(APIView):
         serializer = ClientSerializer(clients, many=True)
         return Response({'clients': serializer.data}, status=status.HTTP_200_OK)
     
-class StatusListAPIView(APIView):
-    def get(self, request):
-
-        statuses = Status.objects.all()
-        serializer = StatusSerializer(statuses, many=True)
-        return Response({'statuses': serializer.data}, status=status.HTTP_200_OK)
-
 def respHome(request):
     return render(request, "crm/login.html")
 
-class NewApplicationsView(View):
+class ApplicationsView(View):
     def get(self, request):
         # Получаем параметры сортировки из GET-запроса
         sort_field = request.GET.get('sort', 'id')
@@ -127,41 +101,51 @@ class NewApplicationsView(View):
         
         # Получаем параметры фильтрации
         doctor_filter = request.GET.getlist('doctor')  # Получаем список выбранных врачей
+        search_query = request.GET.get('search', '')  # Получаем параметр поиска
         
         # Определяем порядок сортировки
         if sort_direction == 'desc':
             sort_field = f'-{sort_field}'
 
+        # Начальный запрос
         queryset = Application.objects.select_related(
             'client',
             'status',
             'doctor',
             'doctor__user',
         ).prefetch_related(
-            Prefetch(
-                'comments', 
-                queryset=Comment.objects.select_related('manager')
-            )
+            Prefetch('comments', queryset=Comment.objects.select_related('manager'))
         )
         
-        # Применяем фильтр по врачам, если он задан
+        # Применяем фильтры:
         if doctor_filter:
             queryset = queryset.filter(doctor__user__last_name__in=doctor_filter)
         
+        # Применяем фильтрацию по поисковому запросу
+        if search_query:
+                queryset = queryset.filter(
+                    Q(client__last_name__icontains=search_query) | 
+                    Q(client__first_name__icontains=search_query) |
+                    Q(client__surname__icontains=search_query)
+                )
+
+        # Сортировка
         queryset = queryset.order_by(sort_field)
-        
+
+        # Пагинация
         paginator = Paginator(queryset, 30)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
-        
+
         # Получаем список всех врачей для фильтра через Doctor
-        doctors = Doctor.objects.select_related('user').values_list('user__last_name', flat=True).distinct()
-        
+        doctors = Doctor.objects.select_related('user').filter(user__role_id=3).values_list('user__last_name', flat=True).distinct()
+
         context = {
             'page_obj': page_obj,
             'current_sort': sort_field.lstrip('-'),
             'current_direction': sort_direction,
             'doctors': doctors,  # Передаем список врачей в шаблон
+            'search_query': search_query,  # Передаем поисковый запрос в шаблон
         }
 
         return render(request, 'crm/index.html', context)
