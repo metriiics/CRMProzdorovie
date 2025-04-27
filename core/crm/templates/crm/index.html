@@ -67,8 +67,7 @@
         <div class="filter-section">
           <div
             class="filter-header collapsed"
-            onclick="toggleSection('client-options')"
-          >
+            onclick="toggleSection('client-options')">
             Статус
           </div>
           <ul class="filter-items collapsed" id="client-options">
@@ -173,6 +172,7 @@
                 type="date"
                 class="filter-date-input"
                 id="start-date"
+                value="{{ start_date }}"
               />
             </div>
             <div class="filter-search">
@@ -181,6 +181,7 @@
                 type="date"
                 class="filter-date-input"
                 id="end-date"
+                value="{{ end_date }}"
               />
             </div>
           </div>
@@ -201,6 +202,7 @@
         type="date"
         class="filter-date-input"
         id="record-start-date"
+        value="{{ record_start_date }}"
       />
     </div>
     <div class="filter-search">
@@ -209,6 +211,7 @@
         type="date"
         class="filter-date-input"
         id="record-end-date"
+        value="{{ record_end_date }}"
       />
     </div>
   </div>
@@ -228,6 +231,7 @@
         type="date"
         class="filter-date-input"
         id="call-start-date"
+        value="{{ call_start_date }}"
       />
     </div>
     <div class="filter-search">
@@ -236,6 +240,7 @@
         type="date"
         class="filter-date-input"
         id="call-end-date"
+        value="{{ call_end_date }}"
       />
     </div>
   </div>

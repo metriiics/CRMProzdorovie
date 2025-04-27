@@ -116,9 +116,6 @@ document.addEventListener("DOMContentLoaded", () => {
 // ==============================================
 // ФИЛЬТРЫ
 // ==============================================
-// ==============================================
-// ФИЛЬТРЫ
-// ==============================================
 
 function toggleSection(sectionId) {
   const section = document.getElementById(sectionId);
@@ -185,6 +182,38 @@ function applyFilters() {
     url.searchParams.append('doctor', doctorName);
   });
 
+  // Добавляем фильтры по дате в URL
+  const startDate = document.getElementById('start-date').value;
+  const endDate = document.getElementById('end-date').value;
+  const recordStartDate = document.getElementById('record-start-date').value;
+  const recordEndDate = document.getElementById('record-end-date').value;
+  const callStartDate = document.getElementById('call-start-date').value;
+  const callEndDate = document.getElementById('call-end-date').value;
+
+  if (startDate && endDate) {
+    url.searchParams.set("start_date", startDate);
+    url.searchParams.set("end_date", endDate);
+  } else {
+    url.searchParams.delete("start_date");
+    url.searchParams.delete("end_date");
+  }
+
+  if (recordStartDate && recordEndDate) {
+    url.searchParams.set("record_start_date", recordStartDate);
+    url.searchParams.set("record_end_date", recordEndDate);
+  } else {
+    url.searchParams.delete("record_start_date");
+    url.searchParams.delete("record_end_date");
+  }
+
+  if (callStartDate && callEndDate) {
+    url.searchParams.set("call_start_date", callStartDate);
+    url.searchParams.set("call_end_date", callEndDate);
+  } else {
+    url.searchParams.delete("call_start_date");
+    url.searchParams.delete("call_end_date");
+  }
+
   // Сбросить на первую страницу
   url.searchParams.set('page', 1);
 
@@ -212,9 +241,16 @@ function resetFilters() {
   url.searchParams.delete('doctor');
   url.searchParams.delete('search');
   url.searchParams.delete('page'); // обнуляем страницу тоже
+  url.searchParams.delete('start_date');
+  url.searchParams.delete('end_date');
+  url.searchParams.delete('record_start_date');
+  url.searchParams.delete('record_end_date');
+  url.searchParams.delete('call_start_date');
+  url.searchParams.delete('call_end_date');
 
   window.location.href = url.toString();
 }
+
 
 // Вызов всех инициализаций при загрузке страницы
 document.addEventListener('DOMContentLoaded', () => {

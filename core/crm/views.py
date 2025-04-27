@@ -98,11 +98,17 @@ class ApplicationsView(View):
         # Получаем параметры сортировки из GET-запроса
         sort_field = request.GET.get('sort', 'id')
         sort_direction = request.GET.get('dir', 'asc')
-        
+
         # Получаем параметры фильтрации
         doctor_filter = request.GET.getlist('doctor')  # Получаем список выбранных врачей
         search_query = request.GET.get('search', '')  # Получаем параметр поиска
-        
+        start_date = request.GET.get('start_date')  # Начальная дата
+        end_date = request.GET.get('end_date')  # Конечная дата
+        record_start_date = request.GET.get('record_start_date')  # Начальная дата записи
+        record_end_date = request.GET.get('record_end_date')  # Конечная дата записи
+        call_start_date = request.GET.get('call_start_date')  # Начальная дата звонка
+        call_end_date = request.GET.get('call_end_date')  # Конечная дата звонка
+
         # Определяем порядок сортировки
         if sort_direction == 'desc':
             sort_field = f'-{sort_field}'
@@ -116,18 +122,26 @@ class ApplicationsView(View):
         ).prefetch_related(
             Prefetch('comments', queryset=Comment.objects.select_related('manager'))
         )
-        
-        # Применяем фильтры:
+
+        # Применяем фильтры по датам
+        if start_date and end_date:
+            queryset = queryset.filter(client__created_at__range=[start_date, end_date])
+        if record_start_date and record_end_date:
+            queryset = queryset.filter(date_recording__range=[record_start_date, record_end_date])
+        if call_start_date and call_end_date:
+            queryset = queryset.filter(date_next_call__range=[call_start_date, call_end_date])
+
+        # Применяем фильтры по врачам
         if doctor_filter:
             queryset = queryset.filter(doctor__user__last_name__in=doctor_filter)
-        
+
         # Применяем фильтрацию по поисковому запросу
         if search_query:
-                queryset = queryset.filter(
-                    Q(client__last_name__icontains=search_query) | 
-                    Q(client__first_name__icontains=search_query) |
-                    Q(client__surname__icontains=search_query)
-                )
+            queryset = queryset.filter(
+                Q(client__last_name__icontains=search_query) |
+                Q(client__first_name__icontains=search_query) |
+                Q(client__surname__icontains=search_query)
+            )
 
         # Сортировка
         queryset = queryset.order_by(sort_field)
@@ -146,9 +160,16 @@ class ApplicationsView(View):
             'current_direction': sort_direction,
             'doctors': doctors,  # Передаем список врачей в шаблон
             'search_query': search_query,  # Передаем поисковый запрос в шаблон
+            'start_date': start_date,  # Передаем начальную дату в шаблон
+            'end_date': end_date,  # Передаем конечную дату в шаблон
+            'record_start_date': record_start_date,  # Передаем начальную дату записи в шаблон
+            'record_end_date': record_end_date,  # Передаем конечную дату записи в шаблон
+            'call_start_date': call_start_date,  # Передаем начальную дату звонка в шаблон
+            'call_end_date': call_end_date,  # Передаем конечную дату звонка в шаблон
         }
 
         return render(request, 'crm/index.html', context)
+
     
 class ModalViewAddClient(View):
     def get(self, request):
