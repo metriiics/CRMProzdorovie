@@ -1,8 +1,8 @@
 const modalMap = {
-  "create-record-btn": "modal/create-record/",
-  "add-client-btn": "modal/add-client/",
-  "edit-client-btn": "modal/change-client/",
-  "change-record-btn": "modal/change-record/",
+  "create-record-btn": "api/v1/applications/modal/create-record/",
+  "add-client-btn": "api/v1/applications/modal/add-client/",
+  "edit-client-btn": "api/v1/applications/modal/change-client/",
+  "change-record-btn": "api/v1/applications/modal/change-record/",
 };
 
 const loadedModals = {};
