@@ -113,6 +113,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ЗАМЕНЕНА НА DJANGO PAGIN
 
+
+// ==============================================
+// Для выходы POST запрос для жанго
+// ==============================================
+
+document.addEventListener('DOMContentLoaded', function () {
+  const logoutLink = document.getElementById('logout-link');
+  const logoutForm = document.getElementById('logout-form');
+
+  if (logoutLink && logoutForm) {
+    logoutLink.addEventListener('click', function (event) {
+      event.preventDefault();
+      logoutForm.submit();
+    });
+  }
+});
+
+
 // ==============================================
 // ФИЛЬТРЫ
 // ==============================================

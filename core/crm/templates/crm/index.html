@@ -46,10 +46,15 @@
             </a>
           </li>
           <li>
-            <a href="{% url 'login' %}">Выйти</a>
+            <a href="#" id="logout-link">Выйти</a>
           </li>
         </ul>
       </nav>
+
+      <!-- Скрытая форма для отправки POST запроса на логаут -->
+      <form id="logout-form" method="POST" action="{% url 'logout' %}" style="display:none;">
+        {% csrf_token %}
+      </form>
     </header>
 
     <!-- Основное содержимое -->

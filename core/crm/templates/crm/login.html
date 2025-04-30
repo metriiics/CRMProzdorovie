@@ -25,10 +25,19 @@
       <div class="card">
         <h1>Добро пожаловать</h1>
 
-        <form>
+        {% if messages %}
+          <ul class="messages">
+            {% for message in messages %}
+              <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+        <form method="POST" action="">
+          {% csrf_token %}
           <div class="form-group">
-            <label for="login">Логин</label>
-            <input type="text" id="login" name="login" value="" />
+            <label for="username">Логин</label>
+            <input type="text" id="username" name="username" value="" />
           </div>
 
           <div class="form-group">

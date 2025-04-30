@@ -11,7 +11,7 @@ class Role(models.Model):
         managed = False
 
 
-class User(models.Model):
+class User(AbstractUser):
     role = models.ForeignKey(Role, on_delete=models.CASCADE, null=True)
     username = models.CharField(max_length=150, null=True, unique=True)
     password = models.CharField(max_length=128, null=True)
@@ -21,6 +21,9 @@ class User(models.Model):
     email = models.EmailField(null=True)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = []
 
     class Meta:
         db_table = 'users'

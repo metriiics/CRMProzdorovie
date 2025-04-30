@@ -1,8 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from rest_framework import status
 from .models import Client, Application, Comment, Doctor, Status, User
 from django.core.paginator import Paginator
@@ -10,27 +12,26 @@ from django.db.models import Q, Prefetch
 from .serializers import CombineSerializer, ClientSerializer, StatusSerializer
 from rest_framework.pagination import PageNumberPagination
 from django.views import View
+from django.contrib import messages
 
 class LoginView(APIView):
     def get(self, request):
-        return render(request, 'crm/home.html')
+        return render(request, 'crm/login.html')
     
     def post(self, request):
-        username = request.data.get('username')
-        password = request.data.get('password')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
 
         user = authenticate(username=username, password=password)
 
-        if user is not None:
-            refresh = RefreshToken.for_user(user)
-            return Response({
-                'access': str(refresh.access_token),
-                'refresh': str(refresh)
-            }, status=status.HTTP_200_OK)
-        
-        return Response({
-            'error': 'Invalid credentials'
-        }, status=status.HTTP_401_UNAUTHORIZED)
+        if user is not None and user.is_active:
+            login(request, user)
+            return redirect('applications-list') 
+        else:
+            print(f"Сообщение для пользователя {username}: Неверный логин или пароль")
+            messages.error(request, 'Неверный логин или пароль')
+            return render(request, 'crm/login.html')
+
     
 
 def client_list(request):
@@ -89,10 +90,8 @@ class SearchClientAPIView(APIView):
 
         serializer = ClientSerializer(clients, many=True)
         return Response({'clients': serializer.data}, status=status.HTTP_200_OK)
-    
-def respHome(request):
-    return render(request, "crm/login.html")
 
+@method_decorator(login_required(login_url='login'), name='dispatch')
 class ApplicationsView(View):
     def get(self, request):
         # Получаем параметры сортировки из GET-запроса
