@@ -5,33 +5,38 @@
   <!-- Заголовок -->
   <h1>Добавить клиента</h1>
 
+  <!-- Форма для отправки данных -->
+  <form id="client-form" method="post" action="{% url 'add_client_modal' %}">
+    {% csrf_token %}
+
   <!-- Поля ввода данных клиента -->
   <div class="form-group">
-    <label for="surname">Фамилия</label>
-    <input id="surname" type="text" class="search-input" />
+    <label for="last_name">Фамилия</label>
+    <input id="last_name" name="last_name" type="text" class="search-input" />
   </div>
 
   <div class="form-group">
-    <label for="name">Имя</label>
-    <input id="name" type="text" class="search-input" />
+    <label for="first_name">Имя</label>
+    <input id="first_name" name="first_name" type="text" class="search-input" />
   </div>
 
   <div class="form-group">
     <label for="surname">Отчество</label>
-    <input id="surname" type="text" class="search-input" />
+    <input id="surname" name="surname" type="text" class="search-input" />
   </div>
 
   <div class="form-group">
-    <label for="phone">Номер телефона</label>
-    <input id="phone" type="text" class="search-input" />
+    <label for="phone_number">Номер телефона</label>
+    <input id="phone_number" name="phone_number" type="text" class="search-input" />
   </div>
 
   <!-- Кнопки действий -->
   <div class="button-container">
-    <div class="success-message" style="display: none">
+    <div id="success-message" class="success-message" style="display: none">
       Клиент успешно сохранен
     </div>
-    <button class="save-btn">Сохранить</button>
+    <div id="error-message" class="error-message" style="display: none; color: red;"></div>
+    <button type="submit" class="save-btn">Сохранить</button>
     <span class="delete-link">Отмена</span>
   </div>
   <!-- Модальное окно подтверждения удаления -->
@@ -45,4 +50,3 @@
     </div>
   </div>
 </div>
-<script src="{% static 'crm/js/AddClientJS.js' %}"></script>

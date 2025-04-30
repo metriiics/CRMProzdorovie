@@ -13,6 +13,10 @@ from .serializers import CombineSerializer, ClientSerializer, StatusSerializer
 from rest_framework.pagination import PageNumberPagination
 from django.views import View
 from django.contrib import messages
+from django.http import JsonResponse
+from django.utils import timezone
+import json
+
 
 class LoginView(APIView):
     def get(self, request):
@@ -32,31 +36,6 @@ class LoginView(APIView):
             messages.error(request, 'Неверный логин или пароль')
             return render(request, 'crm/login.html')
 
-    
-
-def client_list(request):
-    clients = Client.objects.all()
-    
-    search_query = request.GET.get('search')
-    if search_query:
-        clients = clients.filter(
-            Q(last_name__icontains=search_query) |
-            Q(first_name__icontains=search_query) |
-            Q(surname__icontains=search_query) |
-            Q(phone_number__icontains=search_query)
-        )
-    
-
-    paginator = Paginator(clients, 30)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    
-    context = {
-        'page_obj': page_obj,
-        'search_query': search_query, 
-    }
-    return render(request, 'crm/clients_list.html', context)
-        
 #поиска врача
 class SearchDoctorAPIView(APIView):
     def get(self, request):
@@ -174,9 +153,66 @@ class ModalViewAddClient(View):
     def get(self, request):
         return render(request, 'crm/add_client.html')
     
+    def post(self, request):
+
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        surname = request.POST.get('surname')
+        phone_number = request.POST.get('phone_number')
+        
+        client = Client(
+            first_name=first_name,
+            last_name=last_name,
+            surname=surname,
+            phone_number=phone_number,
+            created_at=timezone.now()
+        )
+        client.save()
+        
+        return JsonResponse({'status': 'success', 'message': 'Клиент успешно сохранен'})
+
 class ModalViewChangeClient(View):
     def get(self, request):
         return render(request, 'crm/change_client.html')
+    def post(self, request):
+        # Получаем данные из формы
+        client_id = request.POST.get('client_id')
+        last_name = request.POST.get('last_name')
+        first_name = request.POST.get('first_name')
+        surname = request.POST.get('surname')
+        phone_number = request.POST.get('phone_number')
+
+        # Проверяем обязательные поля
+        if not client_id:
+            messages.error(request, 'Требуется ID клиента')
+            return redirect('change_client')  # Редирект на эту же страницу
+        
+        # Получаем клиента из БД
+        try:
+            client = Client.objects.get(id=client_id)
+        except Client.DoesNotExist:
+            messages.error(request, 'Клиент не найден')
+            return redirect('change_client')
+
+        # Обновляем данные клиента
+        if last_name:
+            client.last_name = last_name
+        if first_name:
+            client.first_name = first_name
+        if surname:
+            client.surname = surname
+        if phone_number:
+            client.phone_number = phone_number
+        
+        # Сохраняем изменения
+        client.save()
+
+        return JsonResponse({
+                'status': 'success',
+                'message': 'Данные клиента успешно обновлены'
+            })
+
+        
     
 class ModalViewChangeRecord(View):
     def get(self, request):
