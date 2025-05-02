@@ -62,6 +62,27 @@
     </div>
   </div>
 
+  <!-- Способ оплаты и сумма -->
+  <div class="payment-container">
+    <div class="form-group">
+      <label for="payment-method">Способ оплаты</label>
+      <select id="payment-method" class="search-input">
+        <option value="cash">Наличные</option>
+        <option value="card">Безналичный</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="payment-amount">Сумма</label>
+      <input 
+        id="payment-amount" 
+        type="text" 
+        class="search-input" 
+        placeholder="Введите сумму"
+      />
+    </div>
+  </div>
+
   <!-- Поле для добавления комментария -->
   <div class="comment-input-group">
     <input

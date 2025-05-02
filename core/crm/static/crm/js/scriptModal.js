@@ -78,238 +78,151 @@ function initModalHandlers() {
             suggestions.style.display = "none";
         });
     });
-}
-
-  function setupFormHandlers() {
-    const form = document.getElementById('change-client-form');
-    if (!form) {
-      console.error('Форма client-form не найдена');
-      return;
-    }
-  
-    // Удаляем старые обработчики
-    form.removeEventListener('submit', handleFormSubmit);
-    
-    // Добавляем новый обработчик
-    form.addEventListener('submit', handleFormSubmit);
-    console.log('Обработчик формы установлен');
   }
-  
-  function handleFormSubmit(e) {
-    e.preventDefault();
-    console.log('Форма отправлена');
-    
-    const form = e.target;
-    const formData = new FormData(form);
-    const errorElement = document.getElementById('error-message');
-    const successElement = document.getElementById('success-message');
-  
-    // Логируем данные формы
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
-    }
-  
-    // Индикатор загрузки
-    const submitBtn = form.querySelector('button[type="submit"]');
-    const originalBtnText = submitBtn.textContent;
-    submitBtn.textContent = 'Сохранение...';
-    submitBtn.disabled = true;
-  
-    fetch(form.action, {
-      method: 'POST',
-      body: formData,
-      headers: {
-        'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value,
-        'X-Requested-With': 'XMLHttpRequest'
-      }
-    })
-    .then(response => {
-      console.log('Ответ сервера:', response);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(data => {
-      console.log('Данные ответа:', data);
-      if (data.status === 'success') {
-        if (successElement) {
-          successElement.style.display = 'block';
-          successElement.textContent = data.message || 'Клиент успешно сохранен';
-        }
-        if (errorElement) errorElement.style.display = 'none';
+
+  function setupAddClientForm() {
+    const form = document.getElementById('client-form');
+    if (!form) return;
+
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
         
-        form.reset();
-        setTimeout(() => {
-          const modal = form.closest('.modal');
-          if (modal) modal.style.display = 'none';
-        }, 1500);
-      } else {
-        throw new Error(data.message || 'Неизвестная ошибка сервера');
-      }
-    })
-    .catch(error => {
-      console.error('Ошибка:', error);
-      if (errorElement) {
-        errorElement.style.display = 'block';
-        errorElement.textContent = error.message;
-      }
-    })
-    .finally(() => {
-      if (submitBtn) {
-        submitBtn.textContent = originalBtnText;
-        submitBtn.disabled = false;
-      }
+        const formData = new FormData(form);
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        
+        // Показываем индикатор загрузки
+        submitBtn.textContent = 'Сохранение...';
+        submitBtn.disabled = true;
+
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value,
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+
+            const data = await response.json();
+            
+            if (data.status === 'success') {
+                // Показываем сообщение об успехе
+                showSuccessMessage(data.message);
+                
+                // Очищаем форму после успешного сохранения
+                form.reset();
+                
+                // Закрываем модальное окно через 1.5 секунды
+                setTimeout(() => {
+                    const modal = form.closest('.modal');
+                    if (modal) modal.style.display = 'none';
+                }, 1500);
+            } else {
+                showErrorMessage(data.message || 'Ошибка при сохранении клиента');
+            }
+        } catch (error) {
+            console.error('Ошибка:', error);
+            showErrorMessage('Произошла ошибка при сохранении');
+        } finally {
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        }
     });
-
-    setupClientSearch();
-    setupChangeClientForm();
   }
 
+  function setupChangeClientForm() {
+    const form = document.getElementById('change-client-form');
+    if (!form) return;
 
-function setupClientSearch() {
-  const searchInput = document.getElementById('client-search');
-  if (!searchInput) return;
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(form);
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        
+        // Показываем индикатор загрузки
+        submitBtn.textContent = 'Сохранение...';
+        submitBtn.disabled = true;
 
-  const suggestions = searchInput.nextElementSibling;
-  
-  searchInput.addEventListener('input', async function() {
-      const query = this.value.trim();
-      if (query.length < 2) {
-          suggestions.style.display = 'none';
-          return;
-      }
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value,
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
 
-      try {
-          const response = await fetch(`/api/search-client/?query=${encodeURIComponent(query)}`);
-          const data = await response.json();
-          
-          suggestions.innerHTML = '';
-          data.clients.forEach(client => {
-              const div = document.createElement('div');
-              div.className = 'suggestion-item';
-              div.textContent = `${client.last_name} ${client.first_name} ${client.surname || ''}`;
-              div.dataset.clientId = client.id;
-              div.dataset.lastName = client.last_name;
-              div.dataset.firstName = client.first_name;
-              div.dataset.surname = client.surname || '';
-              div.dataset.phone = client.phone_number;
-              
-              div.addEventListener('click', () => {
-                  fillClientForm(client);
-                  suggestions.style.display = 'none';
-              });
-              
-              suggestions.appendChild(div);
-          });
-          
-          suggestions.style.display = 'block';
-      } catch (error) {
-          console.error('Ошибка поиска клиентов:', error);
-      }
-  });
-
-  // Закрытие подсказок при клике вне поля
-  document.addEventListener('click', function(e) {
-      if (e.target !== searchInput && e.target.className !== 'suggestion-item') {
-          suggestions.style.display = 'none';
-      }
-  });
-}
-
-function fillClientForm(client) {
-  console.log('Filling form with:', client); // Добавим лог для отладки
-  
-  // Убедимся, что client.id существует и это число
-  if (!client.id || isNaN(client.id)) {
-      console.error('Invalid client ID:', client.id);
-      return;
+            const data = await response.json();
+            
+            if (data.status === 'success') {
+                // Показываем сообщение об успехе
+                showSuccessMessage(data.message);
+                
+                // Закрываем модальное окно через 1.5 секунды
+                setTimeout(() => {
+                    const modal = form.closest('.modal');
+                    if (modal) modal.style.display = 'none';
+                }, 1500);
+            } else {
+                showErrorMessage(data.message || 'Ошибка при изменении клиента');
+            }
+        } catch (error) {
+            console.error('Ошибка:', error);
+            showErrorMessage('Произошла ошибка при сохранении');
+        } finally {
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        }
+    });
   }
-  
-  // Заполняем все поля
-  const clientIdField = document.getElementById('client-id');
-  const lastNameField = document.getElementById('last_name');
-  const firstNameField = document.getElementById('first_name');
-  const surnameField = document.getElementById('surname');
-  const phoneField = document.getElementById('phone_number');
-  const searchField = document.getElementById('client-search');
 
-  if (clientIdField) clientIdField.value = client.id;
-  if (lastNameField) lastNameField.value = client.last_name || '';
-  if (firstNameField) firstNameField.value = client.first_name || '';
-  if (surnameField) surnameField.value = client.surname || '';
-  if (phoneField) phoneField.value = client.phone_number || '';
-  if (searchField) searchField.value = `${client.last_name} ${client.first_name} ${client.surname || ''}`.trim();
-}
+  function fillClientForm(client) {
+    console.log('Filling form with:', client);
+    
+    if (!client.id || isNaN(client.id)) {
+        console.error('Invalid client ID:', client.id);
+        return;
+    }
+    
+    const clientIdField = document.getElementById('client-id');
+    const lastNameField = document.getElementById('last_name');
+    const firstNameField = document.getElementById('first_name');
+    const surnameField = document.getElementById('surname');
+    const phoneField = document.getElementById('phone_number');
+    const searchField = document.getElementById('client-search');
 
-function setupChangeClientForm() {
-  const form = document.getElementById('change-client-form');
-  if (!form) return;
-
-  form.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      
-      const formData = new FormData(form);
-      const submitBtn = form.querySelector('button[type="submit"]');
-      const originalText = submitBtn.textContent;
-      
-      // Показываем индикатор загрузки
-      submitBtn.textContent = 'Сохранение...';
-      submitBtn.disabled = true;
-
-      try {
-          const response = await fetch(form.action, {
-              method: 'POST',
-              body: formData,
-              headers: {
-                  'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value,
-                  'X-Requested-With': 'XMLHttpRequest'
-              }
-          });
-
-          const data = await response.json();
-          
-          if (data.status === 'success') {
-              // Показываем сообщение об успехе
-              showSuccessMessage(data.message);
-              
-              // Можно очистить форму или оставить данные
-              // form.reset();
-          } else {
-              showErrorMessage(data.message);
-          }
-      } catch (error) {
-          console.error('Ошибка:', error);
-          showErrorMessage('Произошла ошибка при сохранении');
-      } finally {
-          submitBtn.textContent = originalText;
-          submitBtn.disabled = false;
-      }
-  });
-}
-
-function showSuccessMessage(message) {
-  const successElement = document.getElementById('success-message');
-  if (successElement) {
-      successElement.textContent = message;
-      successElement.style.display = 'block';
-      
-      // Скрываем сообщение через 3 секунды
-      setTimeout(() => {
-          successElement.style.display = 'none';
-      }, 3000);
+    if (clientIdField) clientIdField.value = client.id;
+    if (lastNameField) lastNameField.value = client.last_name || '';
+    if (firstNameField) firstNameField.value = client.first_name || '';
+    if (surnameField) surnameField.value = client.surname || '';
+    if (phoneField) phoneField.value = client.phone_number || '';
+    if (searchField) searchField.value = `${client.last_name} ${client.first_name} ${client.surname || ''}`.trim();
   }
-}
 
-function showErrorMessage(message) {
-  const errorElement = document.getElementById('error-message');
-  if (errorElement) {
-      errorElement.textContent = message;
-      errorElement.style.display = 'block';
+  function showSuccessMessage(message) {
+    const successElement = document.getElementById('success-message');
+    if (successElement) {
+        successElement.textContent = message;
+        successElement.style.display = 'block';
+        
+        setTimeout(() => {
+            successElement.style.display = 'none';
+        }, 3000);
+    }
   }
-}
 
-
+  function showErrorMessage(message) {
+    const errorElement = document.getElementById('error-message');
+    if (errorElement) {
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+    }
+  }
 
   // 2. Обработчики для комментариев
   function setupCommentHandlers() {
@@ -346,12 +259,11 @@ function showErrorMessage(message) {
   // Обработчик для кнопки "Отмена"/"Удалить клиента"
   function setupDeleteHandlers() {
     document.addEventListener("click", function (e) {
-      // Для кнопки "Отмена"/"Удалить клиента"
       if (e.target.classList.contains("delete-link")) {
         e.preventDefault();
         const modal = e.target.closest(".modal");
         if (modal) {
-          const confirmationModal = modal.nextElementSibling; // Предполагаем, что confirmation-modal идёт сразу после modal
+          const confirmationModal = modal.nextElementSibling;
           if (
             confirmationModal &&
             confirmationModal.classList.contains("confirmation-modal")
@@ -361,7 +273,6 @@ function showErrorMessage(message) {
         }
       }
 
-      // Для кнопки "Нет" в окне подтверждения
       if (e.target.classList.contains("cancel-btn")) {
         const confirmationModal = e.target.closest(".confirmation-modal");
         if (confirmationModal) {
@@ -369,7 +280,6 @@ function showErrorMessage(message) {
         }
       }
 
-      // Для кнопки "Да" в окне подтверждения
       if (e.target.classList.contains("confirm-btn")) {
         const confirmationModal = e.target.closest(".confirmation-modal");
         if (confirmationModal) {
@@ -388,7 +298,8 @@ function showErrorMessage(message) {
   setupCommentHandlers();
   setupCloseHandler();
   setupDeleteHandlers();
-  setupFormHandlers();
+  setupAddClientForm();  // Добавлено для обработки формы добавления клиента
+  setupChangeClientForm();
 }
 
 // Экспортируем функцию для вызова извне
