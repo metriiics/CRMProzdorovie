@@ -329,7 +329,7 @@
                   -
                 {% endif %}
               </td>
-              <td>{{ app.record.date|date:"d.m.Y"|default:None }}</td>
+              <td>{{ app.date_recording|date:"d.m.Y"|default:None }}</td>
               <td>{{ app.date_next_call|date:"d.m.Y"|default:None }}</td>
             </tr>
             {% endfor %}

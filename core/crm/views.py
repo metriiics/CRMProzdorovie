@@ -204,8 +204,51 @@ class ModalViewChangeClient(View):
 class ModalViewChangeRecord(View):
     def get(self, request):
         return render(request, 'crm/change_record.html')
+
     
 class ModalViewCreateRecord(View):
     def get(self, request):
         return render(request, 'crm/create_record.html')
+    
+    def post(self, request):
+        # Для FormData используем request.POST
+        data = {
+            'client_id': request.POST.get('client_id'),
+            'doctor_id': request.POST.get('doctor_id'),
+            'service_date': request.POST.get('service_date'),
+            'callback_date': request.POST.get('callback_date'),
+            'comment': request.POST.get('comment'),
+        }
+        
+        # Валидация обязательных полей
+        required_fields = ['client_id', 'doctor_id', 'service_date']
+        for field in required_fields:
+            if not data[field]:
+                return JsonResponse({
+                    'status': 'error',
+                    'message': f'Поле {field} обязательно для заполнения'
+                }, status=400)
+
+        # Создаем запись
+        record = Application.objects.create(
+            client_id=data['client_id'],
+            doctor_id=data['doctor_id'],
+            date_recording=data['service_date'],
+            date_next_call=data['callback_date'],
+            status_id=1  # Статус "Новая"
+        )
+        
+        # Добавляем комментарий, если есть
+        if data['comment']:
+            Comment.objects.create(
+                application=record,
+                manager=request.user,
+                comment=data['comment']
+            )
+        
+        return JsonResponse({
+            'status': 'success',
+            'message': 'Запись успешно создана',
+            'record_id': record.id
+        })
 

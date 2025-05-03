@@ -5,49 +5,71 @@
   <!-- Заголовок -->
   <h1>Создать запись</h1>
 
+  <form id="create-record-form" method="post" action="{% url 'create_record_modal' %}">
+    {% csrf_token %}
+
   <!-- Поиск клиента -->
   <div class="search-container">
-    <label for="phone">Клиент</label>
-    <input type="text" class="search-input" placeholder="Поиск клиента..." />
-    <div class="suggestions">
-    </div>
+    <label for="client-search">Клиент</label>
+    <input 
+      id="client-search" 
+      type="text" 
+      class="search-input" 
+      placeholder="Поиск клиента..." 
+      autocomplete="off"
+    />
+    <div class="suggestions"></div>
+    <input type="hidden" id="client-id" name="client_id">
   </div>
 
   <div class="form-group">
-    <label for="phone">Номер телефона</label>
+    <label for="phone_number">Номер телефона</label>
     <input
-      id="phone"
+      id="phone_number"
       type="text"
       class="search-input"
+      name="phone_number"
       readonly
     />
   </div>
 
   <!-- Поиск врача -->
   <div class="search-container">
-    <label for="phone">Врач</label>
-    <input type="text" class="search-input" placeholder="Поиск врача..." />
-    <div class="suggestions">
-    </div>
+    <label for="doctor-search">Врач</label>
+    <input 
+      id="doctor-search" 
+      type="text" 
+      class="search-input" 
+      placeholder="Поиск врача..." 
+      autocomplete="off"
+    />
+    <div class="suggestions"></div>
+    <input type="hidden" id="doctor-id" name="doctor_id">
   </div>
 
   <!-- Поиск услуги -->
   <div class="search-container">
-    <label for="phone">Услуга</label>
-    <input type="text" class="search-input" placeholder="Поиск услуги..." />
-    <div class="suggestions">
-    </div>
+    <label for="service-search">Услуга</label>
+    <input 
+      id="service-search" 
+      type="text" 
+      class="search-input" 
+      placeholder="Поиск услуги..." 
+      autocomplete="off"
+    />
+    <div class="suggestions"></div>
+    <input type="hidden" id="service-id" name="service_id">
   </div>
 
   <div class="date-time-container">
     <div class="form-group">
       <label for="service-date">Дата</label>
-      <input id="service-date" type="date" class="search-input" />
+      <input id="service-date" type="date" class="search-input" name="service_date" required />
     </div>
 
     <div class="form-group">
       <label for="service-time">Время</label>
-      <select id="service-time" class="search-input">
+      <select id="service-time" class="search-input" name="service_time" required>
         <option value="12:00">12:00</option>
         <option value="12:30">12:30</option>
         <option value="13:00">13:00</option>
@@ -58,7 +80,7 @@
 
     <div class="form-group">
       <label for="callback-date">Звонок</label>
-      <input id="callback-date" type="date" class="search-input" />
+      <input id="callback-date" type="date" class="search-input" name="callback_date" />
     </div>
   </div>
 
@@ -66,7 +88,7 @@
   <div class="payment-container">
     <div class="form-group">
       <label for="payment-method">Способ оплаты</label>
-      <select id="payment-method" class="search-input">
+      <select id="payment-method" class="search-input" name="payment_method">
         <option value="cash">Наличные</option>
         <option value="card">Безналичный</option>
       </select>
@@ -76,30 +98,31 @@
       <label for="payment-amount">Сумма</label>
       <input 
         id="payment-amount" 
-        type="text" 
+        type="number" 
         class="search-input" 
         placeholder="Введите сумму"
+        name="payment_amount"
       />
     </div>
   </div>
-
-  <!-- Поле для добавления комментария -->
-  <div class="comment-input-group">
-    <input
-      type="text"
-      class="search-input"
-      placeholder="Добавить комментарий..."
-    />
-  </div>
-
-  <!-- Кнопки действий -->
-  <div class="button-container">
-    <div class="success-message" style="display: none">
-      Запись успешно создана
+    <!-- Поле для добавления комментария -->
+    <div class="comment-input-group">
+      <input
+        id="comment-input"
+        type="text"
+        class="search-input"
+        placeholder="Добавить комментарий..."
+        name="comment"
+      />
     </div>
-    <button class="save-btn">Сохранить</button>
-    <span class="delete-link">Отмена</span>
-  </div>
+
+    <!-- Кнопки действий -->
+    <div class="button-container">
+      <button type="submit" class="save-btn">Сохранить</button>
+      <span class="delete-link">Отмена</span>
+    </div>
+  </form>
+
   <!-- Модальное окно подтверждения удаления -->
   <div class="confirmation-modal">
     <div class="confirmation-content">
