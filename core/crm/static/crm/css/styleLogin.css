@@ -35,14 +35,19 @@ header {
   background-color: white;
   width: 450px;
   height: 400px;
-  padding: 60px;
+  padding: 40px 60px; /* Уменьшаем верхний padding */
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   text-align: center;
+  position: relative;
+}
+
+form {
+  margin-top: 60px; /* Добавляем отступ сверху для формы */
 }
 
 .card h1 {
-  margin-bottom: 60px;
+  margin-bottom: 30px;
   font-size: 24px;
   font-weight: 800;
   color: #333;
@@ -86,7 +91,14 @@ header {
 .messages {
   list-style-type: none;
   padding: 0;
+  position: absolute;
+  top: 80px; /* Позиционируем сообщения после заголовка */
+  left: 0;
+  right: 0;
+  margin: 0 60px;
+  z-index: 10;
 }
+
 
 .messages li {
   padding: 10px;

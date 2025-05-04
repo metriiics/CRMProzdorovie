@@ -581,6 +581,53 @@ function initModalHandlers() {
     });
   }
 
+  function setupStatusSelect() {
+    const statusSelect = document.querySelector('.status-select');
+    if (!statusSelect) return;
+  
+    const statusSelected = document.getElementById('status-selected');
+    const statusOptions = document.querySelector('.status-options');
+    const statusInput = document.getElementById('client-status');
+  
+    // Обработчик клика по выбранному статусу
+    statusSelect.addEventListener('click', function(e) {
+      e.stopPropagation();
+      this.classList.toggle('active');
+    });
+  
+    // Обработчики клика по вариантам статуса
+    if (statusOptions) {
+      statusOptions.querySelectorAll('.status-option').forEach(option => {
+        option.addEventListener('click', function(e) {
+          e.stopPropagation();
+          
+          const value = this.dataset.value;
+          const text = this.textContent;
+          
+          if (statusSelected) statusSelected.textContent = text;
+          if (statusInput) statusInput.value = value;
+          
+          // Закрываем выпадающее меню
+          statusSelect.classList.remove('active');
+        });
+      });
+    }
+  
+    // Закрытие при клике вне элемента
+    document.addEventListener('click', function(e) {
+      if (!statusSelect.contains(e.target)) {
+        statusSelect.classList.remove('active');
+      }
+    });
+  
+    // Закрытие при нажатии Esc
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && statusSelect.classList.contains('active')) {
+        statusSelect.classList.remove('active');
+      }
+    });
+  }
+
   // Вызываем все функции инициализации
   setupSearchHandlers();
   setupCommentHandlers();
@@ -590,6 +637,7 @@ function initModalHandlers() {
   setupChangeClientForm();
   setupCreateRecordForm();
   setupChangeRecordHandlers();
+  setupStatusSelect();
 }
 
 // Экспортируем функцию для вызова извне
