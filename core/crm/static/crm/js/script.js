@@ -75,6 +75,11 @@ function initializeSortButtons() {
     { id: "sort-date", sortField: "client__created_at" },
     { id: "sort-record", sortField: "record__date" },
     { id: "sort-next-call", sortField: "date_next_call" },
+    { id: "sort-name", sortField: "sort__name"},
+    { id: "sort-phone", sortField: "client__phone" },
+    { id: "sort-status", sortField: "client__status" },
+    { id: "sort-doctor", sortField: "doctor__name" },
+    { id: "sort-service", sortField: "service__name" },
   ];
 
   sortButtons.forEach((button) => {

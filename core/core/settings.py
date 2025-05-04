@@ -72,9 +72,9 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Crm_syst',
+        'NAME': 'db1',
         'USER': 'postgres',
-        'PASSWORD': '320330',
+        'PASSWORD': 'admin',
         'HOST': 'localhost',
         'PORT': '5432',
     }

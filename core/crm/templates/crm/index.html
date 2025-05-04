@@ -271,11 +271,31 @@
                        class="arrow {% if current_sort == 'client__created_at' %}{% if current_direction == 'asc' %}arrow-up{% else %}arrow-down{% endif %}{% endif %}"/>
                 </a>
               </th>
-              <th>Имя</th>
+              <th>
+                <a href="" id="sort-name">
+                  Имя
+                  <img src="{% static 'crm/img/arrow_sort.svg' %}" alt="" class="arrow"/>
+                </a>
+              </th>
               <th>Номер</th>
-              <th>Статус</th>
-              <th>Врач</th>
-              <th>Услуга</th>
+              <th>
+                <a href="" id="sort-status">
+                  Статус
+                  <img src="{% static 'crm/img/arrow_sort.svg' %}" alt="" class="arrow"/>
+                </a>
+              </th>
+              <th>
+                <a href="" id="sort-doctor">
+                  Врач
+                  <img src="{% static 'crm/img/arrow_sort.svg' %}" alt="" class="arrow"/>
+                </a>
+              </th>
+              <th>
+                <a href="" id="sort-service">
+                  Услуга
+                  <img src="{% static 'crm/img/arrow_sort.svg' %}" alt="" class="arrow"/>
+                </a>
+              </th>
               <th>Комментарий</th>
               <th>
                 <a href="?sort=record__date&dir={% if current_sort == 'record__date' and current_direction == 'asc' %}desc{% else %}asc{% endif %}&page=1" id="sort-record">
