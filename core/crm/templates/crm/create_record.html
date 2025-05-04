@@ -61,6 +61,24 @@
     <input type="hidden" id="service-id" name="service_id">
   </div>
 
+  <!-- Статус клиента -->
+  <div class="search-container">
+    <label for="client-status-search">Статус</label>
+    <input 
+      id="client-status-search" 
+      type="text" 
+      class="search-input" 
+      placeholder="Выберите статус..." 
+      autocomplete="off"
+    />
+    <div class="suggestions">
+      <div class="suggestion" data-value="new">Алексей</div>
+      <div class="suggestion" data-value="consultation">Писей водил по</div>
+      <div class="suggestion" data-value="recorded">губам</div>
+    </div>
+    <input type="hidden" id="client-status" name="client_status" value="">
+  </div>
+
   <div class="date-time-container">
     <div class="form-group">
       <label for="service-date">Дата</label>

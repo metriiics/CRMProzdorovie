@@ -163,18 +163,6 @@ function initModalHandlers() {
     if (doctorSearchField) doctorSearchField.value = doctor.fio;
   }
 
-  function fillServiceForm(service) {
-    console.log('Filling service form with:', service);
-    
-    const serviceIdField = document.getElementById('service-id');
-    const serviceSearchField = document.getElementById('service-search');
-    const priceField = document.getElementById('payment-amount');
-
-    if (serviceIdField) serviceIdField.value = service.id;
-    if (serviceSearchField) serviceSearchField.value = service.fio;
-    if (priceField && service.price) priceField.value = service.price;
-  }
-
   function fillClientForm(client) {
     console.log('Filling client form with:', client);
     
@@ -310,10 +298,9 @@ function initModalHandlers() {
     document.addEventListener('modal-loaded', function(e) {
       if (e.detail.modalId === 'change-record-btn-modal' && window.currentRecordId) {
         loadRecordData(window.currentRecordId);
+        setupChangeRecordForm();
       }
     });
-  
-    setupChangeRecordForm();
   }
   
     // Загрузка данных записи при открытии модального окна
@@ -406,9 +393,6 @@ function initModalHandlers() {
             
             // Добавляем недостающие данные из формы
             formData.append('doctor_id', document.getElementById('doctor-id').value);
-            formData.append('service_id', document.getElementById('service-id').value);
-            formData.append('payment_method', document.getElementById('payment-method').value);
-            formData.append('payment_amount', document.getElementById('payment-amount').value);
             formData.append('comment', document.getElementById('comment-input').value);
 
             const response = await fetch(form.action, {
@@ -581,6 +565,53 @@ function initModalHandlers() {
     });
   }
 
+  function setupStatusSelect() {
+    const statusSelect = document.querySelector('.status-select');
+    if (!statusSelect) return;
+  
+    const statusSelected = document.getElementById('status-selected');
+    const statusOptions = document.querySelector('.status-options');
+    const statusInput = document.getElementById('client-status');
+  
+    // Обработчик клика по выбранному статусу
+    statusSelect.addEventListener('click', function(e) {
+      e.stopPropagation();
+      this.classList.toggle('active');
+    });
+  
+    // Обработчики клика по вариантам статуса
+    if (statusOptions) {
+      statusOptions.querySelectorAll('.status-option').forEach(option => {
+        option.addEventListener('click', function(e) {
+          e.stopPropagation();
+          
+          const value = this.dataset.value;
+          const text = this.textContent;
+          
+          if (statusSelected) statusSelected.textContent = text;
+          if (statusInput) statusInput.value = value;
+          
+          // Закрываем выпадающее меню
+          statusSelect.classList.remove('active');
+        });
+      });
+    }
+  
+    // Закрытие при клике вне элемента
+    document.addEventListener('click', function(e) {
+      if (!statusSelect.contains(e.target)) {
+        statusSelect.classList.remove('active');
+      }
+    });
+  
+    // Закрытие при нажатии Esc
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && statusSelect.classList.contains('active')) {
+        statusSelect.classList.remove('active');
+      }
+    });
+  }
+
   // Вызываем все функции инициализации
   setupSearchHandlers();
   setupCommentHandlers();
@@ -590,6 +621,7 @@ function initModalHandlers() {
   setupChangeClientForm();
   setupCreateRecordForm();
   setupChangeRecordHandlers();
+  setupStatusSelect();
 }
 
 // Экспортируем функцию для вызова извне
