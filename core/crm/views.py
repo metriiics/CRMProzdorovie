@@ -272,21 +272,35 @@ class ModalViewChangeRecord(View):
     
     def post(self, request):
         record_id = request.POST.get('record_id')
-        record = Application.objects.get(id=record_id)
-        
-        # Обновляем поля записи
-        # Добавьте здесь логику обновления полей
-        
+        record = get_object_or_404(Application, id=record_id)
+
+        doctor_id = request.POST.get('doctor_id')
+        client_status = request.POST.get('client_status')
+
+        service_date = request.POST.get('service_date')
+
+        callback_date = request.POST.get('callback_date')
+
+        if doctor_id:
+            record.doctor_id = doctor_id
+        if client_status:
+            record.status = client_status
+        if service_date:
+            record.date_recording = service_date
+        if callback_date:
+            record.date_next_call = callback_date
+
         record.save()
-        
-        # Добавляем комментарий, если он есть
+
         comment_text = request.POST.get('comment')
         if comment_text:
             Comment.objects.create(
-                record=record,
-                manager=request.user.manager,
+                application=record,
+                manager=request.user,
                 comment=comment_text
             )
+
+        return JsonResponse({'status': 'success', 'message': 'Запись успешно обновлена'})
 
     
 class ModalViewCreateRecord(View):

@@ -163,18 +163,6 @@ function initModalHandlers() {
     if (doctorSearchField) doctorSearchField.value = doctor.fio;
   }
 
-  function fillServiceForm(service) {
-    console.log('Filling service form with:', service);
-    
-    const serviceIdField = document.getElementById('service-id');
-    const serviceSearchField = document.getElementById('service-search');
-    const priceField = document.getElementById('payment-amount');
-
-    if (serviceIdField) serviceIdField.value = service.id;
-    if (serviceSearchField) serviceSearchField.value = service.fio;
-    if (priceField && service.price) priceField.value = service.price;
-  }
-
   function fillClientForm(client) {
     console.log('Filling client form with:', client);
     
@@ -310,10 +298,9 @@ function initModalHandlers() {
     document.addEventListener('modal-loaded', function(e) {
       if (e.detail.modalId === 'change-record-btn-modal' && window.currentRecordId) {
         loadRecordData(window.currentRecordId);
+        setupChangeRecordForm();
       }
     });
-  
-    setupChangeRecordForm();
   }
   
     // Загрузка данных записи при открытии модального окна
@@ -406,9 +393,6 @@ function initModalHandlers() {
             
             // Добавляем недостающие данные из формы
             formData.append('doctor_id', document.getElementById('doctor-id').value);
-            formData.append('service_id', document.getElementById('service-id').value);
-            formData.append('payment_method', document.getElementById('payment-method').value);
-            formData.append('payment_amount', document.getElementById('payment-amount').value);
             formData.append('comment', document.getElementById('comment-input').value);
 
             const response = await fetch(form.action, {
