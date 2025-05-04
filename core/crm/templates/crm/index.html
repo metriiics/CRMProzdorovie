@@ -297,7 +297,7 @@
           </thead>
           <tbody id="record-container">
             {% for app in page_obj %}
-            <tr class="record-row">
+            <tr class="record-row" data-record-id="{{ app.id }}">
               <td>{{ app.client.created_at|date:"d.m.Y"|default:None }}</td>
               <td>
                 {{ app.client.last_name }}

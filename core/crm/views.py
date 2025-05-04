@@ -203,7 +203,26 @@ class ModalViewChangeClient(View):
     
 class ModalViewChangeRecord(View):
     def get(self, request):
+        record_id = request.GET.get('record_id')
         return render(request, 'crm/change_record.html')
+    
+    def post(self, request):
+        record_id = request.POST.get('record_id')
+        record = Application.objects.get(id=record_id)
+        
+        # Обновляем поля записи
+        # Добавьте здесь логику обновления полей
+        
+        record.save()
+        
+        # Добавляем комментарий, если он есть
+        comment_text = request.POST.get('comment')
+        if comment_text:
+            Comment.objects.create(
+                record=record,
+                manager=request.user.manager,
+                comment=comment_text
+            )
 
     
 class ModalViewCreateRecord(View):

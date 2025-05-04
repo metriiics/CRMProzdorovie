@@ -305,6 +305,129 @@ function initModalHandlers() {
     });
   }
 
+  function setupChangeRecordHandlers() {
+    // Обработчик будет срабатывать после загрузки модального окна
+    document.addEventListener('modal-loaded', function(e) {
+      if (e.detail.modalId === 'change-record-btn' && window.currentRecordId) {
+        loadRecordData(window.currentRecordId);
+      }
+    });
+  
+    setupChangeRecordForm();
+  }
+  
+  // Загрузка данных записи
+  function loadRecordData(recordId) {
+    fetch(`/get-record-data/?record_id=${recordId}`)
+      .then(response => response.json())
+      .then(data => {
+        fillRecordForm(data);
+      })
+      .catch(error => {
+        console.error('Error loading record data:', error);
+        showErrorMessage('Ошибка загрузки данных записи');
+      });
+  }
+  
+  // Заполнение формы данными
+  function fillRecordForm(data) {
+    document.getElementById('record-id').value = data.id;
+    document.getElementById('client-id').value = data.client.id;
+    document.getElementById('client-search').value = 
+      `${data.client.last_name} ${data.client.first_name} ${data.client.surname || ''}`.trim();
+    document.getElementById('phone').value = data.client.phone_number || '';
+    
+    if (data.doctor) {
+      document.getElementById('doctor-id').value = data.doctor.id;
+      document.getElementById('doctor-search').value = 
+        `${data.doctor.last_name} ${data.doctor.first_name} ${data.doctor.surname || ''}`.trim();
+    }
+    
+    if (data.service) {
+      document.getElementById('service-id').value = data.service.id;
+      document.getElementById('service-search').value = data.service.name;
+      document.getElementById('payment-amount').value = data.service.price || '';
+    }
+    
+    if (data.date_recording) {
+      document.getElementById('service-date').value = data.date_recording.split(' ')[0];
+    }
+    
+    if (data.date_next_call) {
+      document.getElementById('callback-date').value = data.date_next_call.split(' ')[0];
+    }
+    
+    // Заполнение комментариев
+    const commentsContainer = document.getElementById('comments-container');
+    commentsContainer.innerHTML = '';
+    data.comments.forEach(comment => {
+      const commentDiv = document.createElement('div');
+      commentDiv.className = 'comment';
+      commentDiv.textContent = `${comment.created_at} ${comment.manager}: ${comment.text}`;
+      commentsContainer.appendChild(commentDiv);
+    });
+  }
+  
+  // Обработчик формы (как в предыдущем примере)
+  function setupChangeRecordForm() {
+    const form = document.getElementById('change-record-form');
+    if (!form) return;
+  
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const originalText = submitBtn.textContent;
+      
+      submitBtn.textContent = 'Сохранение...';
+      submitBtn.disabled = true;
+  
+      try {
+        const formData = new FormData(form);
+        
+        if (!formData.get('record_id')) {
+          throw new Error('Не выбрана запись');
+        }
+        if (!formData.get('client_id')) {
+          throw new Error('Не выбран клиент');
+        }
+  
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value,
+            'X-Requested-With': 'XMLHttpRequest'
+          }
+        });
+  
+        const data = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(data.message || 'Ошибка сервера');
+        }
+        
+        if (data.status === 'success') {
+          showSuccessMessage(data.message);
+          
+          setTimeout(() => {
+            const modal = form.closest('.modal');
+            if (modal) modal.style.display = 'none';
+            if (typeof refreshRecords === 'function') refreshRecords();
+          }, 1500);
+        } else {
+          throw new Error(data.message || 'Ошибка при изменении записи');
+        }
+      } catch (error) {
+        console.error('Ошибка:', error);
+        showErrorMessage(error.message);
+      } finally {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      }
+    });
+  }
+
   function setupChangeClientForm() {
     const form = document.getElementById('change-client-form');
     if (!form) return;
@@ -447,6 +570,7 @@ function initModalHandlers() {
   setupAddClientForm();  
   setupChangeClientForm();
   setupCreateRecordForm();
+  setupChangeRecordHandlers();
 }
 
 // Экспортируем функцию для вызова извне

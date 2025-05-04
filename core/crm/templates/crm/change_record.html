@@ -5,18 +5,24 @@
   <!-- Заголовок -->
   <h1>Изменить запись</h1>
 
+  <form id="change-record-form" method="POST" action="{% url 'change_record_modal' %}">
+    {% csrf_token %}
+    <input type="hidden" id="record-id" name="record_id">
+    <input type="hidden" id="client-id" name="client_id">
+
   <!-- Поиск клиента -->
   <div class="search-container">
-    <label for="phone">Клиент</label>
-    <input type="text" class="search-input" readonly/>
+    <label for="client-search">Клиент</label>
+    <input type="text" id="client-search" class="search-input" readonly/>
   </div>
 
   <div class="form-group">
-    <label for="phone">Номер телефона</label>
+    <label for="phone_number">Номер телефона</label>
     <input
-      id="phone"
+      id="phone_number"
       type="text"
       class="search-input"
+      name="phone_number"
       readonly
       value="Тут подтягивается номер"
     />
@@ -24,8 +30,9 @@
 
   <!-- Поиск врача -->
   <div class="search-container">
-    <label for="phone">Врач</label>
-    <input type="text" class="search-input" placeholder="Поиск врача..." />
+    <label for="doctor-search">Врач</label>
+    <input type="text" id="doctor-search" class="search-input" placeholder="Поиск врача..." />
+    <input type="hidden" id="doctor-id" name="doctor-id">
     <div class="suggestions">
       <div class="suggestion-item">Кенешбеков Иван Дмитриевич</div>
       <div class="suggestion-item">Иванов Петр Сергеевич</div>
@@ -47,7 +54,7 @@
   <div class="date-time-container">
     <div class="form-group">
       <label for="service-date">Дата</label>
-      <input id="service-date" type="date" class="search-input" />
+      <input id="service-date" type="date" class="search-input" name="service_date"/>
     </div>
 
     <div class="form-group">
@@ -63,7 +70,7 @@
 
     <div class="form-group">
       <label for="callback-date">Звонок</label>
-      <input id="callback-date" type="date" class="search-input" />
+      <input id="callback-date" type="date" class="search-input" name="callback_date"/>
     </div>
   </div>
 
@@ -90,7 +97,7 @@
 
   <!-- Комментарии -->
   <div class="comments-container">
-    <div class="comments-scroll">
+    <div class="comments-scroll" id="comments-container">
       <div class="comment">04.04 Валера Какой-то крутой текст например</div>
     </div>
   </div>
@@ -99,6 +106,7 @@
   <div class="comment-input-group">
     <input
       type="text"
+      id="comment-input"
       class="search-input"
       placeholder="Добавить комментарий..."
     />
