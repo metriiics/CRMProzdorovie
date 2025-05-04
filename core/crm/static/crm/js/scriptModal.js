@@ -308,7 +308,7 @@ function initModalHandlers() {
   function setupChangeRecordHandlers() {
     // Обработчик будет срабатывать после загрузки модального окна
     document.addEventListener('modal-loaded', function(e) {
-      if (e.detail.modalId === 'change-record-btn' && window.currentRecordId) {
+      if (e.detail.modalId === 'change-record-btn-modal' && window.currentRecordId) {
         loadRecordData(window.currentRecordId);
       }
     });
@@ -316,115 +316,134 @@ function initModalHandlers() {
     setupChangeRecordForm();
   }
   
-  // Загрузка данных записи
+    // Загрузка данных записи при открытии модального окна
   function loadRecordData(recordId) {
-    fetch(`/get-record-data/?record_id=${recordId}`)
-      .then(response => response.json())
-      .then(data => {
-        fillRecordForm(data);
-      })
-      .catch(error => {
-        console.error('Error loading record data:', error);
-        showErrorMessage('Ошибка загрузки данных записи');
-      });
+    fetch(`/api/record-data/?record_id=${recordId}`)
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => {
+            if (data.error) {
+                throw new Error(data.error);
+            }
+            fillRecordForm(data);
+        })
+        .catch(error => {
+            console.error('Error loading record data:', error);
+            showErrorMessage('Ошибка загрузки данных записи: ' + error.message);
+        });
   }
-  
-  // Заполнение формы данными
+
   function fillRecordForm(data) {
-    document.getElementById('record-id').value = data.id;
-    document.getElementById('client-id').value = data.client.id;
-    document.getElementById('client-search').value = 
-      `${data.client.last_name} ${data.client.first_name} ${data.client.surname || ''}`.trim();
-    document.getElementById('phone').value = data.client.phone_number || '';
+    console.log('Filling form with data:', data);
     
+    // Основные поля
+    document.getElementById('record-id').value = data.id || '';
+    document.getElementById('client-id').value = data.client?.id || '';
+    
+    // Клиент
+    const clientName = `${data.client?.last_name || ''} ${data.client?.first_name || ''} ${data.client?.surname || ''}`.trim();
+    document.getElementById('client-search').value = clientName;
+    document.getElementById('phone_number').value = data.client?.phone_number || '';
+    
+    // Врач
     if (data.doctor) {
-      document.getElementById('doctor-id').value = data.doctor.id;
-      document.getElementById('doctor-search').value = 
-        `${data.doctor.last_name} ${data.doctor.first_name} ${data.doctor.surname || ''}`.trim();
+        document.getElementById('doctor-id').value = data.doctor.id || '';
+        const doctorName = `${data.doctor.last_name || ''} ${data.doctor.first_name || ''} ${data.doctor.surname || ''}`.trim();
+        document.getElementById('doctor-search').value = doctorName;
     }
     
-    if (data.service) {
-      document.getElementById('service-id').value = data.service.id;
-      document.getElementById('service-search').value = data.service.name;
-      document.getElementById('payment-amount').value = data.service.price || '';
-    }
-    
+    // Даты
     if (data.date_recording) {
-      document.getElementById('service-date').value = data.date_recording.split(' ')[0];
+        const recordingDate = data.date_recording.includes('T') 
+            ? data.date_recording.split('T')[0] 
+            : data.date_recording;
+        document.getElementById('service-date').value = recordingDate;
     }
     
     if (data.date_next_call) {
-      document.getElementById('callback-date').value = data.date_next_call.split(' ')[0];
+        const nextCallDate = data.date_next_call.includes('T')
+            ? data.date_next_call.split('T')[0]
+            : data.date_next_call;
+        document.getElementById('callback-date').value = nextCallDate;
     }
     
-    // Заполнение комментариев
+    // Комментарии
     const commentsContainer = document.getElementById('comments-container');
-    commentsContainer.innerHTML = '';
-    data.comments.forEach(comment => {
-      const commentDiv = document.createElement('div');
-      commentDiv.className = 'comment';
-      commentDiv.textContent = `${comment.created_at} ${comment.manager}: ${comment.text}`;
-      commentsContainer.appendChild(commentDiv);
-    });
+    if (commentsContainer) {
+        commentsContainer.innerHTML = '';
+        
+        if (data.comments?.length > 0) {
+            data.comments.forEach(comment => {
+                const commentDiv = document.createElement('div');
+                commentDiv.className = 'comment';
+                commentDiv.textContent = `${comment.created_at} ${comment.manager?.full_name || 'Менеджер'}: ${comment.text}`;
+                commentsContainer.appendChild(commentDiv);
+            });
+        }
+    }
+    
+    console.log('Form should be filled now');
   }
-  
-  // Обработчик формы (как в предыдущем примере)
+
+  // Обработчик формы изменения записи
   function setupChangeRecordForm() {
     const form = document.getElementById('change-record-form');
     if (!form) return;
-  
+
     form.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      
-      const submitBtn = form.querySelector('button[type="submit"]');
-      const originalText = submitBtn.textContent;
-      
-      submitBtn.textContent = 'Сохранение...';
-      submitBtn.disabled = true;
-  
-      try {
-        const formData = new FormData(form);
+        e.preventDefault();
         
-        if (!formData.get('record_id')) {
-          throw new Error('Не выбрана запись');
-        }
-        if (!formData.get('client_id')) {
-          throw new Error('Не выбран клиент');
-        }
-  
-        const response = await fetch(form.action, {
-          method: 'POST',
-          body: formData,
-          headers: {
-            'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value,
-            'X-Requested-With': 'XMLHttpRequest'
-          }
-        });
-  
-        const data = await response.json();
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
         
-        if (!response.ok) {
-          throw new Error(data.message || 'Ошибка сервера');
+        submitBtn.textContent = 'Сохранение...';
+        submitBtn.disabled = true;
+
+        try {
+            const formData = new FormData(form);
+            
+            // Добавляем недостающие данные из формы
+            formData.append('doctor_id', document.getElementById('doctor-id').value);
+            formData.append('service_id', document.getElementById('service-id').value);
+            formData.append('payment_method', document.getElementById('payment-method').value);
+            formData.append('payment_amount', document.getElementById('payment-amount').value);
+            formData.append('comment', document.getElementById('comment-input').value);
+
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value,
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+
+            const data = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(data.message || 'Ошибка сервера');
+            }
+            
+            if (data.status === 'success') {
+                showSuccessMessage(data.message);
+                
+                setTimeout(() => {
+                    const modal = form.closest('.modal');
+                    if (modal) modal.style.display = 'none';
+                    if (typeof refreshRecords === 'function') refreshRecords();
+                }, 1500);
+            } else {
+                throw new Error(data.message || 'Ошибка при изменении записи');
+            }
+        } catch (error) {
+            console.error('Ошибка:', error);
+            showErrorMessage(error.message);
+        } finally {
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
         }
-        
-        if (data.status === 'success') {
-          showSuccessMessage(data.message);
-          
-          setTimeout(() => {
-            const modal = form.closest('.modal');
-            if (modal) modal.style.display = 'none';
-            if (typeof refreshRecords === 'function') refreshRecords();
-          }, 1500);
-        } else {
-          throw new Error(data.message || 'Ошибка при изменении записи');
-        }
-      } catch (error) {
-        console.error('Ошибка:', error);
-        showErrorMessage(error.message);
-      } finally {
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
-      }
     });
   }
 

@@ -9,6 +9,7 @@
     {% csrf_token %}
     <input type="hidden" id="record-id" name="record_id">
     <input type="hidden" id="client-id" name="client_id">
+    <input type="hidden" id="doctor-id" name="doctor_id">
 
   <!-- Поиск клиента -->
   <div class="search-container">
@@ -24,7 +25,7 @@
       class="search-input"
       name="phone_number"
       readonly
-      value="Тут подтягивается номер"
+      value=""
     />
   </div>
 
@@ -32,7 +33,6 @@
   <div class="search-container">
     <label for="doctor-search">Врач</label>
     <input type="text" id="doctor-search" class="search-input" placeholder="Поиск врача..." />
-    <input type="hidden" id="doctor-id" name="doctor-id">
     <div class="suggestions">
       <div class="suggestion-item">Кенешбеков Иван Дмитриевич</div>
       <div class="suggestion-item">Иванов Петр Сергеевич</div>

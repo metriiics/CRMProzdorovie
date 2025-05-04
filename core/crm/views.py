@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -69,6 +69,71 @@ class SearchClientAPIView(APIView):
 
         serializer = ClientSerializer(clients, many=True)
         return Response({'clients': serializer.data}, status=status.HTTP_200_OK)
+    
+class RecordDataAPIView(APIView):
+    def get(self, request):
+        record_id = request.query_params.get('record_id')
+        
+        if not record_id:
+            return Response(
+                {'error': 'record_id parameter is required'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+            
+        try:
+            record = get_object_or_404(Application, id=record_id)
+            
+            # Получаем данные врача через связанного пользователя
+            doctor_user = record.doctor.user
+            
+            data = {
+                'id': record.id,
+                'client': {
+                    'id': record.client.id,
+                    'last_name': record.client.last_name,
+                    'first_name': record.client.first_name,
+                    'surname': record.client.surname or '',
+                    'phone_number': record.client.phone_number or '',
+                },
+                'doctor': {
+                    'id': record.doctor.id,
+                    'user_id': doctor_user.id,
+                    'last_name': doctor_user.last_name,
+                    'first_name': doctor_user.first_name,
+                    'surname': doctor_user.surname or '',
+                    'specialization': {
+                        'id': record.doctor.specialization.id,
+                        'name': record.doctor.specialization.name
+                    }
+                },
+                'status': {
+                    'id': record.status.id,
+                    'name': record.status.status
+                },
+                'date_recording': record.date_recording,
+                'date_call': record.date_call,
+                'date_next_call': record.date_next_call,
+                'comments': [
+                    {
+                        'id': comment.id,
+                        'created_at': comment.created_at.strftime('%d.%m.%Y %H:%M'),
+                        'manager': {
+                            'id': comment.manager.id,
+                            'full_name': f"{comment.manager.last_name} {comment.manager.first_name} {comment.manager.surname or ''}".strip()
+                        },
+                        'text': comment.comment
+                    }
+                    for comment in record.comments.all()
+                ]
+            }
+            return Response(data)
+            
+        except Exception as e:
+            return Response(
+                {'error': str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class ApplicationsView(View):
@@ -203,7 +268,6 @@ class ModalViewChangeClient(View):
     
 class ModalViewChangeRecord(View):
     def get(self, request):
-        record_id = request.GET.get('record_id')
         return render(request, 'crm/change_record.html')
     
     def post(self, request):

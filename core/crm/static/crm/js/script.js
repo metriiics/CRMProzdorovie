@@ -2,10 +2,7 @@ function initializeModalWindows() {
   document.querySelectorAll(".record-row").forEach((row) => {
     row.addEventListener("click", function() {
       const recordId = this.dataset.recordId;
-    
-      // Сохраняем recordId в глобальной переменной перед открытием модалки
       window.currentRecordId = recordId;
-      
       showModal("change-record-btn");
     });
   });
