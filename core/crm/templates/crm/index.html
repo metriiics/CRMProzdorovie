@@ -83,84 +83,84 @@
         </div>
 
         <!-- Фильтр по врачам -->
-<div class="filter-section">
-  <div class="filter-header collapsed" onclick="toggleSection('doctor-options')">
-    Врач
-  </div>
+        <div class="filter-section">
+          <div class="filter-header collapsed" onclick="toggleSection('doctor-options')">
+            Врач
+          </div>
 
-  <div class="filter-content collapsed" id="doctor-options">
-    <div class="filter-search">
-      <input
-        type="text"
-        class="filter-search-input"
-        placeholder="Поиск по врачам..."
-        oninput="filterItems('doctor-options', this.value)"
-      />
-    </div>
+          <div class="filter-content collapsed" id="doctor-options">
+            <div class="filter-search">
+              <input
+                type="text"
+                class="filter-search-input"
+                placeholder="Поиск по врачам..."
+                oninput="filterItems('doctor-options', this.value)"
+              />
+            </div>
 
-    <ul class="filter-items">
-      {% for doctor in doctors %}
-        <li class="filter-item">
-          {{ doctor }}
-          <input type="checkbox" name="doctor" id="doctor-{{ doctor|slugify }}" />
-        </li>
-      {% endfor %}
-    </ul>
+            <ul class="filter-items">
+              {% for doctor in doctors %}
+                <li class="filter-item">
+                  {{ doctor }}
+                  <input type="checkbox" name="doctor" id="doctor-{{ doctor|slugify }}" />
+                </li>
+              {% endfor %}
+            </ul>
 
-    <button class="show-all-btn" onclick="toggleShowAll('doctor-options', this)">
-      Показать все
-    </button>
-  </div>
-</div>
+            <button class="show-all-btn" onclick="toggleShowAll('doctor-options', this)">
+              Показать все
+            </button>
+          </div>
+        </div>
         
 
-<!-- Фильтр по услугам -->
-<div class="filter-section">
-  <div
-    class="filter-header collapsed"
-    onclick="toggleSection('service-options')"
-  >
-    Услуга
-  </div>
-  <ul class="filter-items collapsed" id="service-options">
-    <div class="filter-search">
-      <input
-        type="text"
-        class="filter-search-input"
-        placeholder="Поиск по услуге..."
-        oninput="filterItems('service-options', this.value)"
-      />
-    </div>
-    <li class="filter-item">
-      Массаж<input type="checkbox" name="service" id="service-massage" />
-    </li>
-    <li class="filter-item">
-      Консультация<input
-        type="checkbox"
-        name="service"
-        id="service-consultation"
-      />
-    </li>
-    <li class="filter-item">
-      Диагностика<input
-        type="checkbox"
-        name="service"
-        id="service-diagnostics"
-      />
-    </li>
-    <li class="filter-item">
-      Диагностика<input
-        type="checkbox"
-        name="service"
-        id="service-diagnostics"
-      />
-    </li>
-    
-    <button class="show-all-btn" onclick="toggleShowAll('service-options', this)">
-      Показать все
-    </button>
-  </ul>
-</div>
+        <!-- Фильтр по услугам -->
+        <div class="filter-section">
+          <div
+            class="filter-header collapsed"
+            onclick="toggleSection('service-options')"
+          >
+            Услуга
+          </div>
+          <ul class="filter-items collapsed" id="service-options">
+            <div class="filter-search">
+              <input
+                type="text"
+                class="filter-search-input"
+                placeholder="Поиск по услуге..."
+                oninput="filterItems('service-options', this.value)"
+              />
+            </div>
+            <li class="filter-item">
+              Массаж<input type="checkbox" name="service" id="service-massage" />
+            </li>
+            <li class="filter-item">
+              Консультация<input
+                type="checkbox"
+                name="service"
+                id="service-consultation"
+              />
+            </li>
+            <li class="filter-item">
+              Диагностика<input
+                type="checkbox"
+                name="service"
+                id="service-diagnostics"
+              />
+            </li>
+            <li class="filter-item">
+              Диагностика<input
+                type="checkbox"
+                name="service"
+                id="service-diagnostics"
+              />
+            </li>
+            
+            <button class="show-all-btn" onclick="toggleShowAll('service-options', this)">
+              Показать все
+            </button>
+          </ul>
+        </div>
 
         <!-- Фильтр по дате -->
         <div class="filter-section">
@@ -193,70 +193,70 @@
         </div>
 
         <!-- Фильтр по дате записи -->
-<div class="filter-section">
-  <div
-    class="filter-header collapsed"
-    onclick="toggleSection('record-date-options')"
-  >
-    Дата записи
-  </div>
-  <div class="filter-content collapsed" id="record-date-options">
-    <div class="filter-search">
-      <label for="record-start-date">Начальная дата:</label>
-      <input
-        type="date"
-        class="filter-date-input"
-        id="record-start-date"
-        value="{{ record_start_date }}"
-      />
+        <div class="filter-section">
+          <div
+            class="filter-header collapsed"
+            onclick="toggleSection('record-date-options')"
+          >
+            Дата записи
+          </div>
+          <div class="filter-content collapsed" id="record-date-options">
+            <div class="filter-search">
+              <label for="record-start-date">Начальная дата:</label>
+              <input
+                type="date"
+                class="filter-date-input"
+                id="record-start-date"
+                value="{{ record_start_date }}"
+              />
+            </div>
+            <div class="filter-search">
+              <label for="record-end-date">Конечная дата:</label>
+              <input
+                type="date"
+                class="filter-date-input"
+                id="record-end-date"
+                value="{{ record_end_date }}"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Фильтр по дате звонка -->
+        <div class="filter-section">
+          <div
+            class="filter-header collapsed"
+            onclick="toggleSection('call-date-options')">
+            Дата следующего звонка
+          </div>
+          <div class="filter-content collapsed" id="call-date-options">
+            <div class="filter-search">
+              <label for="call-start-date">Начальная дата:</label>
+              <input
+                type="date"
+                class="filter-date-input"
+                id="call-start-date"
+                value="{{ call_start_date }}"
+              />
+            </div>
+            <div class="filter-search">
+              <label for="call-end-date">Конечная дата:</label>
+              <input
+                type="date"
+                class="filter-date-input"
+                id="call-end-date"
+                value="{{ call_end_date }}"
+              />
+            </div>
+          </div>
+
+        <div class="filter-buttons">
+          <button class="filter-apply-btn" onclick="applyFilters()">Применить</button>
+          <button class="filter-reset-btn" onclick="resetFilters()">Сбросить</button>
+        </div>  
     </div>
-    <div class="filter-search">
-      <label for="record-end-date">Конечная дата:</label>
-      <input
-        type="date"
-        class="filter-date-input"
-        id="record-end-date"
-        value="{{ record_end_date }}"
-      />
-    </div>
-  </div>
 </div>
-
-<!-- Фильтр по дате звонка -->
-<div class="filter-section">
-  <div
-    class="filter-header collapsed"
-    onclick="toggleSection('call-date-options')">
-    Дата следующего звонка
-  </div>
-  <div class="filter-content collapsed" id="call-date-options">
-    <div class="filter-search">
-      <label for="call-start-date">Начальная дата:</label>
-      <input
-        type="date"
-        class="filter-date-input"
-        id="call-start-date"
-        value="{{ call_start_date }}"
-      />
-    </div>
-    <div class="filter-search">
-      <label for="call-end-date">Конечная дата:</label>
-      <input
-        type="date"
-        class="filter-date-input"
-        id="call-end-date"
-        value="{{ call_end_date }}"
-      />
-    </div>
-  </div>
-
-  <div class="filter-buttons">
-    <button class="filter-apply-btn" onclick="applyFilters()">Применить</button>
-    <button class="filter-reset-btn" onclick="resetFilters()">Сбросить</button>
-  </div>  
-
-</div>
-      </div>
+      
 
       <!-- Таблица с записями -->
       <div class="table">

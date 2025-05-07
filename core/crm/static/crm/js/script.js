@@ -158,60 +158,171 @@ document.addEventListener('DOMContentLoaded', function () {
 // ФИЛЬТРЫ
 // ==============================================
 
+// ==============================================
+// ФИЛЬТРЫ
+// ==============================================
+
 function toggleSection(sectionId) {
   const section = document.getElementById(sectionId);
   const header = section.previousElementSibling;
   header.classList.toggle("collapsed");
   section.classList.toggle("collapsed");
+  
+  // Если секция раскрывается, сбрасываем отображение элементов
+  if (!section.classList.contains("collapsed")) {
+    resetSectionItems(sectionId);
+  }
 }
 
-function initializeFilters() {
-  document.querySelectorAll(".filter-items").forEach((section) => {
-    const items = section.querySelectorAll(".filter-item");
-    items.forEach((item, index) => {
+// Новая функция для сброса отображения элементов в секции
+function resetSectionItems(sectionId) {
+  const section = document.getElementById(sectionId);
+  const items = section.querySelectorAll(".filter-item");
+  const showAllBtn = section.querySelector(".show-all-btn");
+  const searchInput = section.querySelector(".filter-search-input");
+  const searchQuery = searchInput ? searchInput.value.trim() : "";
+  
+  items.forEach((item, index) => {
+    const text = item.textContent.trim();
+    const matchesSearch = searchQuery === "" || 
+                         text.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    if (matchesSearch) {
       item.style.display = index < 3 ? "flex" : "none";
-    });
-
-    const button = section.nextElementSibling;
-    if (button && button.classList.contains("show-all-btn")) {
-      button.textContent = "Показать все";
-      button.dataset.expanded = "false";
+    } else {
+      item.style.display = "none";
     }
   });
+  
+  if (showAllBtn) {
+    showAllBtn.textContent = "Показать все";
+    showAllBtn.dataset.expanded = "false";
+  }
+}
+function filterItems(sectionId, searchQuery) {
+  const section = document.getElementById(sectionId);
+  const items = section.querySelectorAll(".filter-item");
+  const showAllBtn = section.querySelector(".show-all-btn");
+  let visibleCount = 0;
+  
+  // Сохраняем текущее состояние кнопки "Показать все"
+  const isExpanded = showAllBtn.dataset.expanded === "true";
+  
+  items.forEach((item, index) => {
+    const doctorName = item.textContent.trim();
+    const matchesSearch = doctorName.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    // Показываем элемент, если он соответствует поиску
+    if (matchesSearch) {
+      item.style.display = "flex";
+      visibleCount++;
+    } else {
+      item.style.display = "none";
+    }
+    
+    // Если не в режиме "Показать все", скрываем элементы после 3-го
+    if (!isExpanded && index >= 3 && matchesSearch) {
+      item.style.display = visibleCount <= 3 ? "flex" : "none";
+    }
+  });
+  
+  // Обновляем текст кнопки в зависимости от количества видимых элементов
+  if (visibleCount <= 3) {
+    showAllBtn.textContent = "Показать все";
+    showAllBtn.dataset.expanded = "false";
+  } else if (!isExpanded) {
+    showAllBtn.textContent = "Показать все";
+  }
+}
+
+// Обновленная initializeFilters
+function initializeFilters() {
+  const url = new URL(window.location.href);
+  const globalSearchQuery = url.searchParams.get('search') || '';
+  const doctorSearchQuery = url.searchParams.get('doctor_search') || '';
+  
+  // Инициализация глобального поиска
+  const globalSearchInput = document.getElementById("filter-search-input");
+  if (globalSearchInput) {
+    globalSearchInput.value = globalSearchQuery;
+  }
+  
+  // Инициализация всех секций
+  document.querySelectorAll(".filter-content").forEach(section => {
+    const searchInput = section.querySelector(".filter-search-input");
+    const sectionId = section.id;
+    
+    if (searchInput) {
+      searchInput.value = doctorSearchQuery;
+      filterItems(sectionId, doctorSearchQuery);
+    } else {
+      // Для секций без поиска просто сбрасываем отображение
+      resetSectionItems(sectionId);
+    }
+  });
+
+  // При загрузке отмечаем чекбоксы, если врач выбран в фильтре
+  const selectedDoctors = url.searchParams.getAll('doctor');
+  if (selectedDoctors.length > 0) {
+    selectedDoctors.forEach((doctorName) => {
+      document.querySelectorAll('#doctor-options .filter-item').forEach((item) => {
+        const label = item.textContent.trim();
+        const checkbox = item.querySelector('input[type="checkbox"]');
+        if (label === doctorName && checkbox) {
+          checkbox.checked = true;
+        }
+      });
+    });
+  }
 }
 
 function toggleShowAll(sectionId, button) {
   const section = document.getElementById(sectionId);
   const items = section.querySelectorAll(".filter-item");
   const isExpanded = button.dataset.expanded === "true";
-
+  const searchInput = section.querySelector(".filter-search-input");
+  const searchQuery = searchInput ? searchInput.value.trim() : "";
+  
   items.forEach((item, index) => {
-    item.style.display = isExpanded && index >= 3 ? "none" : "flex";
+    const doctorName = item.textContent.trim();
+    const matchesSearch = searchQuery === "" || 
+                         doctorName.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    if (!matchesSearch) {
+      item.style.display = "none";
+    } else {
+      item.style.display = isExpanded && index >= 3 ? "none" : "flex";
+    }
   });
-
+  
   button.textContent = isExpanded ? "Показать все" : "Скрыть все";
   button.dataset.expanded = isExpanded ? "false" : "true";
-}
-
-let searchQuery = '';  // Храним запрос поиска в переменной
-
-// Функция для инициализации глобального поиска
-function setupGlobalSearch() {
-  const input = document.getElementById("filter-search-input");
-  input.addEventListener("input", function () {
-    searchQuery = this.value.trim();  // Сохраняем значение поиска
-  });
 }
 
 // Функция для применения фильтров
 function applyFilters() {
   const url = new URL(window.location.href);
 
-  // Если есть поисковый запрос, добавляем его в параметры URL
-  if (searchQuery) {
-    url.searchParams.set("search", searchQuery);
-  } else {
-    url.searchParams.delete("search");
+  // Глобальный поиск
+  const globalSearchInput = document.getElementById("filter-search-input");
+  if (globalSearchInput) {
+    const globalSearchQuery = globalSearchInput.value.trim();
+    if (globalSearchQuery) {
+      url.searchParams.set("search", globalSearchQuery);
+    } else {
+      url.searchParams.delete("search");
+    }
+  }
+
+  // Поиск по врачам
+  const doctorSearchInput = document.querySelector("#doctor-options .filter-search-input");
+  if (doctorSearchInput) {
+    const doctorSearchQuery = doctorSearchInput.value.trim();
+    if (doctorSearchQuery) {
+      url.searchParams.set("doctor_search", doctorSearchQuery);
+    } else {
+      url.searchParams.delete("doctor_search");
+    }
   }
 
   // Очищаем текущие выбранные значения докторов
@@ -219,7 +330,7 @@ function applyFilters() {
 
   // Находим все отмеченные чекбоксы врачей
   document.querySelectorAll('#doctor-options input[type="checkbox"]:checked').forEach((checkbox) => {
-    const doctorName = checkbox.parentElement.textContent.trim(); // Берем текст из label
+    const doctorName = checkbox.parentElement.textContent.trim();
     url.searchParams.append('doctor', doctorName);
   });
 
@@ -274,14 +385,12 @@ function resetFilters() {
     input.value = '';
   });
 
-  // Очищаем поисковый запрос
-  searchQuery = '';
-
   // Очищаем фильтры в URL
   const url = new URL(window.location.href);
   url.searchParams.delete('doctor');
   url.searchParams.delete('search');
-  url.searchParams.delete('page'); // обнуляем страницу тоже
+  url.searchParams.delete('doctor_search');
+  url.searchParams.delete('page');
   url.searchParams.delete('start_date');
   url.searchParams.delete('end_date');
   url.searchParams.delete('record_start_date');
@@ -292,11 +401,9 @@ function resetFilters() {
   window.location.href = url.toString();
 }
 
-
 // Вызов всех инициализаций при загрузке страницы
 document.addEventListener('DOMContentLoaded', () => {
   initializeFilters();
-  setupGlobalSearch();
 
   const url = new URL(window.location.href);
   const selectedDoctors = url.searchParams.getAll('doctor');
@@ -314,7 +421,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
-
 
 // ==============================================
 // РАБОТА С КАЛЕНДАРЯМИ
