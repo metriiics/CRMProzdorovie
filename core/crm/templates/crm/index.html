@@ -72,14 +72,28 @@
         <div class="filter-section">
           <div
             class="filter-header collapsed"
-            onclick="toggleSection('client-options')">
+            onclick="toggleSection('status-options')">
             Статус
           </div>
-          <ul class="filter-items collapsed" id="client-options">
-            <li class="filter-item">Оказана<input type="checkbox" /></li>
-            <li class="filter-item">Перенесена<input type="checkbox" /></li>
-            <li class="filter-item">Удалена<input type="checkbox" /></li>
-          </ul>
+          <div class="filter-content collapsed" id="status-options">
+            <ul class="filter-items">
+              {% for status in statuses %}
+                <li class="filter-item">
+                  {{ status }}
+                  <input
+                    type="checkbox"
+                    name="status"
+                    id="status-{{ status|slugify }}"
+                    {% if status in selected_statuses %}checked{% endif %}
+                  />
+                </li>
+              {% endfor %}
+            </ul>
+
+            <button class="show-all-btn" onclick="toggleShowAll('status-options', this)">
+              Показать все
+            </button>
+          </div>
         </div>
 
         <!-- Фильтр по врачам -->

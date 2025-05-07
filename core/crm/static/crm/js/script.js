@@ -240,6 +240,7 @@ function initializeFilters() {
   const url = new URL(window.location.href);
   const globalSearchQuery = url.searchParams.get('search') || '';
   const doctorSearchQuery = url.searchParams.get('doctor_search') || '';
+  const selectedStatuses = url.searchParams.getAll('status');
   
   // Инициализация глобального поиска
   const globalSearchInput = document.getElementById("filter-search-input");
@@ -260,6 +261,18 @@ function initializeFilters() {
       resetSectionItems(sectionId);
     }
   });
+
+  if (selectedStatuses.length > 0) {
+    selectedStatuses.forEach((statusName) => {
+      document.querySelectorAll('#status-options .filter-item').forEach((item) => {
+        const label = item.textContent.trim();
+        const checkbox = item.querySelector('input[type="checkbox"]');
+        if (label === statusName && checkbox) {
+          checkbox.checked = true;
+        }
+      });
+    });
+  }
 
   // При загрузке отмечаем чекбоксы, если врач выбран в фильтре
   const selectedDoctors = url.searchParams.getAll('doctor');
@@ -325,6 +338,15 @@ function applyFilters() {
     }
   }
 
+  // Очищаем текущие выбранные значения статусов
+  url.searchParams.delete('status');
+
+  // Находим все отмеченные чекбоксы статусов
+  document.querySelectorAll('#status-options input[type="checkbox"]:checked').forEach((checkbox) => {
+    const statusName = checkbox.parentElement.textContent.trim();
+    url.searchParams.append('status', statusName);
+  });
+
   // Очищаем текущие выбранные значения докторов
   url.searchParams.delete('doctor');
 
@@ -389,6 +411,7 @@ function resetFilters() {
   const url = new URL(window.location.href);
   url.searchParams.delete('doctor');
   url.searchParams.delete('search');
+  url.searchParams.delete('status');
   url.searchParams.delete('doctor_search');
   url.searchParams.delete('page');
   url.searchParams.delete('start_date');

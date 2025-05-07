@@ -142,6 +142,8 @@ class ApplicationsView(View):
         sort_field = request.GET.get('sort', 'id')
         sort_direction = request.GET.get('dir', 'asc')
 
+        status_filter = request.GET.getlist('status')
+
         # параметры фильтрации
         doctor_filter = request.GET.getlist('doctor')  # список выбранных врачей
         search_query = request.GET.get('search', '')  # параметр поиска
@@ -178,6 +180,9 @@ class ApplicationsView(View):
         if doctor_filter:
             queryset = queryset.filter(doctor__user__last_name__in=doctor_filter)
 
+        if status_filter:
+            queryset = queryset.filter(status__status__in=status_filter)
+
         #  фильтрацию по поисковому запросу
         if search_query:
             queryset = queryset.filter(
@@ -197,11 +202,16 @@ class ApplicationsView(View):
         #  список всех врачей 
         doctors = Doctor.objects.select_related('user').filter(user__role_id=3).values_list('user__last_name', flat=True).distinct()
 
+        #  все статусы из базы данных
+        statuses = Status.objects.all().values_list('status', flat=True)
+
         context = {
             'page_obj': page_obj,
             'current_sort': sort_field.lstrip('-'),
             'current_direction': sort_direction,
             'doctors': doctors,  
+            'statuses': statuses,
+            'selected_statuses': status_filter,
             'search_query': search_query, 
             'start_date': start_date,  
             'end_date': end_date, 
