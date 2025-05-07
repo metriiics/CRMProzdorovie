@@ -63,7 +63,6 @@ let currentPage = 1;
 
 document.addEventListener("DOMContentLoaded", function () {
   initializeSortButtons();
-  initializePagination();
 });
 
 // ==============================================
@@ -127,7 +126,6 @@ function initializeSortButtons() {
 // Добавьте вызов функции в инициализацию
 document.addEventListener("DOMContentLoaded", () => {
   initializeSortButtons();
-  initializeTableRowClick(); // Инициализация кликов по строкам таблицы
 });
 
 // ==============================================
