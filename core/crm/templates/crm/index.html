@@ -272,37 +272,45 @@
                 </a>
               </th>
               <th>
-                <a href="" id="sort-name">
+                <a href="?sort=client__last_name&dir={% if current_sort == 'client__last_name' and current_direction == 'asc' %}desc{% else %}asc{% endif %}&page=1" id="sort-name">
                   Имя
-                  <img src="{% static 'crm/img/arrow_sort.svg' %}" alt="" class="arrow"/>
+                  <img src="{% static 'crm/img/arrow_sort.svg' %}" 
+                       alt="" 
+                       class="arrow {% if current_sort == 'client__last_name' %}{% if current_direction == 'asc' %}arrow-up{% else %}arrow-down{% endif %}{% endif %}"/>
                 </a>
               </th>
               <th>Номер</th>
               <th>
-                <a href="" id="sort-status">
+                <a href="?sort=status__status&dir={% if current_sort == 'status__status' and current_direction == 'asc' %}desc{% else %}asc{% endif %}&page=1" id="sort-status">
                   Статус
-                  <img src="{% static 'crm/img/arrow_sort.svg' %}" alt="" class="arrow"/>
+                  <img src="{% static 'crm/img/arrow_sort.svg' %}" 
+                       alt="" 
+                       class="arrow {% if current_sort == 'status__status' %}{% if current_direction == 'asc' %}arrow-up{% else %}arrow-down{% endif %}{% endif %}"/>
                 </a>
               </th>
               <th>
-                <a href="" id="sort-doctor">
+                <a href="?sort=doctor__user__last_name&dir={% if current_sort == 'doctor__user__last_name' and current_direction == 'asc' %}desc{% else %}asc{% endif %}&page=1" id="sort-doctor">
                   Врач
-                  <img src="{% static 'crm/img/arrow_sort.svg' %}" alt="" class="arrow"/>
+                  <img src="{% static 'crm/img/arrow_sort.svg' %}" 
+                       alt="" 
+                       class="arrow {% if current_sort == 'doctor__user__last_name' %}{% if current_direction == 'asc' %}arrow-up{% else %}arrow-down{% endif %}{% endif %}"/>
                 </a>
               </th>
               <th>
-                <a href="" id="sort-service">
+                <a href="?sort=service__name&dir={% if current_sort == 'service__name' and current_direction == 'asc' %}desc{% else %}asc{% endif %}&page=1" id="sort-service">
                   Услуга
-                  <img src="{% static 'crm/img/arrow_sort.svg' %}" alt="" class="arrow"/>
+                  <img src="{% static 'crm/img/arrow_sort.svg' %}" 
+                       alt="" 
+                       class="arrow {% if current_sort == 'service__name' %}{% if current_direction == 'asc' %}arrow-up{% else %}arrow-down{% endif %}{% endif %}"/>
                 </a>
               </th>
               <th>Комментарий</th>
               <th>
-                <a href="?sort=record__date&dir={% if current_sort == 'record__date' and current_direction == 'asc' %}desc{% else %}asc{% endif %}&page=1" id="sort-record">
+                <a href="?sort=date_recording&dir={% if current_sort == 'date_recording' and current_direction == 'asc' %}desc{% else %}asc{% endif %}&page=1" id="sort-record">
                   Запись 
                   <img src="{% static 'crm/img/arrow_sort.svg' %}" 
                        alt="" 
-                       class="arrow {% if current_sort == 'record__date' %}{% if current_direction == 'asc' %}arrow-up{% else %}arrow-down{% endif %}{% endif %}"/>
+                       class="arrow {% if current_sort == 'date_recording' %}{% if current_direction == 'asc' %}arrow-up{% else %}arrow-down{% endif %}{% endif %}"/>
                 </a>
               </th>
               <th>

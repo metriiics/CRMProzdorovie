@@ -73,13 +73,14 @@ document.addEventListener("DOMContentLoaded", function () {
 function initializeSortButtons() {
   const sortButtons = [
     { id: "sort-date", sortField: "client__created_at" },
-    { id: "sort-record", sortField: "record__date" },
-    { id: "sort-next-call", sortField: "date_next_call" },
-    { id: "sort-name", sortField: "sort__name"},
-    { id: "sort-phone", sortField: "client__phone" },
-    { id: "sort-status", sortField: "client__status" },
-    { id: "sort-doctor", sortField: "doctor__name" },
+
+    { id: "sort-name", sortField: "client__last_name" },
+    { id: "sort-status", sortField: "status__status" },
+    { id: "sort-doctor", sortField: "doctor__user__last_name" },
     { id: "sort-service", sortField: "service__name" },
+
+    { id: "sort-record", sortField: "date_recording" },
+    { id: "sort-next-call", sortField: "date_next_call" },
   ];
 
   sortButtons.forEach((button) => {
@@ -102,6 +103,21 @@ function initializeSortButtons() {
         url.searchParams.set('sort', button.sortField);
         url.searchParams.set('dir', newDirection);
         url.searchParams.set('page', 1); // Сбрасываем на первую страницу
+
+        // Сохраняем все существующие параметры фильтрации
+        const paramsToKeep = [
+          'doctor', 'search', 'start_date', 'end_date', 
+          'record_start_date', 'record_end_date',
+          'call_start_date', 'call_end_date'
+        ];
+
+        paramsToKeep.forEach(param => {
+          const value = url.searchParams.get(param);
+          if (value) {
+            url.searchParams.set(param, value);
+          }
+        });
+
         window.location.href = url.toString();
       });
     }
