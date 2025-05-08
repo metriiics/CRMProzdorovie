@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -10,13 +9,11 @@ from .models import Client, Application, Comment, Doctor, Status, User
 from django.core.paginator import Paginator
 from django.db.models import Q, Prefetch
 from .serializers import CombineSerializer, ClientSerializer, StatusSerializer
-from rest_framework.pagination import PageNumberPagination
 from django.views import View
 from django.contrib import messages
 from django.http import JsonResponse
 from django.utils import timezone
-from .forms import AddClientForm
-import json
+from .forms import AddClientForm, CreateRecordForm, ChangeClientForm
 
 
 class LoginView(APIView):
@@ -57,8 +54,10 @@ class SearchDoctorAPIView(APIView):
         query = request.GET.get('query', '')
         if query:
             doctors = Doctor.objects.filter(
+                user__role_id=3,
                 user__first_name__icontains=query
             ) | Doctor.objects.filter(
+                user__role_id=3,
                 user__last_name__icontains=query
             )
             doctors_list = [
@@ -248,11 +247,7 @@ class ModalViewAddClient(View):
 
         if not form.is_valid():
             errors = form.errors.as_json()
-            return JsonResponse({'status': 'error', 'message': 'Ошибка валидации', 'errors': errors}, status=400)
-        # first_name = request.POST.get('first_name')
-        # last_name = request.POST.get('last_name')
-        # surname = request.POST.get('surname')
-        # phone_number = request.POST.get('phone_number')
+            return JsonResponse({'status': 'error', 'message': 'Некорректные данные. Проверьте и повторите!', 'errors': errors}, status=400)
 
         client = Client(
             first_name=form.cleaned_data['first_name'],
@@ -270,31 +265,40 @@ class ModalViewChangeClient(View):
         return render(request, 'crm/change_client.html')
     
     def post(self, request):
-        client_id = request.POST.get('client_id')
-        last_name = request.POST.get('last_name')
-        first_name = request.POST.get('first_name')
-        surname = request.POST.get('surname')
-        phone_number = request.POST.get('phone_number')
-        
-        #  клиента из БД
-        try:
-            client = Client.objects.get(id=client_id)
-        except Client.DoesNotExist:
-            messages.error(request, 'Клиент не найден')
-            return redirect('change_client')
+        form = ChangeClientForm(request.POST)
 
-        if last_name:
-            client.last_name = last_name
-        if first_name:
-            client.first_name = first_name
-        if surname:
-            client.surname = surname
-        if phone_number:
-            client.phone_number = phone_number
+        if not form.is_valid():
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Некорректные данные. Проверьте и повторите!',
+                'errors': form.errors.as_json()
+            }, status=400)
         
-        client.save()
-        return JsonResponse({'status': 'success', 'message': 'Данные сохранены!'})
-        
+        try:
+            client = Client.objects.get(id=form.cleaned_data['client_id'])
+
+            client.last_name = form.cleaned_data['last_name']
+            client.first_name = form.cleaned_data['first_name']
+            client.surname = form.cleaned_data.get('surname', '')
+            client.phone_number = form.cleaned_data['phone_number']
+            
+            client.save()
+
+            return JsonResponse({
+                'status': 'success', 
+                'message': 'Данные клиента успешно обновлены!'
+            })
+        except Client.DoesNotExist:
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Клиент не найден'
+            }, status=404)
+            
+        except Exception as e:
+            return JsonResponse({
+                'status': 'error',
+                'message': f'Ошибка при обновлении данных: {str(e)}'
+            }, status=500)
     
 class ModalViewChangeRecord(View):
     def get(self, request):
@@ -317,7 +321,7 @@ class ModalViewChangeRecord(View):
             record.doctor_id = doctor_id
 
         if client_status_id:
-            # Просто сохраняем ID статуса, не получая объект
+            # сохраняем ID статуса, не получая объект
             record.status_id = int(client_status_id)
         if client_status:
             record.status = client_status
@@ -344,46 +348,42 @@ class ModalViewCreateRecord(View):
         return render(request, 'crm/create_record.html')
     
     def post(self, request):
-        # Для FormData используем request.POST
-        data = {
-            'client_id': request.POST.get('client_id'),
-            'doctor_id': request.POST.get('doctor_id'),
-            'client_status_id': request.POST.get('client_status'),
-            'service_date': request.POST.get('service_date'),
-            'callback_date': request.POST.get('callback_date'),
-            'comment': request.POST.get('comment'),
-        }
-        
-        # Валидация обязательных полей
-        required_fields = ['client_id', 'doctor_id', 'service_date']
-        for field in required_fields:
-            if not data[field]:
-                return JsonResponse({
-                    'status': 'error',
-                    'message': f'Поле {field} обязательно для заполнения'
-                }, status=400)
+        form = CreateRecordForm(request.POST)
 
-        status_id = int(data['client_status_id'])
+        if not form.is_valid():
+            errors = form.errors.as_json()
+            print(errors)
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Некорректные данные. Проверьте и повторите!',
+                'errors': errors
+            })
 
-        record = Application.objects.create(
-            client_id=data['client_id'],
-            doctor_id=data['doctor_id'],
-            date_recording=data['service_date'],
-            date_next_call=data['callback_date'],
-            status_id=status_id
-        )
-        
-        # Добавляем комментарий, если есть
-        if data['comment']:
-            Comment.objects.create(
-                application=record,
-                manager=request.user,
-                comment=data['comment']
+        try:
+            record = Application.objects.create(
+                client_id=form.cleaned_data['client_id'],
+                doctor_id=form.cleaned_data['doctor_id'],
+                date_recording=form.cleaned_data['service_date'],
+                date_next_call=form.cleaned_data.get('callback_date'),
+                status_id=form.cleaned_data['client_status']
             )
-        
-        return JsonResponse({
-            'status': 'success',
-            'message': 'Запись успешно создана',
-            'record_id': record.id
-        })
+
+            # Добавляем комментарий, если есть
+            if form.cleaned_data['comment']:
+                Comment.objects.create(
+                    application=record,
+                    manager=request.user,
+                    comment=form.cleaned_data['comment']
+                )
+
+            return JsonResponse({
+                'status': 'success',
+                'message': 'Запись успешно создана',
+                'record_id': record.id
+            })
+        except Exception as e:
+            return JsonResponse({
+                'status': 'error',
+                'message': f'Ошибка при создании записи: {str(e)}'
+            }, status=500)
 

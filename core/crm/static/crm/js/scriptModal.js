@@ -648,10 +648,10 @@ function initModalHandlers() {
   }
 
   function showSuccessMessage(message) {
-    console.log('Attempting to show success message:', message); // Для отладки
+    console.log('Attempting to show success message:', message);
     
-    // 1. Находим активное модальное окно (расширенный селектор)
-    const activeModal = document.querySelector('.modal.show, .modal[style*="display: block"], .modal[style*="display: flex"]');
+    // 1. Находим активное модальное окно (более универсальный поиск)
+    const activeModal = document.querySelector('.modal[style*="display: block"], .modal[style*="display: flex"], .modal.show');
     
     if (!activeModal) {
         console.warn('No active modal found, showing alert instead');
@@ -664,54 +664,72 @@ function initModalHandlers() {
     // 2. Ищем или создаем элемент для сообщения
     let successElement = activeModal.querySelector('.success-message');
     
-    // Если элемента нет - создаем
     if (!successElement) {
         console.log('Creating new success message element');
         successElement = document.createElement('div');
         successElement.className = 'success-message';
+        successElement.style.display = 'block';
+        successElement.style.opacity = '1';
+        successElement.style.transition = 'opacity 0.5s';
         
-        // Вставляем перед кнопками (но после формы, если есть)
-        const buttonContainer = activeModal.querySelector('.button-container');
-        if (buttonContainer) {
-            buttonContainer.prepend(successElement);
+        // Вставляем в подходящее место
+        const form = activeModal.querySelector('form');
+        if (form) {
+            form.insertAdjacentElement('afterend', successElement);
         } else {
             activeModal.appendChild(successElement);
         }
     }
     
     successElement.textContent = message || "Данные успешно сохранены";
+    successElement.style.display = 'block';
+    successElement.style.opacity = '1';
     
-    // 4. Плавное исчезновение
+    // 3. Плавное исчезновение
     setTimeout(() => {
-        successElement.style.opacity = "0";
+        successElement.style.opacity = '0';
         setTimeout(() => {
-            successElement.style.display = "none";
+            successElement.style.display = 'none';
         }, 500);
     }, 3000);
     
-    // 5. Прокручиваем к сообщению, если оно вне видимости
+    // 4. Прокручиваем к сообщению
     successElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-}
+  }
 
   function showErrorMessage(message) {
-    const modal = document.querySelector(".modal[style*='display: block']");
-    if (modal) {
-      const errorElement = modal.querySelector(".error-message");
-      if (!errorElement) {
-        // Создаем элемент, если его нет
-        const div = document.createElement("div");
-        div.className = "error-message";
-        modal.querySelector(".button-container").prepend(div);
-        errorElement = div;
-      }
-      
-      errorElement.textContent = message;
-      errorElement.style.display = "block";
-      
-      setTimeout(() => {
-        errorElement.style.display = "none";
-      }, 5000);
+    const modal = document.querySelector('.modal[style*="display: block"], .modal[style*="display: flex"], .modal.show');
+    if (!modal) {
+        console.error('No modal found for error message');
+        alert(message || "Произошла ошибка");
+        return;
     }
+
+    let errorElement = modal.querySelector('.error-message');
+    if (!errorElement) {
+        errorElement = document.createElement('div');
+        errorElement.className = 'error-message';
+        errorElement.style.display = 'none';
+        errorElement.style.color = 'red';
+        
+        const buttonContainer = modal.querySelector('.button-container');
+        if (buttonContainer) {
+            buttonContainer.prepend(errorElement);
+        } else {
+            modal.appendChild(errorElement);
+        }
+    }
+    
+    errorElement.textContent = message;
+    errorElement.style.display = 'block';
+    errorElement.style.opacity = '1';
+    
+    setTimeout(() => {
+        errorElement.style.opacity = '0';
+        setTimeout(() => {
+            errorElement.style.display = 'none';
+        }, 500);
+    }, 5000);
   }
 
   function setupStatusSelect() {

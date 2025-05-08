@@ -273,6 +273,17 @@ textarea {
   display: block;
 }
 
+
+.error-message {
+  color: red;
+  padding: 10px;
+  margin: 10px 0;
+  /* background: #ffe6e6;
+  border: 1px solid #d8a0a0;
+  border-radius: 4px; */
+  transition: opacity 0.5s;
+}
+
 /* Контейнер для полей даты и времени */
 .date-time-container {
   display: flex;
