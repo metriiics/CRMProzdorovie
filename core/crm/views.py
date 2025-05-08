@@ -36,6 +36,21 @@ class LoginView(APIView):
             messages.error(request, 'Неверный логин или пароль')
             return render(request, 'crm/login.html')
 
+class StatusSearchView(APIView):
+    def get(self, request):
+        query = request.GET.get('query', '')
+        
+        statuses = Status.objects.filter(
+            status__icontains=query
+        ).order_by('status')[:10]
+        
+        results = [{
+            'id': status.id,
+            'name': status.status,
+        } for status in statuses]
+        
+        return Response({'statuses': results}, status=status.HTTP_200_OK)
+
 #поиска врача
 class SearchDoctorAPIView(APIView):
     def get(self, request):
@@ -287,12 +302,18 @@ class ModalViewChangeRecord(View):
         doctor_id = request.POST.get('doctor_id')
         client_status = request.POST.get('client_status')
 
+        client_status_id = request.POST.get('client_status')
+
         service_date = request.POST.get('service_date')
 
         callback_date = request.POST.get('callback_date')
 
         if doctor_id:
             record.doctor_id = doctor_id
+
+        if client_status_id:
+            # Просто сохраняем ID статуса, не получая объект
+            record.status_id = int(client_status_id)
         if client_status:
             record.status = client_status
         if service_date:
@@ -322,6 +343,7 @@ class ModalViewCreateRecord(View):
         data = {
             'client_id': request.POST.get('client_id'),
             'doctor_id': request.POST.get('doctor_id'),
+            'client_status_id': request.POST.get('client_status'),
             'service_date': request.POST.get('service_date'),
             'callback_date': request.POST.get('callback_date'),
             'comment': request.POST.get('comment'),
@@ -336,13 +358,14 @@ class ModalViewCreateRecord(View):
                     'message': f'Поле {field} обязательно для заполнения'
                 }, status=400)
 
-        # Создаем запись
+        status_id = int(data['client_status_id'])
+
         record = Application.objects.create(
             client_id=data['client_id'],
             doctor_id=data['doctor_id'],
             date_recording=data['service_date'],
             date_next_call=data['callback_date'],
-            status_id=1  # Статус "Новая"
+            status_id=status_id
         )
         
         # Добавляем комментарий, если есть

@@ -228,6 +228,91 @@ function initModalHandlers() {
     });
   }
 
+  function initStatusSearch() {
+    const statusSearchInput = document.getElementById('client-status-search');
+    const statusSuggestions = document.getElementById('status-suggestions');
+    const statusHiddenInput = document.getElementById('client-status');
+  
+    if (!statusSearchInput || !statusSuggestions || !statusHiddenInput) {
+      console.warn('Элементы для поиска статусов не найдены');
+      return;
+    }
+  
+    // Обработчик ввода текста
+    statusSearchInput.addEventListener('input', debounce(handleStatusSearch, 300));
+  
+    // Обработчик клика по подсказке
+    statusSuggestions.addEventListener('click', (e) => {
+      const suggestion = e.target.closest('.suggestion-item');
+      if (suggestion) {
+        selectStatusSuggestion(suggestion);
+      }
+    });
+  
+    // Закрытие подсказок при клике вне элемента
+    document.addEventListener('click', (e) => {
+      if (!statusSearchInput.contains(e.target) && !statusSuggestions.contains(e.target)) {
+        statusSuggestions.style.display = 'none';
+      }
+    });
+  
+    async function handleStatusSearch() {
+      const query = statusSearchInput.value.trim();
+      
+      if (query.length < 2) {
+        statusSuggestions.style.display = 'none';
+        statusHiddenInput.value = '';
+        return;
+      }
+  
+      try {
+        const response = await fetch(`/api/status-search/?query=${encodeURIComponent(query)}`);
+        if (!response.ok) throw new Error('Network response was not ok');
+        
+        const data = await response.json();
+        
+        if (data.statuses && data.statuses.length > 0) {
+          renderStatusSuggestions(data.statuses);
+          statusSuggestions.style.display = 'block';
+        } else {
+          statusSuggestions.style.display = 'none';
+        }
+      } catch (error) {
+        console.error('Ошибка при поиске статусов:', error);
+        statusSuggestions.style.display = 'none';
+      }
+    }
+  
+    function renderStatusSuggestions(statuses) {
+      statusSuggestions.innerHTML = '';
+      
+      statuses.forEach(status => {
+        const div = document.createElement('div');
+        div.className = 'suggestion-item';
+        div.textContent = status.name;
+        div.dataset.id = status.id;
+        statusSuggestions.appendChild(div);
+      });
+    }
+  
+    function selectStatusSuggestion(suggestion) {
+      statusSearchInput.value = suggestion.textContent;
+      statusHiddenInput.value = suggestion.dataset.id;
+      statusSuggestions.style.display = 'none';
+    }
+  
+    function debounce(func, wait) {
+      let timeout;
+      return function() {
+        const context = this, args = arguments;
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+          func.apply(context, args);
+        }, wait);
+      };
+    }
+  }
+
   function setupCreateRecordForm() {
     const form = document.getElementById('create-record-form');
     if (!form) return;
@@ -341,6 +426,17 @@ function initModalHandlers() {
         document.getElementById('doctor-search').value = doctorName;
     }
     
+    // Статус 
+    if (data.status) {
+      const statusSearchInput = document.getElementById('client-status-search');
+      const statusHiddenInput = document.getElementById('client-status');
+      
+      if (statusSearchInput && statusHiddenInput) {
+          statusSearchInput.value = data.status.name || '';
+          statusHiddenInput.value = data.status.id || '';
+      }
+  }
+
     // Даты
     if (data.date_recording) {
         const recordingDate = data.date_recording.includes('T') 
@@ -622,6 +718,7 @@ function initModalHandlers() {
   setupCreateRecordForm();
   setupChangeRecordHandlers();
   setupStatusSelect();
+  initStatusSearch();
 }
 
 // Экспортируем функцию для вызова извне
