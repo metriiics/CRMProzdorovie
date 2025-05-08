@@ -15,6 +15,7 @@ from django.views import View
 from django.contrib import messages
 from django.http import JsonResponse
 from django.utils import timezone
+from .forms import AddClientForm
 import json
 
 
@@ -32,7 +33,6 @@ class LoginView(APIView):
             login(request, user)
             return redirect('applications-list') 
         else:
-            print(f"Сообщение для пользователя {username}: Неверный логин или пароль")
             messages.error(request, 'Неверный логин или пароль')
             return render(request, 'crm/login.html')
 
@@ -244,16 +244,21 @@ class ModalViewAddClient(View):
         return render(request, 'crm/add_client.html')
     
     def post(self, request):
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        surname = request.POST.get('surname')
-        phone_number = request.POST.get('phone_number')
+        form = AddClientForm(request.POST)
+
+        if not form.is_valid():
+            errors = form.errors.as_json()
+            return JsonResponse({'status': 'error', 'message': 'Ошибка валидации', 'errors': errors}, status=400)
+        # first_name = request.POST.get('first_name')
+        # last_name = request.POST.get('last_name')
+        # surname = request.POST.get('surname')
+        # phone_number = request.POST.get('phone_number')
 
         client = Client(
-            first_name=first_name,
-            last_name=last_name,
-            surname=surname,
-            phone_number=phone_number,
+            first_name=form.cleaned_data['first_name'],
+            last_name=form.cleaned_data['last_name'],
+            surname=form.cleaned_data['surname'],
+            phone_number=form.cleaned_data['phone_number'],
             created_at=timezone.now()
         )
         client.save()

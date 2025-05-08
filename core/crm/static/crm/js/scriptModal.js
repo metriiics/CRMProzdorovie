@@ -425,7 +425,7 @@ function initModalHandlers() {
         const doctorName = `${data.doctor.last_name || ''} ${data.doctor.first_name || ''} ${data.doctor.surname || ''}`.trim();
         document.getElementById('doctor-search').value = doctorName;
     }
-    
+
     // Статус 
     if (data.status) {
       const statusSearchInput = document.getElementById('client-status-search');
@@ -573,26 +573,6 @@ function initModalHandlers() {
     });
   }
 
-  function showSuccessMessage(message) {
-    const successElement = document.getElementById('success-message');
-    if (successElement) {
-      successElement.textContent = message;
-      successElement.style.display = 'block';
-      
-      setTimeout(() => {
-        successElement.style.display = 'none';
-      }, 3000);
-    }
-  }
-
-  function showErrorMessage(message) {
-    const errorElement = document.getElementById('error-message');
-    if (errorElement) {
-      errorElement.textContent = message;
-      errorElement.style.display = 'block';
-    }
-  }
-
   // Обработчики для комментариев
   function setupCommentHandlers() {
     const commentInput = document.getElementById("comment-input");
@@ -630,17 +610,19 @@ function initModalHandlers() {
   // Обработчик для кнопки "Отмена"/"Удалить клиента"
   function setupDeleteHandlers() {
     document.addEventListener("click", function(e) {
+      // Обработка кнопки "Отмена"
       if (e.target.classList.contains("delete-link")) {
         e.preventDefault();
         const modal = e.target.closest(".modal");
         if (modal) {
-          const confirmationModal = modal.nextElementSibling;
-          if (confirmationModal && confirmationModal.classList.contains("confirmation-modal")) {
+          const confirmationModal = modal.querySelector(".confirmation-modal");
+          if (confirmationModal) {
             confirmationModal.style.display = "flex";
           }
         }
       }
 
+      // Обработка кнопки "Нет" в окне подтверждения
       if (e.target.classList.contains("cancel-btn")) {
         const confirmationModal = e.target.closest(".confirmation-modal");
         if (confirmationModal) {
@@ -648,17 +630,88 @@ function initModalHandlers() {
         }
       }
 
+      // Обработка кнопки "Да" в окне подтверждения
       if (e.target.classList.contains("confirm-btn")) {
         const confirmationModal = e.target.closest(".confirmation-modal");
         if (confirmationModal) {
           confirmationModal.style.display = "none";
-          const mainModal = confirmationModal.previousElementSibling;
-          if (mainModal && mainModal.classList.contains("modal")) {
+          const mainModal = confirmationModal.closest(".modal");
+          if (mainModal) {
             mainModal.style.display = "none";
+            // Очищаем форму при закрытии
+            const form = mainModal.querySelector("form");
+            if (form) form.reset();
           }
         }
       }
     });
+  }
+
+  function showSuccessMessage(message) {
+    console.log('Attempting to show success message:', message); // Для отладки
+    
+    // 1. Находим активное модальное окно (расширенный селектор)
+    const activeModal = document.querySelector('.modal.show, .modal[style*="display: block"], .modal[style*="display: flex"]');
+    
+    if (!activeModal) {
+        console.warn('No active modal found, showing alert instead');
+        alert(message || "Данные успешно сохранены");
+        return;
+    }
+    
+    console.log('Active modal found:', activeModal);
+    
+    // 2. Ищем или создаем элемент для сообщения
+    let successElement = activeModal.querySelector('.success-message');
+    
+    // Если элемента нет - создаем
+    if (!successElement) {
+        console.log('Creating new success message element');
+        successElement = document.createElement('div');
+        successElement.className = 'success-message';
+        
+        // Вставляем перед кнопками (но после формы, если есть)
+        const buttonContainer = activeModal.querySelector('.button-container');
+        if (buttonContainer) {
+            buttonContainer.prepend(successElement);
+        } else {
+            activeModal.appendChild(successElement);
+        }
+    }
+    
+    successElement.textContent = message || "Данные успешно сохранены";
+    
+    // 4. Плавное исчезновение
+    setTimeout(() => {
+        successElement.style.opacity = "0";
+        setTimeout(() => {
+            successElement.style.display = "none";
+        }, 500);
+    }, 3000);
+    
+    // 5. Прокручиваем к сообщению, если оно вне видимости
+    successElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+  function showErrorMessage(message) {
+    const modal = document.querySelector(".modal[style*='display: block']");
+    if (modal) {
+      const errorElement = modal.querySelector(".error-message");
+      if (!errorElement) {
+        // Создаем элемент, если его нет
+        const div = document.createElement("div");
+        div.className = "error-message";
+        modal.querySelector(".button-container").prepend(div);
+        errorElement = div;
+      }
+      
+      errorElement.textContent = message;
+      errorElement.style.display = "block";
+      
+      setTimeout(() => {
+        errorElement.style.display = "none";
+      }, 5000);
+    }
   }
 
   function setupStatusSelect() {
