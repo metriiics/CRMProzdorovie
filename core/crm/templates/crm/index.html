@@ -127,16 +127,12 @@
           </div>
         </div>
         
-
         <!-- Фильтр по услугам -->
         <div class="filter-section">
-          <div
-            class="filter-header collapsed"
-            onclick="toggleSection('service-options')"
-          >
+          <div class="filter-header collapsed" onclick="toggleSection('service-options')">
             Услуга
           </div>
-          <ul class="filter-items collapsed" id="service-options">
+          <div class="filter-content collapsed" id="service-options">
             <div class="filter-search">
               <input
                 type="text"
@@ -145,35 +141,24 @@
                 oninput="filterItems('service-options', this.value)"
               />
             </div>
-            <li class="filter-item">
-              Массаж<input type="checkbox" name="service" id="service-massage" />
-            </li>
-            <li class="filter-item">
-              Консультация<input
-                type="checkbox"
-                name="service"
-                id="service-consultation"
-              />
-            </li>
-            <li class="filter-item">
-              Диагностика<input
-                type="checkbox"
-                name="service"
-                id="service-diagnostics"
-              />
-            </li>
-            <li class="filter-item">
-              Диагностика<input
-                type="checkbox"
-                name="service"
-                id="service-diagnostics"
-              />
-            </li>
-            
+            <ul class="filter-items">
+              <li class="filter-item">
+                Массаж<input type="checkbox" name="service" id="service-massage" />
+              </li>
+              <li class="filter-item">
+                Консультация<input type="checkbox" name="service" id="service-consultation" />
+              </li>
+              <li class="filter-item">
+                Диагностика<input type="checkbox" name="service" id="service-diagnostics" />
+              </li>
+              <li class="filter-item">
+                Диагностика<input type="checkbox" name="service" id="service-diagnostics" />
+              </li>
+            </ul>
             <button class="show-all-btn" onclick="toggleShowAll('service-options', this)">
               Показать все
             </button>
-          </ul>
+          </div>
         </div>
 
         <!-- Фильтр по дате -->
