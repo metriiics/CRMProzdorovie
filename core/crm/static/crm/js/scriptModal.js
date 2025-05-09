@@ -622,11 +622,66 @@ function initModalHandlers() {
         }
       }
 
+      //  логика только для удаления клиента
+      if (e.target.classList.contains("delete-client-link")) {
+        e.preventDefault();
+        const modal = e.target.closest(".modal");
+        if (modal) {
+          const confirmationModal = modal.querySelector(".confirmation-modal");
+          if (confirmationModal) {
+            confirmationModal.style.display = "flex";
+          }
+        }
+      }
+
       // Обработка кнопки "Нет" в окне подтверждения
       if (e.target.classList.contains("cancel-btn")) {
         const confirmationModal = e.target.closest(".confirmation-modal");
         if (confirmationModal) {
           confirmationModal.style.display = "none";
+        }
+      }
+
+      // Обработка подтверждения удаления КЛИЕНТА
+      if (e.target.classList.contains("confirm-delete-client-btn")) {
+        const confirmationModal = e.target.closest(".confirmation-modal");
+        if (confirmationModal) {
+          const mainModal = confirmationModal.closest(".modal");
+          if (mainModal) {
+            const form = mainModal.querySelector("form");
+            if (form) {
+              const formData = new FormData(form);
+              formData.append('action', 'deactivate'); // Добавляем флаг деактивации
+              
+              fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                  'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value,
+                  'X-Requested-With': 'XMLHttpRequest'
+                }
+              })
+              .then(response => response.json())
+              .then(data => {
+                if (data.status === 'success') {
+                  showSuccessMessage(data.message);
+                  confirmationModal.style.display = "none";
+                  mainModal.style.display = "none";
+                  
+                  // Обновляем список клиентов если нужно
+                  if (typeof refreshClientsList === 'function') {
+                    refreshClientsList();
+                  }
+                } else {
+                  showErrorMessage(data.message || 'Ошибка при деактивации клиента');
+                }
+              })
+              .catch(error => {
+                console.error('Error:', error);
+                showErrorMessage('Произошла ошибка при деактивации клиента');
+              });
+            }
+          }
         }
       }
 

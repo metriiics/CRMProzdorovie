@@ -277,6 +277,14 @@ class ModalViewChangeClient(View):
         try:
             client = Client.objects.get(id=form.cleaned_data['client_id'])
 
+            if request.POST.get('action') == 'deactivate':
+                client.is_active = False
+                client.save()
+                return JsonResponse({
+                    'status': 'success', 
+                    'message': 'Клиент успешно деактивирован!'
+                })
+
             client.last_name = form.cleaned_data['last_name']
             client.first_name = form.cleaned_data['first_name']
             client.surname = form.cleaned_data.get('surname', '')

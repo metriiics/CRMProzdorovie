@@ -201,6 +201,17 @@ textarea {
   color: #666;
 }
 
+.delete-client-link {
+  color: #f44336;
+  cursor: pointer;
+  text-decoration: underline;
+  margin-left: 15px;
+}
+
+.delete-client-link:hover {
+  color: #d32f2f;
+}
+
 /* Модальное окно подтверждения */
 .confirmation-modal {
   display: none;

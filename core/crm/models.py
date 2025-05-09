@@ -58,6 +58,7 @@ class Client(models.Model):
     surname = models.CharField(max_length=100, null=True)
     phone_number = models.CharField(max_length=20, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         db_table = 'clients'
