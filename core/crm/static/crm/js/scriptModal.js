@@ -1,6 +1,8 @@
 // Основная функция инициализации всех обработчиков модального окна
 function initModalHandlers() {
   // 1. Обработчики для поиска с подсказками
+  setupSearchHandlers();
+
   function setupSearchHandlers() {
     document.querySelectorAll(".search-container").forEach((container) => {
       const input = container.querySelector(".search-input");
@@ -178,7 +180,7 @@ function initModalHandlers() {
     if (firstNameField) firstNameField.value = client.first_name || '';
     if (surnameField) surnameField.value = client.surname || '';
     if (phoneField) phoneField.value = client.phone_number || '';
-    if (searchField) searchField.value = client.fio;
+    if (searchField) searchField.value = client.fio || '';
   }
 
   function setupAddClientForm() {
@@ -383,8 +385,8 @@ function initModalHandlers() {
     document.addEventListener('modal-loaded', function(e) {
       if (e.detail.modalId === 'change-record-btn-modal' && window.currentRecordId) {
         loadRecordData(window.currentRecordId);
-        setupChangeRecordForm();
       }
+      setupChangeRecordForm();
     });
   }
   
@@ -598,14 +600,31 @@ function initModalHandlers() {
     }
   }
 
-  // Обработчик закрытия модального окна
   function setupCloseHandler() {
-    document.querySelectorAll(".close-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        btn.closest(".modal").style.display = "none";
-      });
+  document.querySelectorAll(".close-btn").forEach(btn => {
+    btn.addEventListener("click", function() {
+      const modal = this.closest(".modal");
+      if (modal) {
+        modal.style.display = "none";
+        
+        // Очищаем все динамические данные
+        const form = modal.querySelector("form");
+        if (form) form.reset();
+        
+        // Очищаем поисковые подсказки
+        modal.querySelectorAll(".suggestions").forEach(s => {
+          s.innerHTML = '';
+          s.style.display = 'none';
+        });
+        
+        // Очищаем поля поиска
+        modal.querySelectorAll(".search-input").forEach(i => {
+          i.value = '';
+        });
+      }
     });
-  }
+  });
+}
 
   // Обработчик для кнопки "Отмена"/"Удалить клиента"
   function setupDeleteHandlers() {
@@ -835,7 +854,6 @@ function initModalHandlers() {
   }
 
   // Вызываем все функции инициализации
-  setupSearchHandlers();
   setupCommentHandlers();
   setupCloseHandler();
   setupDeleteHandlers();

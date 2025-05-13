@@ -33,11 +33,23 @@ async function loadModal(modalId) {
   }
 }
 
-// В modal_loader.js, внутри функции showModal:
 function showModal(modalId) {
-  // Закрываем все открытые модальные окна
+  // Закрываем все открытые модальные окна и очищаем их
   document.querySelectorAll(".modal").forEach((modal) => {
     modal.style.display = "none";
+    const form = modal.querySelector("form");
+    if (form) form.reset();
+    
+    // Очищаем поисковые подсказки
+    modal.querySelectorAll(".suggestions").forEach(s => {
+      s.innerHTML = '';
+      s.style.display = 'none';
+    });
+    
+    // Очищаем поля поиска
+    modal.querySelectorAll(".search-input").forEach(i => {
+      i.value = '';
+    });
   });
 
   loadModal(modalId).then((success) => {
@@ -48,24 +60,26 @@ function showModal(modalId) {
 
     modal.style.display = "flex";
 
+    // Инициализируем обработчики для этой конкретной модалки
+    if (window.ModalHandlers) {
+      ModalHandlers.init();
+    }
+
     // Триггерим кастомное событие о загрузке модалки
     const event = new CustomEvent('modal-loaded', {
       detail: { modalId: `${modalId}-modal` }
     });
     document.dispatchEvent(event);
 
-    // Инициализируем обработчики
-    if (window.ModalHandlers) {
-      ModalHandlers.init();
-    }
-
     // Обработчик закрытия
     const closeBtn = modal.querySelector(".close-btn");
     if (closeBtn && !closeBtn._listenerAdded) {
-      closeBtn.addEventListener(
-        "click",
-        () => (modal.style.display = "none")
-      );
+      closeBtn.addEventListener("click", () => {
+        modal.style.display = "none";
+        // Очищаем форму при закрытии
+        const form = modal.querySelector("form");
+        if (form) form.reset();
+      });
       closeBtn._listenerAdded = true;
     }
   }).catch((error) => {
