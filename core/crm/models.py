@@ -20,8 +20,12 @@ class User(AbstractUser):
     surname = models.CharField(max_length=100, null=True)
     email = models.EmailField(null=True)
     is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
 
+    date_joined = models.DateTimeField(auto_now_add=True, null=True)
+    is_staff = models.BooleanField(default=False, null=True)
+    is_superuser = models.BooleanField(default=False, null=True)
+    last_login = models.DateTimeField(null=True, blank=True)
+    
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
 
