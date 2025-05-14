@@ -91,96 +91,64 @@ function initModalHandlers() {
   }
   
   function bindSuggestionClicks(container, input, suggestions) {
-    suggestions.querySelectorAll(".suggestion-item").forEach((item) => {
-      item.addEventListener("click", () => {
-        const modal = container.closest('.modal');
-        const placeholder = input.placeholder.toLowerCase();
-        
-        // Для клиентов
-        if (placeholder.includes("клиент")) {
-          const clientData = {
-            id: item.dataset.id,
-            last_name: item.dataset.lastName,
-            first_name: item.dataset.firstName,
-            surname: item.dataset.surname || '',
-            phone_number: item.dataset.phone,
-            fio: item.dataset.fio
-          };
-          
-          if (modal.id === 'create-record-modal') {
-            fillCreateRecordForm(clientData);
-          } else {
-            fillClientForm(clientData);
-          }
-        }
-        // Для врачей
-        else if (placeholder.includes("врач")) {
-          const doctorData = {
-            id: item.dataset.id,
-            last_name: item.dataset.lastName,
-            first_name: item.dataset.firstName,
-            surname: item.dataset.surname || '',
-            fio: item.dataset.fio
-          };
-          
-          fillDoctorForm(doctorData);
-        }
-        // Для услуг
-        else if (placeholder.includes("услуг")) {
-          const serviceData = {
-            id: item.dataset.id,
-            name: item.dataset.name,
-            price: item.dataset.price,
-            fio: item.dataset.fio
-          };
-          
-          fillServiceForm(serviceData);
-        }
-        
-        input.value = item.dataset.fio;
-        suggestions.style.display = "none";
+      suggestions.querySelectorAll(".suggestion-item").forEach((item) => {
+          item.addEventListener("click", () => {
+              const modal = container.closest('.modal');
+              const form = modal.querySelector('form');
+              const formId = form?.id;
+              
+              // Для клиентов
+              if (input.id === 'client-search') {
+                  const clientData = {
+                      id: item.dataset.id,
+                      last_name: item.dataset.lastName,
+                      first_name: item.dataset.firstName,
+                      surname: item.dataset.surname || '',
+                      phone_number: item.dataset.phone,
+                      fio: item.dataset.fio
+                  };
+
+                  // Заполнение для формы создания записи
+                  if (formId === 'create-record-form') {
+                      fillField(modal, '#client-id', clientData.id);
+                      fillField(modal, '#phone_number', clientData.phone_number);
+                      fillField(modal, '#client-search', clientData.fio);
+                  }
+                  // Заполнение для формы изменения клиента
+                  else if (formId === 'change-client-form') {
+                      fillField(modal, '#client-id', clientData.id);
+                      fillField(modal, '#last_name', clientData.last_name);
+                      fillField(modal, '#first_name', clientData.first_name);
+                      fillField(modal, '#surname', clientData.surname);
+                      fillField(modal, '#phone_number', clientData.phone_number);
+                      fillField(modal, '#client-search', clientData.fio);
+                  }
+              }
+              // Для врачей
+              else if (input.id === 'doctor-search') {
+                  const doctorData = {
+                      id: item.dataset.id,
+                      fio: item.dataset.fio
+                  };
+                  fillField(modal, '#doctor-id', doctorData.id);
+                  fillField(modal, '#doctor-search', doctorData.fio);
+              }
+              
+              input.value = item.textContent;
+              suggestions.style.display = "none";
+          });
       });
-    });
   }
 
-  function fillCreateRecordForm(client) {
-    console.log('Filling create record form with:', client);
-    
-    const clientIdField = document.getElementById('client-id');
-    const phoneField = document.getElementById('phone');
-    const clientSearchField = document.getElementById('client-search');
-
-    if (clientIdField) clientIdField.value = client.id;
-    if (phoneField) phoneField.value = client.phone_number || '';
-    if (clientSearchField) clientSearchField.value = client.fio;
-  }
-
-  function fillDoctorForm(doctor) {
-    console.log('Filling doctor form with:', doctor);
-    
-    const doctorIdField = document.getElementById('doctor-id');
-    const doctorSearchField = document.getElementById('doctor-search');
-
-    if (doctorIdField) doctorIdField.value = doctor.id;
-    if (doctorSearchField) doctorSearchField.value = doctor.fio;
-  }
-
-  function fillClientForm(client) {
-    console.log('Filling client form with:', client);
-    
-    const clientIdField = document.getElementById('client-id');
-    const lastNameField = document.getElementById('last_name');
-    const firstNameField = document.getElementById('first_name');
-    const surnameField = document.getElementById('surname');
-    const phoneField = document.getElementById('phone_number');
-    const searchField = document.getElementById('client-search');
-
-    if (clientIdField) clientIdField.value = client.id;
-    if (lastNameField) lastNameField.value = client.last_name || '';
-    if (firstNameField) firstNameField.value = client.first_name || '';
-    if (surnameField) surnameField.value = client.surname || '';
-    if (phoneField) phoneField.value = client.phone_number || '';
-    if (searchField) searchField.value = client.fio || '';
+  // Вспомогательная функция для безопасного заполнения полей
+  function fillField(modal, selector, value) {
+    const field = modal.querySelector(selector);
+    if (field) {
+      field.value = value;
+      console.log(`Filled ${selector} with:`, value);
+    } else {
+      console.warn(`Field not found: ${selector}`);
+    }
   }
 
   function setupAddClientForm() {
@@ -412,50 +380,52 @@ function initModalHandlers() {
   function fillRecordForm(data) {
     console.log('Filling form with data:', data);
     
+    const modal = document.getElementById('change-record-btn-modal');
+    if (!modal) {
+        console.error('Modal "change-record-btn-modal" not found');
+        return;
+    }
+
     // Основные поля
-    document.getElementById('record-id').value = data.id || '';
-    document.getElementById('client-id').value = data.client?.id || '';
+    fillField(modal, '#record-id', data.id || '');
+    fillField(modal, '#client-id', data.client?.id || '');
     
     // Клиент
     const clientName = `${data.client?.last_name || ''} ${data.client?.first_name || ''} ${data.client?.surname || ''}`.trim();
-    document.getElementById('client-search').value = clientName;
-    document.getElementById('phone_number').value = data.client?.phone_number || '';
+    fillField(modal, '#client-search', clientName);
+    fillField(modal, '#phone_number', data.client?.phone_number || '');
     
     // Врач
     if (data.doctor) {
-        document.getElementById('doctor-id').value = data.doctor.id || '';
+        fillField(modal, '#doctor-id', data.doctor.id || '');
         const doctorName = `${data.doctor.last_name || ''} ${data.doctor.first_name || ''} ${data.doctor.surname || ''}`.trim();
-        document.getElementById('doctor-search').value = doctorName;
+        fillField(modal, '#doctor-search', doctorName);
     }
 
     // Статус 
     if (data.status) {
-      const statusSearchInput = document.getElementById('client-status-search');
-      const statusHiddenInput = document.getElementById('client-status');
-      
-      if (statusSearchInput && statusHiddenInput) {
-          statusSearchInput.value = data.status.name || '';
-          statusHiddenInput.value = data.status.id || '';
-      }
-  }
+        fillField(modal, '#client-status-search', data.status.name || '');
+        fillField(modal, '#client-status', data.status.id || '');
+    }
+
 
     // Даты
     if (data.date_recording) {
         const recordingDate = data.date_recording.includes('T') 
             ? data.date_recording.split('T')[0] 
             : data.date_recording;
-        document.getElementById('service-date').value = recordingDate;
+        fillField(modal, '#service-date', recordingDate);
     }
     
     if (data.date_next_call) {
         const nextCallDate = data.date_next_call.includes('T')
             ? data.date_next_call.split('T')[0]
             : data.date_next_call;
-        document.getElementById('callback-date').value = nextCallDate;
+        fillField(modal, '#callback-date', nextCallDate);
     }
     
     // Комментарии
-    const commentsContainer = document.getElementById('comments-container');
+    const commentsContainer = modal.querySelector('#comments-container');
     if (commentsContainer) {
         commentsContainer.innerHTML = '';
         
