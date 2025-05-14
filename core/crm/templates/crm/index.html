@@ -1,4 +1,5 @@
 {% load static %}
+{% load pagination_tags %}
 
 <!DOCTYPE html>
 <html lang="ru">
@@ -116,7 +117,13 @@
               {% for doctor in doctors %}
                 <li class="filter-item">
                   {{ doctor }}
-                  <input type="checkbox" name="doctor" id="doctor-{{ doctor|slugify }}" />
+                  <input 
+                    type="checkbox" 
+                    name="doctor" 
+                    id="doctor-{{ doctor|slugify }}" 
+                    {% if doctor in request.GET.getlist|default:'' %}checked{% endif %}
+                    value="{{ doctor }}"
+                  />
                 </li>
               {% endfor %}
             </ul>
@@ -364,10 +371,9 @@
         </table>
       
         <!-- Пагинация -->
-        {% with request.GET.urlencode as current_query %}
         <div class="pagination">
           {% if page_obj.has_previous %}
-            <a href="?{% if current_query %}{{ current_query }}&{% endif %}page={{ page_obj.previous_page_number }}" class="pagination-btn">Назад</a>
+            <a href="{% pagination_url request page_obj.previous_page_number %}" class="pagination-btn">Назад</a>
           {% else %}
             <button class="pagination-btn" disabled>Назад</button>
           {% endif %}
@@ -375,14 +381,11 @@
           <span id="pageIndicator">Стр. {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
           
           {% if page_obj.has_next %}
-            <a href="?{% if current_query %}{{ current_query }}&{% endif %}page={{ page_obj.next_page_number }}" class="pagination-btn">Вперёд</a>
+            <a href="{% pagination_url request page_obj.next_page_number %}" class="pagination-btn">Вперёд</a>
           {% else %}
             <button class="pagination-btn" disabled>Вперёд</button>
           {% endif %}
         </div>
-        {% endwith %}
-
-
 
   <!-- Основной скрипт -->
   <script src="{% static 'crm/js/scriptModal.js' %}"></script>

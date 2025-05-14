@@ -68,16 +68,13 @@ document.addEventListener("DOMContentLoaded", function () {
 // ==============================================
 // ФУНКЦИИ СОРТИРОВКИ
 // ==============================================
-
 function initializeSortButtons() {
   const sortButtons = [
     { id: "sort-date", sortField: "client__created_at" },
-
     { id: "sort-name", sortField: "client__last_name" },
     { id: "sort-status", sortField: "status__status" },
     { id: "sort-doctor", sortField: "doctor__user__last_name" },
     { id: "sort-service", sortField: "service__name" },
-
     { id: "sort-record", sortField: "date_recording" },
     { id: "sort-next-call", sortField: "date_next_call" },
   ];
@@ -87,10 +84,13 @@ function initializeSortButtons() {
     if (element) {
       element.addEventListener("click", (event) => {
         event.preventDefault();
-        // Получаем текущие параметры сортировки из URL
-        const url = new URL(window.location.href);
-        const currentSort = url.searchParams.get('sort');
-        const currentDirection = url.searchParams.get('dir') || 'asc';
+        
+        // Создаем новый URLSearchParams из текущих параметров
+        const currentParams = new URLSearchParams(window.location.search);
+        
+        // Получаем текущие параметры сортировки
+        const currentSort = currentParams.get('sort');
+        const currentDirection = currentParams.get('dir') || 'asc';
         
         // Определяем новое направление сортировки
         let newDirection = 'asc';
@@ -98,35 +98,38 @@ function initializeSortButtons() {
           newDirection = 'desc';
         }
         
-        // Обновляем URL и перезагружаем страницу
-        url.searchParams.set('sort', button.sortField);
-        url.searchParams.set('dir', newDirection);
-        url.searchParams.set('page', 1); // Сбрасываем на первую страницу
-
-        // Сохраняем все существующие параметры фильтрации
-        const paramsToKeep = [
-          'doctor', 'search', 'start_date', 'end_date', 
-          'record_start_date', 'record_end_date',
-          'call_start_date', 'call_end_date'
-        ];
-
-        paramsToKeep.forEach(param => {
-          const value = url.searchParams.get(param);
-          if (value) {
-            url.searchParams.set(param, value);
+        // Обновляем параметры сортировки
+        currentParams.set('sort', button.sortField);
+        currentParams.set('dir', newDirection);
+        currentParams.set('page', '1'); // Сбрасываем на первую страницу
+        
+        // Сохраняем все параметры фильтрации (включая множественные)
+        // Особенно важно для параметров типа doctor[] или status[]
+        const allParams = new URLSearchParams(window.location.search);
+        allParams.forEach((value, key) => {
+          // Пропускаем параметры сортировки и пагинации
+          if (key !== 'sort' && key !== 'dir' && key !== 'page') {
+            // Для параметров, которые могут быть множественными
+            if (key === 'doctor' || key === 'status') {
+              // Удаляем старые значения
+              currentParams.delete(key);
+              // Добавляем все значения
+              allParams.getAll(key).forEach(val => {
+                currentParams.append(key, val);
+              });
+            } else {
+              currentParams.set(key, value);
+            }
           }
         });
-
-        window.location.href = url.toString();
+        
+        // Формируем новый URL
+        const newUrl = `${window.location.pathname}?${currentParams.toString()}`;
+        window.location.href = newUrl;
       });
     }
   });
 }
-
-// Добавьте вызов функции в инициализацию
-document.addEventListener("DOMContentLoaded", () => {
-  initializeSortButtons();
-});
 
 // ==============================================
 // ПАГИНАЦИЯ
