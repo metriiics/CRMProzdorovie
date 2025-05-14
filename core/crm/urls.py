@@ -1,7 +1,11 @@
 from django.urls import path, include, re_path
-from .views import LoginView, ApplicationsView, SearchDoctorAPIView, SearchClientAPIView, ModalViewAddClient, ModalViewChangeClient, ModalViewChangeRecord, ModalViewCreateRecord, RecordDataAPIView, StatusSearchView
+from .views import (LoginView, ApplicationsView, SearchDoctorAPIView, SearchClientAPIView, 
+                    ModalViewAddClient, ModalViewChangeClient, ModalViewChangeRecord, 
+                    ModalViewCreateRecord, RecordDataAPIView, StatusSearchView,
+                    EmployeeView)
 
 from django.contrib.auth.views import LogoutView
+
 
 urlpatterns = [
     path('api/v1/login/', LoginView.as_view(), name='login'),
@@ -15,6 +19,7 @@ urlpatterns = [
     path('modal/change-client/', ModalViewChangeClient.as_view(), name='change_client_modal'),
     path('modal/change-record/', ModalViewChangeRecord.as_view(), name='change_record_modal'),
     path('modal/create-record/', ModalViewCreateRecord.as_view(), name='create_record_modal'),
+    path('api/v1/employee', EmployeeView.as_view(), name='employee-list'),
 ]
 
 

@@ -28,7 +28,11 @@ class LoginView(APIView):
 
         if user is not None and user.is_active:
             login(request, user)
-            return redirect('applications-list') 
+
+            if user.role_id == 1:
+                return redirect('employee-list')  # имя URL для админа
+            elif user.role_id == 2:
+                return redirect('applications-list')
         else:
             messages.error(request, 'Неверный логин или пароль')
             return render(request, 'crm/login.html')
@@ -395,3 +399,50 @@ class ModalViewCreateRecord(View):
                 'message': f'Ошибка при создании записи: {str(e)}'
             }, status=500)
 
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class EmployeeView(View):
+    def get(self, request):
+        # Получаем всех пользователей с связанными данными
+        users = User.objects.select_related('role').prefetch_related(
+            'doctor_profile__specialization'
+        ).all()
+        
+        # Подготавливаем данные для шаблона
+        employees = []
+        for user in users:
+            # Определяем специализацию только для врачей
+            specialization = "-"
+            if hasattr(user, 'doctor_profile') and user.role and user.role.name.lower() == 'врач':
+                specialization = user.doctor_profile.specialization.name if user.doctor_profile.specialization else "-"
+            
+            employee_data = {
+                'id': user.id,
+                'fio': self._get_fio(user),
+                'username': user.username,
+                'email': user.email,
+                'role': user.role.name if user.role else "-",
+                'specialization': specialization,
+            }
+            employees.append(employee_data)
+        
+        # Пагинация
+        paginator = Paginator(employees, 30)  # 30 пользователей на страницу
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        
+        context = {
+            'employees': page_obj,
+            'page_obj': page_obj
+        }
+        return render(request, "crm/workers.html", context)
+    
+    def _get_fio(self, user):
+        """Форматирует ФИО в виде 'Фамилия И.О.'"""
+        parts = []
+        if user.last_name:
+            parts.append(user.last_name)
+        if user.first_name:
+            parts.append(f"{user.first_name[0]}.")
+        if user.surname:
+            parts.append(f"{user.surname[0]}.")
+        return ' '.join(parts) if parts else "-"

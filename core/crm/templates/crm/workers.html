@@ -1,0 +1,190 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Сотрудники</title>
+
+    <!-- Стили -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{% static 'crm/css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'crm/css/styleModal.css' %}" />
+ 
+    <!-- Скрипты -->
+    <script src="{% static 'crm/js/script.js' %}"></script>
+    <script src="{% static 'crm/js/modal_loader.js' %}"></script>
+  </head>
+  <body>
+    <!-- Шапка -->
+    <header>
+      <img
+        class="logo"
+        src="{% static 'crm/img/logo.svg' %}"
+        alt="Медицинский центр ProЗдоровье"
+      />
+
+      <nav class="navbar">
+        <ul class="links">
+          <li>
+            <a href="#" id="add-employee-btn">
+            <img src="{% static 'crm/img/add.svg' %}" alt="" />Новый сотрудник
+            </a>
+          </li>
+          <li>
+            <a href="#analytics">
+              <img src="{% static 'crm/img/create.svg' %}" alt="" />Отчет
+            </a>
+          </li>
+          <li>
+            <a href="#doctors"> <img src="{% static 'crm/img/add.svg' %}" alt="" />Записи </a>
+          </li>
+          <li>
+            <a href="#admins">
+              <img src="{% static 'crm/img/edit.svg' %}" alt="" />Сотрудники
+            </a>
+          </li>
+          <li>
+            <a href="#" id="logout-link">Выйти</a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Скрытая форма для отправки POST запроса на логаут -->
+      <form id="logout-form" method="POST" action="{% url 'logout' %}" style="display:none;">
+        {% csrf_token %}
+      </form>
+    </header>
+
+    <!-- Основное содержимое -->
+    <div class="main-container">
+      <!-- Блок фильтров -->
+      <div class="filters" id="filters-container">
+        <div class="filter-label">Фильтры</div>
+
+        <!-- Поиск по фильтрам -->
+        <div class="filter-search">
+          <input type="text" id="filter-search-input" placeholder="Поиск..." />
+        </div>
+
+        <!-- Фильтр по роли -->
+        <div class="filter-section">
+          <div
+            class="filter-header collapsed"
+            onclick="toggleSection('role-options')"
+          >
+            Роль
+          </div>
+          <ul class="filter-items collapsed" id="role-options">
+            <li class="filter-item">Администратор<input type="checkbox" name="role" id="role-admin" /></li>
+            <li class="filter-item">Врач<input type="checkbox" name="role" id="role-doctor" /></li>
+            <li class="filter-item">Управляющий<input type="checkbox" name="role" id="role-manager" /></li>
+          </ul>
+        </div>
+
+        <!-- Фильтр по специализации -->
+        <div class="filter-section">
+          <div
+            class="filter-header collapsed"
+            onclick="toggleSection('specialization-options')"
+          >
+            Специализация
+          </div>
+          <ul class="filter-items collapsed" id="specialization-options">
+            <div class="filter-search">
+              <input
+                type="text"
+                class="filter-search-input"
+                placeholder="Поиск по специализации..."
+                oninput="filterItems('specialization-options', this.value)"
+              />
+            </div>
+            <li class="filter-item">
+              Терапевт<input type="checkbox" name="specialization" id="specialization-therapist" />
+            </li>
+            <li class="filter-item">
+              Хирург<input type="checkbox" name="specialization" id="specialization-surgeon" />
+            </li>
+            <li class="filter-item">
+              Невролог<input type="checkbox" name="specialization" id="specialization-neurologist" />
+            </li>
+            <li class="filter-item">
+              Кардиолог<input type="checkbox" name="specialization" id="specialization-cardiologist" />
+            </li>
+            <button class="show-all-btn" onclick="toggleShowAll('specialization-options', this)">
+              Показать все
+            </button>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Таблица с сотрудниками -->
+      <div class="table">
+        <table>
+          <thead>
+            <tr>
+              <th>
+                <a href="" id="sort-name">
+                  ФИО <img src="{% static 'crm/img/arrow_sort.svg' %}" alt="" class="arrow"/>
+                </a>
+              </th>
+              <th>Username</th>
+              <th>Email</th>
+              <th>
+                <a href="" id="sort-role">
+                  Роль <img src="{% static 'crm/img/arrow_sort.svg' %}" alt="" class="arrow"/>
+                </a>
+              </th>
+              <th>
+                <a href="" id="sort-specialization">
+                  Специализация <img src="{% static 'crm/img/arrow_sort.svg' %}" alt="" class="arrow"/>
+                </a>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for employee in employees %}
+            <tr class="employee-row {% if not employee.is_active %}inactive{% endif %}">
+              <td>{{ employee.fio }}</td>
+              <td>{{ employee.username|default:None }}</td>
+              <td>{{ employee.email|default:None }}</td>
+              <td>{{ employee.role|default:None }}</td>
+              <td>{{ employee.specialization|default:"-" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="6">Нет данных о сотрудниках</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <!-- Пагинация -->
+        <div class="pagination">
+          {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" class="pagination-btn">Назад</a>
+          {% else %}
+            <span class="pagination-btn disabled">Назад</span>
+          {% endif %}
+          
+          <span id="pageIndicator">
+            Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+          </span>
+          
+          {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="pagination-btn">Вперёд</a>
+          {% else %}
+            <span class="pagination-btn disabled">Вперёд</span>
+          {% endif %}
+        </div>
+      </div>
+
+
+  <!-- Основной скрипт -->
+  <script src="{% static 'crm/js/scriptModal_upr.js' %}"></script>
+  </body>
+</html>

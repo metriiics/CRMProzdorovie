@@ -13,8 +13,8 @@ class Role(models.Model):
 
 class User(AbstractUser):
     role = models.ForeignKey(Role, on_delete=models.CASCADE, null=True)
-    username = models.CharField(max_length=150, null=True, unique=True)
-    password = models.CharField(max_length=128, null=True)
+    username = models.CharField(max_length=150, unique=True)
+    password = models.CharField(max_length=128)
     first_name = models.CharField(max_length=100, null=True)
     last_name = models.CharField(max_length=100, null=True)
     surname = models.CharField(max_length=100, null=True)
