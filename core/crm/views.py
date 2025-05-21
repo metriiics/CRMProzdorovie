@@ -14,6 +14,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.utils import timezone
 from .forms import AddClientForm, CreateRecordForm, ChangeClientForm
+from loguru import logger
 
 
 class LoginView(APIView):
@@ -28,12 +29,13 @@ class LoginView(APIView):
 
         if user is not None and user.is_active:
             login(request, user)
-
+            logger.info(f'Пользователь {username} вошел в систему')
             if user.role_id == 1:
                 return redirect('employee-list')  # имя URL для админа
             elif user.role_id == 2:
                 return redirect('applications-list')
         else:
+            logger.info(f'Неудачная попытка входа: username={username}')
             messages.error(request, 'Неверный логин или пароль')
             return render(request, 'crm/login.html')
 
@@ -155,6 +157,7 @@ class RecordDataAPIView(APIView):
             return Response(data)
             
         except Exception as e:
+            logger.error(f'Error status code = 500 {e}')
             return Response(
                 {'error': str(e)},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -424,8 +427,7 @@ class EmployeeView(View):
         users = User.objects.select_related('role').prefetch_related(
             'doctor_profile__specialization'
         ).all()
-        
-        # Подготавливаем данные для шаблона
+
         employees = []
         for user in users:
             # Определяем специализацию только для врачей
@@ -443,8 +445,7 @@ class EmployeeView(View):
             }
             employees.append(employee_data)
         
-        # Пагинация
-        paginator = Paginator(employees, 30)  # 30 пользователей на страницу
+        paginator = Paginator(employees, 30)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         
@@ -455,7 +456,6 @@ class EmployeeView(View):
         return render(request, "crm/workers.html", context)
     
     def _get_fio(self, user):
-        """Форматирует ФИО в виде 'Фамилия И.О.'"""
         parts = []
         if user.last_name:
             parts.append(user.last_name)

@@ -40,6 +40,7 @@ SIMPLE_JWT = {
 AUTH_USER_MODEL = 'crm.User' 
 
 MIDDLEWARE = [
+    'crm.middleware.LoguruAccessMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

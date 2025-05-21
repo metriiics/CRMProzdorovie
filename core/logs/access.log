@@ -1,0 +1,26 @@
+2025-05-21 22:42:04 | INFO | GET / status=404 user=testuser
+2025-05-21 22:42:04 | INFO | GET /favicon.ico status=404 user=testuser
+2025-05-21 22:42:45 | INFO | GET /api/v1/applications/ status=200 user=testuser
+2025-05-21 22:42:46 | INFO | POST /logout/ status=302 user=anon
+2025-05-21 22:42:46 | INFO | GET /api/v1/login/ status=200 user=anon
+2025-05-21 22:42:53 | INFO | Пользователь testuser вошел в систему
+2025-05-21 22:42:53 | INFO | POST /api/v1/login/ status=302 user=testuser
+2025-05-21 22:42:53 | INFO | GET /api/v1/applications/ status=200 user=testuser
+2025-05-21 22:42:57 | INFO | GET /modal/add-client/ status=200 user=testuser
+2025-05-21 22:42:59 | INFO | GET /modal/change-client/ status=200 user=testuser
+2025-05-21 22:43:01 | INFO | GET /modal/create-record/ status=200 user=testuser
+2025-05-21 22:43:04 | INFO | GET /search-client/?query=Rk status=200 user=anon
+2025-05-21 22:43:04 | INFO | GET /search-client/?query=Rkb status=200 user=anon
+2025-05-21 22:43:04 | INFO | GET /search-client/?query=Rkbc status=200 user=anon
+2025-05-21 22:43:05 | INFO | GET /search-client/?query=Rkb status=200 user=anon
+2025-05-21 22:43:05 | INFO | GET /search-client/?query=Rk status=200 user=anon
+2025-05-21 22:43:06 | INFO | GET /search-client/?query=%D0%9A%D0%BB status=200 user=anon
+2025-05-21 22:43:06 | INFO | GET /search-client/?query=%D0%9A%D0%BB%D0%B8 status=200 user=anon
+2025-05-21 22:43:06 | INFO | GET /search-client/?query=%D0%9A%D0%BB%D0%B8%D1%81 status=200 user=anon
+2025-05-21 22:43:06 | INFO | GET /search-client/?query=%D0%9A%D0%BB%D0%B8%D1%81%D1%8C status=200 user=anon
+2025-05-21 22:43:08 | INFO | GET /search-client/?query=%D0%9A%D0%BB%D0%B8%D1%81 status=200 user=anon
+2025-05-21 22:43:08 | INFO | GET /search-client/?query=%D0%9A%D0%BB%D0%B8 status=200 user=anon
+2025-05-21 22:43:08 | INFO | GET /search-client/?query=%D0%9A%D0%BB status=200 user=anon
+2025-05-21 22:43:09 | INFO | GET /search-client/?query=%D0%9A%D0%BB status=200 user=anon
+2025-05-21 22:43:09 | INFO | GET /search-client/?query=%D0%9A%D0%BB%D0%B8 status=200 user=anon
+2025-05-21 22:43:09 | INFO | GET /search-client/?query=%D0%9A%D0%BB%D0%B8%D0%B5 status=200 user=anon
