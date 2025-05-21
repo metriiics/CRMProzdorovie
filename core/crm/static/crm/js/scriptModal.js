@@ -640,7 +640,7 @@ function initModalHandlers() {
             const form = mainModal.querySelector("form");
             if (form) {
               const formData = new FormData(form);
-              formData.append('action', 'deactivate'); // Добавляем флаг деактивации
+              formData.append('action', 'deactivate'); 
               
               fetch(form.action, {
                 method: 'POST',
@@ -653,14 +653,12 @@ function initModalHandlers() {
               .then(response => response.json())
               .then(data => {
                 if (data.status === 'success') {
+                  // Показываем сообщение в основном модальном окне
                   showSuccessMessage(data.message);
-                  confirmationModal.style.display = "none";
-                  mainModal.style.display = "none";
                   
-                  // Обновляем список клиентов если нужно
-                  if (typeof refreshClientsList === 'function') {
-                    refreshClientsList();
-                  }
+                  // Закрываем окно подтверждения
+                  confirmationModal.style.display = "none";
+                  
                 } else {
                   showErrorMessage(data.message || 'Ошибка при деактивации клиента');
                 }
@@ -699,7 +697,6 @@ function initModalHandlers() {
     
     if (!activeModal) {
         console.warn('No active modal found, showing alert instead');
-        alert(message || "Данные успешно сохранены");
         return;
     }
     
@@ -745,7 +742,6 @@ function initModalHandlers() {
     const modal = document.querySelector('.modal[style*="display: block"], .modal[style*="display: flex"], .modal.show');
     if (!modal) {
         console.error('No modal found for error message');
-        alert(message || "Произошла ошибка");
         return;
     }
 

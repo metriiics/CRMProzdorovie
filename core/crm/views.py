@@ -82,7 +82,8 @@ class SearchClientAPIView(APIView):
         clients = Client.objects.filter(
             Q(first_name__icontains=query) |
             Q(last_name__icontains=query) |
-            Q(surname__icontains=query)
+            Q(surname__icontains=query),
+            is_active=True
         )
 
         serializer = ClientSerializer(clients, many=True)
