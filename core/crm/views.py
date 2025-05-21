@@ -7,7 +7,7 @@ from django.utils.decorators import method_decorator
 from rest_framework import status
 from .models import Client, Application, Comment, Doctor, Status, User
 from django.core.paginator import Paginator
-from django.db.models import Q, Prefetch
+from django.db.models import Q, Prefetch, Case, When, IntegerField
 from .serializers import CombineSerializer, ClientSerializer, StatusSerializer
 from django.views import View
 from django.contrib import messages
@@ -76,15 +76,22 @@ class SearchClientAPIView(APIView):
     def get(self, request):
         query = request.GET.get('query', '')
 
-        if not query:
+        if len(query) < 2:
             return Response({'clients': []})
-
-        clients = Client.objects.filter(
+        
+        clients = Client.objects.annotate(
+            relevance=Case(
+                When(last_name__istartswith=query, then=1),
+                When(first_name__istartswith=query, then=2),
+                When(surname__istartswith=query, then=3),
+                output_field=IntegerField()
+            )
+        ).filter(
             Q(first_name__icontains=query) |
             Q(last_name__icontains=query) |
             Q(surname__icontains=query),
             is_active=True
-        )
+        ).order_by('relevance', 'last_name')[:10]
 
         serializer = ClientSerializer(clients, many=True)
         return Response({'clients': serializer.data}, status=status.HTTP_200_OK)
