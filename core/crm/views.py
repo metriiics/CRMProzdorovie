@@ -253,16 +253,26 @@ class ModalViewAddClient(View):
             errors = form.errors.as_json()
             return JsonResponse({'status': 'error', 'message': 'Некорректные данные. Проверьте и повторите!', 'errors': errors}, status=400)
 
-        client = Client(
-            first_name=form.cleaned_data['first_name'],
-            last_name=form.cleaned_data['last_name'],
-            surname=form.cleaned_data['surname'],
+        if Client.objects.filter(
+            first_name=form.cleaned_data['first_name'].capitalize(),
+            last_name=form.cleaned_data['last_name'].capitalize(),
             phone_number=form.cleaned_data['phone_number'],
-            created_at=timezone.now()
-        )
-        client.save()
+        ).exists():
+            return JsonResponse({
+                'status': 'error', 
+                'message': 'Клиент с таким именем, фамилией и номером телефона уже существует!'
+            }, status=400)
+        else:
+            client = Client(
+                first_name=form.cleaned_data['first_name'].capitalize(),
+                last_name=form.cleaned_data['last_name'].capitalize(),
+                surname=form.cleaned_data['surname'].capitalize(),
+                phone_number=form.cleaned_data['phone_number'],
+                created_at=timezone.now()
+            )
+            client.save()
 
-        return JsonResponse({'status': 'success', 'message': 'Клиент успешно сохранен'})
+            return JsonResponse({'status': 'success', 'message': 'Клиент успешно сохранен'})
 
 class ModalViewChangeClient(View):
     def get(self, request):

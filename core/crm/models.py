@@ -57,10 +57,10 @@ class Doctor(models.Model):
 
 
 class Client(models.Model):
-    first_name = models.CharField(max_length=100, null=True)
-    last_name = models.CharField(max_length=100, null=True)
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
     surname = models.CharField(max_length=100, null=True)
-    phone_number = models.CharField(max_length=20, unique=True)
+    phone_number = models.CharField(max_length=20)
     created_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
 
@@ -68,6 +68,13 @@ class Client(models.Model):
         db_table = 'clients'
         verbose_name = 'Клиент'
         verbose_name_plural = 'Клиенты'
+
+        constraints = [
+            models.UniqueConstraint(
+                fields=['first_name', 'last_name', 'phone_number'],
+                name='unique_client'
+            )
+        ]
         managed = False
 
 
