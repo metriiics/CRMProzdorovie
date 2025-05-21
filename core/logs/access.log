@@ -598,3 +598,31 @@
 2025-05-21 23:30:15 | INFO | GET /api/status-search/?query=%D0%90%D0%BA%D1%82%D0%B8 status=200 user=anon
 2025-05-21 23:30:23 | INFO | POST /modal/create-record/ status=200 user=testuser
 2025-05-21 23:30:38 | INFO | POST /modal/create-record/ status=200 user=testuser
+2025-05-21 23:33:57 | INFO | GET / status=404 user=anon
+2025-05-21 23:34:06 | INFO | GET /api/v1/applications/ status=302 user=anon
+2025-05-21 23:34:06 | INFO | GET /api/v1/login/?next=/api/v1/applications/ status=200 user=anon
+2025-05-21 23:34:10 | INFO | Пользователь testuser вошел в систему
+2025-05-21 23:34:10 | INFO | POST /api/v1/login/?next=/api/v1/applications/ status=302 user=testuser
+2025-05-21 23:34:10 | INFO | GET /api/v1/applications/ status=200 user=testuser
+2025-05-21 23:34:13 | INFO | GET /modal/add-client/ status=200 user=testuser
+2025-05-21 23:34:14 | INFO | POST /modal/add-client/ status=400 user=testuser
+2025-05-21 23:34:17 | INFO | POST /modal/add-client/ status=400 user=testuser
+2025-05-21 23:35:48 | INFO | GET / status=404 user=anon
+2025-05-21 23:35:55 | INFO | GET /api/v1/applications/ status=302 user=anon
+2025-05-21 23:35:55 | INFO | GET /api/v1/login/?next=/api/v1/applications/ status=200 user=anon
+2025-05-21 23:36:00 | INFO | Пользователь testuser вошел в систему
+2025-05-21 23:36:00 | INFO | POST /api/v1/login/?next=/api/v1/applications/ status=302 user=testuser
+2025-05-21 23:36:00 | INFO | GET /api/v1/applications/ status=200 user=testuser
+2025-05-21 23:36:03 | INFO | GET /modal/add-client/ status=200 user=testuser
+2025-05-21 23:36:04 | INFO | POST /modal/add-client/ status=400 user=testuser
+2025-05-21 23:36:09 | INFO | POST /modal/add-client/ status=400 user=testuser
+2025-05-21 23:36:10 | INFO | POST /modal/add-client/ status=400 user=testuser
+2025-05-21 23:36:13 | INFO | POST /modal/add-client/ status=400 user=testuser
+2025-05-21 23:40:44 | INFO | GET / status=404 user=anon
+2025-05-21 23:40:49 | INFO | GET /api/v1/applications/ status=302 user=anon
+2025-05-21 23:40:49 | INFO | GET /api/v1/login/?next=/api/v1/applications/ status=200 user=anon
+2025-05-21 23:40:53 | INFO | Пользователь testuser вошел в систему
+2025-05-21 23:40:53 | INFO | POST /api/v1/login/?next=/api/v1/applications/ status=302 user=testuser
+2025-05-21 23:40:54 | INFO | GET /api/v1/applications/ status=200 user=testuser
+2025-05-21 23:40:56 | INFO | GET /modal/change-client/ status=200 user=testuser
+2025-05-21 23:41:10 | INFO | POST /modal/change-client/ status=400 user=testuser

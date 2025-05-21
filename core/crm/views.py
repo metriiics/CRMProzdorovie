@@ -262,7 +262,14 @@ class ModalViewAddClient(View):
 
         if not form.is_valid():
             errors = form.errors.as_json()
-            return JsonResponse({'status': 'error', 'message': 'Некорректные данные. Проверьте и повторите!', 'errors': errors}, status=400)
+
+            first_error = None
+            if form.errors:
+                first_error_list = list(form.errors.values())[0]
+                first_error = first_error_list[0] if first_error_list else None
+
+
+            return JsonResponse({'status': 'error', 'message': first_error or 'Некорректные данные. Проверьте и повторите!', 'errors': errors}, status=400)
 
         if Client.objects.filter(
             first_name=form.cleaned_data['first_name'].capitalize(),
@@ -293,10 +300,17 @@ class ModalViewChangeClient(View):
         form = ChangeClientForm(request.POST)
 
         if not form.is_valid():
+            errors = form.errors.as_json()
+
+            first_error = None
+            if form.errors:
+                first_error_list = list(form.errors.values())[0]
+                first_error = first_error_list[0] if first_error_list else None
+
             return JsonResponse({
                 'status': 'error',
-                'message': 'Некорректные данные. Проверьте и повторите!',
-                'errors': form.errors.as_json()
+                'message': first_error or 'Некорректные данные. Проверьте и повторите!',
+                'errors': errors
             }, status=400)
         
         try:

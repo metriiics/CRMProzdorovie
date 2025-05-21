@@ -4,10 +4,10 @@ from django.utils import timezone
 import re
 
 class AddClientForm(forms.Form):
-    first_name = forms.CharField(max_length=100, required=True)
-    last_name = forms.CharField(max_length=100, required=True)
+    first_name = forms.CharField(max_length=100, required=True, error_messages={'required': 'Имя клиента не указано!'})
+    last_name = forms.CharField(max_length=100, required=True, error_messages={'required': 'Фамилия клиента не указана!'})
     surname = forms.CharField(max_length=100, required=False) 
-    phone_number = forms.CharField(max_length=20, required=True)
+    phone_number = forms.CharField(max_length=20, required=True, error_messages={'required': 'Номер клиента не указан!'})
 
     def clean_phone_number(self):
         phone_number = self.cleaned_data['phone_number']
@@ -17,11 +17,11 @@ class AddClientForm(forms.Form):
         return phone_number
     
 class ChangeClientForm(forms.Form):
-    client_id = forms.IntegerField(required=True)
-    last_name = forms.CharField(max_length=100, required=True)
-    first_name = forms.CharField(max_length=100, required=True)
+    client_id = forms.IntegerField(required=True, error_messages={'required': 'Пожалуйста, выберите клиента'})
+    last_name = forms.CharField(max_length=100, required=True, error_messages={'required': 'Фамилия клиента не указана!'})
+    first_name = forms.CharField(max_length=100, required=True, error_messages={'required': 'Имя клиента не указано!'})
     surname = forms.CharField(max_length=100, required=False)
-    phone_number = forms.CharField(max_length=20, required=True)
+    phone_number = forms.CharField(max_length=20, required=True, error_messages={'required': 'Номер клиента не указан!'})
 
     def clean_phone_number(self):
         phone_number = self.cleaned_data['phone_number']
