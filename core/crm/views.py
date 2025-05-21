@@ -386,9 +386,15 @@ class ModalViewCreateRecord(View):
         if not form.is_valid():
             errors = form.errors.as_json()
             print(errors)
+
+            first_error = None
+            if form.errors:
+                first_error_list = list(form.errors.values())[0]
+                first_error = first_error_list[0] if first_error_list else None
+
             return JsonResponse({
                 'status': 'error',
-                'message': 'Некорректные данные. Проверьте и повторите!',
+                'message': first_error or 'Некорректные данные. Проверьте и повторите!',
                 'errors': errors
             })
 

@@ -297,53 +297,41 @@ function initModalHandlers() {
       submitBtn.disabled = true;
   
       try {
-        // Собираем данные формы
-        const formData = new FormData(form);
-        
-        // Добавляем дополнительные проверки
-        if (!formData.get('client_id')) {
-          throw new Error('Не выбран клиент');
-        }
-        if (!formData.get('doctor_id')) {
-          throw new Error('Не выбран врач');
-        }
-        if (!formData.get('service_date')) {
-          throw new Error('Не указана дата услуги');
-        }
-  
-        const response = await fetch(form.action, {
-          method: 'POST',
-          body: formData,
-          headers: {
-            'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value,
-            'X-Requested-With': 'XMLHttpRequest'
-          }
-        });
-  
-        const data = await response.json();
-        
-        if (!response.ok) {
-          throw new Error(data.message || 'Ошибка сервера');
-        }
-        
-        if (data.status === 'success') {
-          showSuccessMessage(data.message);
-          form.reset();
+          const formData = new FormData(form);
           
-          setTimeout(() => {
-            const modal = form.closest('.modal');
-            if (modal) modal.style.display = 'none';
-            if (typeof refreshRecords === 'function') refreshRecords();
-          }, 1500);
-        } else {
-          throw new Error(data.message || 'Ошибка при создании записи');
-        }
+          const response = await fetch(form.action, {
+              method: 'POST',
+              body: formData,
+              headers: {
+                  'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value,
+                  'X-Requested-With': 'XMLHttpRequest'
+              }
+          });
+
+          const data = await response.json();
+          
+          if (!response.ok) {
+              throw new Error(data.message || 'Ошибка сервера');
+          }
+          
+          if (data.status === 'success') {
+              showSuccessMessage(data.message);
+              form.reset();
+              
+              setTimeout(() => {
+                  const modal = form.closest('.modal');
+                  if (modal) modal.style.display = 'none';
+                  if (typeof refreshRecords === 'function') refreshRecords();
+              }, 1500);
+          } else {
+              throw new Error(data.message || 'Ошибка при создании записи');
+          }
       } catch (error) {
-        console.error('Ошибка:', error);
-        showErrorMessage(error.message);
+          console.error('Ошибка:', error);
+          showErrorMessage(error.message);
       } finally {
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
       }
     });
   }
