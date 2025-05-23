@@ -1,0 +1,282 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Аналитика звонков</title>
+
+    <!-- Стили -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{% static 'crm/css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'crm/css/styleModal.css' %}" />
+
+    <!-- Скрипты -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{% static 'crm/js/script.js' %}"></script>
+    <script src="{% static 'crm/js/modal_loader.js' %}"></script>
+  </head>
+  <body>
+    <!-- Шапка -->
+    <header>
+      <img
+        class="logo"
+        src="{% static 'crm/img/logo.svg' %}"
+        alt="Медицинский центр ProЗдоровье"
+      />
+
+      <nav class="navbar">
+        <ul class="links">
+          <li>
+            <a href="#" id="add-employee-btn">
+              <img src="{% static 'crm/img/add.svg' %}" alt="" />Новый сотрудник
+            </a>
+          </li>
+          <li>
+            <a href="#call-analytics">
+              <img src="{% static 'crm/img/create.svg' %}" alt="" />Аналитика звонков
+            </a>
+          </li>
+          <li>
+            <a href="#call-analytics">
+              <img src="{% static 'crm/img/create.svg' %}" alt="" />Отчет
+            </a>
+          </li>
+          <li>
+            <a href="#doctors"> <img src="{% static 'crm/img/add.svg' %}" alt="" />Записи </a>
+          </li>
+          <li>
+            <a href="#admins">
+              <img src="{% static 'crm/img/edit.svg' %}" alt="" />Сотрудники
+            </a>
+          </li>
+          <li>
+            <a href="main.html">Выход</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Основное содержимое -->
+    <div class="main-container">
+      <!-- Блок фильтров -->
+      <div class="filters" id="filters-container">
+        <div class="filter-label">Фильтры</div>
+
+        <!-- Фильтр по администраторам -->
+        <div class="filter-section">
+          <div
+            class="filter-header collapsed"
+            onclick="toggleSection('admin-options')"
+          >
+            Администратор
+          </div>
+          <ul class="filter-items collapsed" id="admin-options">
+            <div class="filter-search">
+              <input
+                type="text"
+                class="filter-search-input"
+                placeholder="Поиск по администраторам..."
+                oninput="filterItems('admin-options', this.value)"
+              />
+            </div>
+            <li class="filter-item">
+              Иванов<input type="checkbox" name="admin" id="admin-ivanov" />
+            </li>
+            <li class="filter-item">
+              Петров<input type="checkbox" name="admin" id="admin-petrov" />
+            </li>
+            <li class="filter-item">
+              Сидоров<input type="checkbox" name="admin" id="admin-sidorov" />
+            </li>
+            <li class="filter-item">
+              Иванов<input type="checkbox" name="admin" id="admin-ivanov" />
+            </li>
+            <li class="filter-item">
+              Петров<input type="checkbox" name="admin" id="admin-petrov" />
+            </li>
+            <li class="filter-item">
+              Сидоров<input type="checkbox" name="admin" id="admin-sidorov" />
+            </li>
+            <button
+              class="show-all-btn"
+              onclick="toggleShowAll('admin-options', this)"
+            >
+              Показать все
+            </button>
+          </ul>
+        </div>
+        <!-- Фильтр по дате -->
+        <div class="filter-section">
+          <div
+            class="filter-header collapsed"
+            onclick="toggleSection('date-range-options')"
+          >
+            Период
+          </div>
+          <div class="filter-content collapsed" id="date-range-options">
+            <div class="filter-search">
+              <label for="start-date">Начальная дата:</label>
+              <input type="date" class="filter-date-input" id="start-date" />
+            </div>
+            <div class="filter-search">
+              <label for="end-date">Конечная дата:</label>
+              <input type="date" class="filter-date-input" id="end-date" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Контент для вкладок -->
+      <div class="table">
+        <table>
+          <thead>
+            <tr>
+              <th>Администратор</th>
+              <th>Пропущенные звонки</th>
+              <th>Завершенные звонки</th>
+              <th>Успешные звонки</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Иванов</td>
+              <td id="missed-calls-ivanov">5</td>
+              <td id="completed-calls-ivanov">20</td>
+              <td id="successful-calls-ivanov">15</td>
+            </tr>
+            <tr>
+              <td>Петров</td>
+              <td id="missed-calls-petrov">3</td>
+              <td id="completed-calls-petrov">18</td>
+              <td id="successful-calls-petrov">12</td>
+            </tr>
+            <tr>
+              <td>Сидоров</td>
+              <td id="missed-calls-sidorov">7</td>
+              <td id="completed-calls-sidorov">25</td>
+              <td id="successful-calls-sidorov">20</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="chart-container">
+          <canvas id="call-analytics-chart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Пример данных для графика ВЫНЕСИ В ОТДЕЛЬНЫЙ ФАЙЛ ДИМААААС ( и в analytic.html ТОЖЕ ВЫНЕСИ СКРИПТ В ФАЙЛ!!!)
+      const ctx = document
+        .getElementById("call-analytics-chart")
+        .getContext("2d");
+      const callAnalyticsChart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: ["01.05", "02.05", "03.05", "04.05", "05.05"], // Дни месяца
+          datasets: [
+            {
+              label: "Иванов - Пропущенные звонки",
+              data: [1, 2, 1, 0, 1], // Пример данных
+              borderColor: "rgba(255, 99, 132, 1)",
+              backgroundColor: "rgba(255, 99, 132, 0.2)",
+              borderWidth: 2,
+              fill: true,
+            },
+            {
+              label: "Иванов - Завершенные звонки",
+              data: [5, 4, 6, 5, 7], // Пример данных
+              borderColor: "rgba(54, 162, 235, 1)",
+              backgroundColor: "rgba(54, 162, 235, 0.2)",
+              borderWidth: 2,
+              fill: true,
+            },
+            {
+              label: "Иванов - Успешные звонки",
+              data: [3, 3, 4, 4, 5], // Пример данных
+              borderColor: "rgba(75, 192, 192, 1)",
+              backgroundColor: "rgba(75, 192, 192, 0.2)",
+              borderWidth: 2,
+              fill: true,
+            },
+            {
+              label: "Петров - Пропущенные звонки",
+              data: [0, 1, 1, 2, 1], // Пример данных
+              borderColor: "rgba(255, 159, 64, 1)",
+              backgroundColor: "rgba(255, 159, 64, 0.2)",
+              borderWidth: 2,
+              fill: true,
+            },
+            {
+              label: "Петров - Завершенные звонки",
+              data: [6, 5, 7, 6, 8], // Пример данных
+              borderColor: "rgba(153, 102, 255, 1)",
+              backgroundColor: "rgba(153, 102, 255, 0.2)",
+              borderWidth: 2,
+              fill: true,
+            },
+            {
+              label: "Петров - Успешные звонки",
+              data: [4, 4, 5, 5, 6], // Пример данных
+              borderColor: "rgba(255, 206, 86, 1)",
+              backgroundColor: "rgba(255, 206, 86, 0.2)",
+              borderWidth: 2,
+              fill: true,
+            },
+            {
+              label: "Сидоров - Пропущенные звонки",
+              data: [2, 1, 2, 3, 2], // Пример данных
+              borderColor: "rgba(75, 192, 192, 1)",
+              backgroundColor: "rgba(75, 192, 192, 0.2)",
+              borderWidth: 2,
+              fill: true,
+            },
+            {
+              label: "Сидоров - Завершенные звонки",
+              data: [7, 6, 8, 7, 9], // Пример данных
+              borderColor: "rgba(54, 162, 235, 1)",
+              backgroundColor: "rgba(54, 162, 235, 0.2)",
+              borderWidth: 2,
+              fill: true,
+            },
+            {
+              label: "Сидоров - Успешные звонки",
+              data: [5, 5, 6, 6, 7], // Пример данных
+              borderColor: "rgba(255, 99, 132, 1)",
+              backgroundColor: "rgba(255, 99, 132, 0.2)",
+              borderWidth: 2,
+              fill: true,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: "top",
+            },
+          },
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: "Дни",
+              },
+            },
+            y: {
+              title: {
+                display: true,
+                text: "Количество звонков",
+              },
+              beginAtZero: true,
+            },
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

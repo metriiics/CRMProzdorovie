@@ -356,9 +356,8 @@ class ModalViewChangeRecord(View):
         record = get_object_or_404(Application, id=record_id)
 
         doctor_id = request.POST.get('doctor_id')
-        client_status = request.POST.get('client_status')
 
-        client_status_id = request.POST.get('client_status')
+        client_status = request.POST.get('client_status')
 
         service_date = request.POST.get('service_date')
 
@@ -367,11 +366,8 @@ class ModalViewChangeRecord(View):
         if doctor_id:
             record.doctor_id = doctor_id
 
-        if client_status_id:
-            # сохраняем ID статуса, не получая объект
-            record.status_id = int(client_status_id)
         if client_status:
-            record.status = client_status
+            record.status = Status.objects.get(pk=client_status)
         if service_date:
             record.date_recording = service_date
         if callback_date:
@@ -484,3 +480,7 @@ class EmployeeView(View):
         if user.surname:
             parts.append(f"{user.surname[0]}.")
         return ' '.join(parts) if parts else "-"
+    
+class Analytics(View):
+    def get(self, request):
+        return render(request, 'crm/call_analytics.html')
