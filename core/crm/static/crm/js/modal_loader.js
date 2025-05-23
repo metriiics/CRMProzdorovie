@@ -39,26 +39,32 @@ function showModal(modalId) {
     modal.style.display = "none";
     const form = modal.querySelector("form");
     if (form) form.reset();
-    
+
     // Очищаем поисковые подсказки
     modal.querySelectorAll(".suggestions").forEach(s => {
       s.innerHTML = '';
       s.style.display = 'none';
     });
-    
+
     // Очищаем поля поиска
     modal.querySelectorAll(".search-input").forEach(i => {
       i.value = '';
     });
   });
 
+  // Показываем overlay
+  const overlay = document.getElementById('modal-overlay');
+  if (overlay) {
+    overlay.style.display = 'block';
+  }
+
   loadModal(modalId).then((success) => {
     if (!success) return;
-    
+
     const modal = document.getElementById(`${modalId}-modal`);
     if (!modal) return;
 
-    modal.style.display = "flex";
+    modal.style.display = "block";
 
     // Инициализируем обработчики для этой конкретной модалки
     if (window.ModalHandlers) {
@@ -76,6 +82,7 @@ function showModal(modalId) {
     if (closeBtn && !closeBtn._listenerAdded) {
       closeBtn.addEventListener("click", () => {
         modal.style.display = "none";
+        if (overlay) overlay.style.display = 'none'; // <-- Скрываем overlay
         // Очищаем форму при закрытии
         const form = modal.querySelector("form");
         if (form) form.reset();

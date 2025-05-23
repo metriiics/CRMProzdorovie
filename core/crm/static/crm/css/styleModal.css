@@ -18,7 +18,17 @@
   z-index: 1000; /* Убедитесь, что модалка поверх других элементов */
 }
 
-
+/* Стили для фона модалок */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 999; /* overlay ниже модального окна */
+  display: none; /* по умолчанию скрыт */
+}
 
 .close-btn {
   position: absolute;
@@ -252,6 +262,11 @@ textarea {
 }
 
 .confirm-btn {
+  background-color: #e31f25;
+  color: white;
+}
+
+.confirm-delete-client-btn {
   background-color: #e31f25;
   color: white;
 }
