@@ -907,3 +907,11 @@
 2025-05-23 18:35:21 | INFO | GET /api/record-data/?record_id=3 status=200 user=anon
 2025-05-23 18:35:26 | INFO | POST /modal/change-record/ status=200 user=testuser
 2025-05-23 18:36:19 | INFO | POST /modal/change-record/ status=200 user=testuser
+2025-05-25 20:57:08 | INFO | GET / status=404 user=testuser
+2025-05-25 20:57:08 | INFO | GET /favicon.ico status=404 user=testuser
+2025-05-25 20:57:13 | INFO | GET /api/v1/applications/ status=200 user=testuser
+2025-05-25 20:57:16 | INFO | GET /modal/create-record/ status=200 user=testuser
+2025-05-25 20:57:57 | INFO | GET / status=404 user=testuser
+2025-05-25 20:58:02 | INFO | GET /api/v1/applications/ status=200 user=testuser
+2025-05-25 20:58:04 | INFO | GET /modal/change-record/ status=200 user=testuser
+2025-05-25 20:58:04 | INFO | GET /api/record-data/?record_id=1 status=200 user=anon
