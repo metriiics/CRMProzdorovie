@@ -1,0 +1,86 @@
+<div class="modal" id="change-employee-modal">
+  <!-- Кнопка закрытия -->
+  <span class="close-btn">&times;</span>
+
+  <!-- Заголовок -->
+  <h1>Изменить сотрудника</h1>
+
+  <!-- Форма для изменения данных сотрудника -->
+  <form id="change-employee-form" method="post" action="{% url 'change_employee_modal' %}">
+ 
+    <input type="hidden" id="employee-id" name="employee_id">
+
+    <!-- Поля ввода данных сотрудника -->
+    <div class="form-group">
+      <label for="last_name">Фамилия</label>
+      <input id="last_name" name="last_name" type="text" class="search-input" required />
+    </div>
+
+    <div class="form-group">
+      <label for="first_name">Имя</label>
+      <input id="first_name" name="first_name" type="text" class="search-input" required />
+    </div>
+
+    <div class="form-group">
+      <label for="surname">Отчество</label>
+      <input id="surname" name="surname" type="text" class="search-input" />
+    </div>
+
+    <div class="form-group">
+      <label for="username">Логин</label>
+      <input id="username" name="username" type="text" class="search-input" required readonly/>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" class="search-input" required />
+    </div>
+
+    <div class="form-group">
+      <label for="role">Роль</label>
+      <select id="role" name="role" class="search-input" required>
+        <option value="admin">Администратор</option>
+        <option value="doctor">Врач</option>
+        <option value="manager">Управляющий</option>
+      </select>
+    </div>
+
+    <div class="form-group" id="change-specialization-group" style="display: none;">
+      <label for="change-specialization">Специализация</label>
+      <select id="change-specialization" name="specialization" class="search-input">
+        <option value="">Выберите специализацию</option>
+        <option value="Терапевт">Терапевт</option>
+        <option value="Хирург">Хирург</option>
+        <option value="Кардиолог">Кардиолог</option>
+        <option value="Невролог">Невролог</option>
+        <option value="Офтальмолог">Офтальмолог</option>
+        <option value="Отоларинголог">Отоларинголог</option>
+        <option value="Дерматолог">Дерматолог</option>
+        <option value="Педиатр">Педиатр</option>
+        <option value="Гинеколог">Гинеколог</option>
+        <option value="Уролог">Уролог</option>
+      </select>
+    </div>
+
+    <!-- Кнопки действий -->
+    <div class="button-container">
+        <div class="success-message" style="display: none">
+          Сотрудник успешно сохранен
+        </div>
+      <div id="error-message" class="error-message" style="display: none"></div>
+      <button type="submit" class="save-btn">Сохранить изменения</button>
+      <span class="delete-link">Удалить сотрудника</span>
+    </div>
+  </form>
+
+  <!-- Модальное окно подтверждения удаления -->
+  <div class="confirmation-modal">
+    <div class="confirmation-content">
+      <p>Вы уверены, что хотите удалить сотрудника?</p>
+      <div class="confirmation-buttons">
+        <button class="confirmation-btn confirm-btn">Да</button>
+        <button class="confirmation-btn cancel-btn">Нет</button>
+      </div>
+    </div>
+  </div>
+</div>

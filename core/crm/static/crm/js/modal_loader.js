@@ -3,6 +3,8 @@ const modalMap = {
   "add-client-btn": "/modal/add-client/",
   "edit-client-btn": "/modal/change-client/",
   "change-record-btn": "/modal/change-record/",
+  "add-employee-btn": "modal/add-employee/",
+ // "": "modal/edit-employee/"
 };
 
 const loadedModals = {};

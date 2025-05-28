@@ -37,20 +37,15 @@
             </a>
           </li>
           <li>
-            <a href="#call-analytics">
-              <img src="{% static 'crm/img/create.svg' %}" alt="" />Аналитика звонков
-            </a>
-          </li>
-          <li>
-            <a href="#call-analytics">
+            <a href="{% url 'analytics_money' %}">
               <img src="{% static 'crm/img/create.svg' %}" alt="" />Отчет
             </a>
           </li>
           <li>
-            <a href="#doctors"> <img src="{% static 'crm/img/add.svg' %}" alt="" />Записи </a>
+            <a href="{% url 'applications-list' %}"> <img src="{% static 'crm/img/add.svg' %}" alt="" />Записи </a>
           </li>
           <li>
-            <a href="#admins">
+            <a href="{% url 'employee-list' %}">
               <img src="{% static 'crm/img/edit.svg' %}" alt="" />Сотрудники
             </a>
           </li>

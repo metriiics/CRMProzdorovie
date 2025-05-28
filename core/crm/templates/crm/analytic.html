@@ -1,0 +1,215 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Интерфейс управляющего</title>
+
+    <!-- Стили -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="./modal-windows/style.css" />
+
+    <!-- Скрипты -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{% static 'crm/js/script.js' %}"></script>
+    <script src="{% static 'crm/js/modal_loader.js' %}"></script>
+  </head>
+  <body>
+    <!-- Шапка -->
+    <header>
+      <img
+        class="logo"
+        src="P{% static 'crm/img/logo.svg' %}"
+        alt="Медицинский центр ProЗдоровье"
+      />
+
+      <nav class="navbar">
+        <ul class="links">
+          <li>
+            <a href="#" id="add-employee-btn">
+            <img src="{% static 'crm/img/add.svg' %}" alt="" />Новый сотрудник
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'analytics_call' %}">
+              <img src="{% static 'crm/img/create.svg' %}" alt="" />Отчет по звонкам
+            </a>
+          </li>
+          <li>
+            <a href="#doctors"> <img src="{% static 'crm/img/add.svg' %}" alt="" />Записи </a>
+          </li>
+          <li>
+            <a href="{% url 'employee-list' %}">
+              <img src="{% static 'crm/img/edit.svg' %}" alt="" />Сотрудники
+            </a>
+          </li>
+          <li>
+            <a href="#">Выход</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Основное содержимое -->
+    <div class="main-container">
+      <!-- Блок фильтров -->
+      <div class="filters" id="filters-container">
+        <div class="analytics-switcher">
+          <button class="analytics-btn active" onclick="switchAnalytics('revenue')">Выручка</button>
+          <button class="analytics-btn" onclick="switchAnalytics('calls')">Звонки</button>
+      </div>
+        <div class="filter-label">Фильтры</div>
+
+        <!-- Фильтр по врачам -->
+        <div class="filter-section">
+          <div
+            class="filter-header collapsed"
+            onclick="toggleSection('doctor-options')"
+          >
+            Администратор
+          </div>
+          <ul class="filter-items collapsed" id="doctor-options">
+            <div class="filter-search">
+              <input
+                type="text"
+                class="filter-search-input"
+                placeholder="Поиск по врачам..."
+                oninput="filterItems('doctor-options', this.value)"
+              />
+            </div>
+            <li class="filter-item">
+              Иванов<input type="checkbox" name="doctor" id="doctor-ivanov" />
+            </li>
+            <li class="filter-item">
+              Петров<input type="checkbox" name="doctor" id="doctor-petrov" />
+            </li>
+            <li class="filter-item">
+              Сидоров<input type="checkbox" name="doctor" id="doctor-sidorov" />
+            </li>
+            <button
+              class="show-all-btn"
+              onclick="toggleShowAll('doctor-options', this)"
+            >
+              Показать все
+            </button>
+          </ul>
+        </div>
+        <!-- Фильтр по дате -->
+        <div class="filter-section">
+          <div
+            class="filter-header collapsed"
+            onclick="toggleSection('date-range-options')"
+          >
+            Период
+          </div>
+          <div class="filter-content collapsed" id="date-range-options">
+            <div class="filter-search">
+              <label for="start-date">Начальная дата:</label>
+              <input type="date" class="filter-date-input" id="start-date" />
+            </div>
+            <div class="filter-search">
+              <label for="end-date">Конечная дата:</label>
+              <input type="date" class="filter-date-input" id="end-date" />
+            </div>
+          </div>
+        </div>
+        <div class="filter-buttons">
+          <button class="filter-apply-btn" onclick="applyFilters()">Применить</button>
+          <button class="filter-reset-btn" onclick="resetFilters()">Сбросить</button> 
+        </div>
+      </div>
+
+      <!-- Контент для вкладок -->
+      <div class="table">
+        <table>
+          <thead>
+            <tr>
+              <th>Параметр</th>
+              <th>Значение</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Администратор</td>
+              <td id="total-records">Кенешбеков</td>
+            </tr>
+            <tr>
+              <td>Общее количество записей</td>
+              <td id="total-records">0</td>
+            </tr>
+            <tr>
+              <td>Общая сумма оплаты</td>
+              <td id="total-payments">0 ₽</td>
+            </tr>
+            <tr>
+              <td>Наличные</td>
+              <td id="cash-payments">0 ₽</td>
+            </tr>
+            <tr>
+              <td>Безналичные</td>
+              <td id="noncash-payments">0 ₽</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="chart-container">
+          <canvas id="analytics-chart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Это в отдлельный скрипт надо будет перенести
+      // Пример данных для графика
+      const ctx = document.getElementById("analytics-chart").getContext("2d");
+      const analyticsChart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: [
+            "Январь",
+            "Февраль",
+            "Март",
+            "Апрель",
+            "Май",
+            "Июнь",
+            "Июль",
+            "Август",
+            "Сентябрь",
+            "Октябрь",
+            "Ноябрь",
+            "Декабрь",
+          ],
+          datasets: [
+            {
+              label: "Текущий период",
+              data: [120, 150, 180, 200, 170, 200, 244, 135],
+              borderColor: "rgba(75, 192, 192, 1)",
+              borderWidth: 2,
+              fill: false,
+            },
+            {
+              label: "Прошлый период",
+              data: [100, 140, 160, 190, 180],
+              borderColor: "rgba(255, 99, 132, 1)",
+              borderWidth: 2,
+              fill: false,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: "top",
+            },
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

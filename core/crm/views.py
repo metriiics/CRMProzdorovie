@@ -481,6 +481,18 @@ class EmployeeView(View):
             parts.append(f"{user.surname[0]}.")
         return ' '.join(parts) if parts else "-"
     
-class Analytics(View):
+class AnalyticsCall(View):
     def get(self, request):
         return render(request, 'crm/call_analytics.html')
+    
+class AnalyticsMoney(View):
+    def get(self, request):
+        return render(request, 'crm/analytic.html')
+
+class ModalViewAddEmployee(View):
+    def get(self, request):
+        return render(request, 'crm/add_employee.html')
+    
+class ModalViewEditEmployee(View):
+    def get(self, request):
+        return render(request, 'crm/change_employee.html')
