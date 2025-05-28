@@ -31,7 +31,7 @@
       <nav class="navbar">
         <ul class="links">
           <li>
-            <a href="#" id="add-employee-btn">
+            <a href="" id="add-employee-btn">
             <img src="{% static 'crm/img/add.svg' %}" alt="" />Новый сотрудник
             </a>
           </li>
@@ -124,6 +124,10 @@
               Показать все
             </button>
           </ul>
+          <div class="filter-buttons">
+            <button class="filter-apply-btn" onclick="applyFilters()">Применить</button>
+            <button class="filter-reset-btn" onclick="resetFilters()">Сбросить</button>
+          </div>  
         </div>
       </div>
 
@@ -190,6 +194,6 @@
 
 
   <!-- Основной скрипт -->
-  <script src="{% static 'crm/js/scriptModal_upr.js' %}"></script>
+  <script src="{% static 'crm/js/script_modal_workers.js' %}"></script>
   </body>
 </html>

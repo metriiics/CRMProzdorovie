@@ -12,8 +12,8 @@
       href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="./modal-windows/style.css" />
+    <link rel="stylesheet" href="{% static 'crm/css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'crm/css/style.css' %}" />
 
     <!-- Скрипты -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -25,7 +25,7 @@
     <header>
       <img
         class="logo"
-        src="P{% static 'crm/img/logo.svg' %}"
+        src="{% static 'crm/img/logo.svg' %}"
         alt="Медицинский центр ProЗдоровье"
       />
 
@@ -60,10 +60,6 @@
     <div class="main-container">
       <!-- Блок фильтров -->
       <div class="filters" id="filters-container">
-        <div class="analytics-switcher">
-          <button class="analytics-btn active" onclick="switchAnalytics('revenue')">Выручка</button>
-          <button class="analytics-btn" onclick="switchAnalytics('calls')">Звонки</button>
-      </div>
         <div class="filter-label">Фильтры</div>
 
         <!-- Фильтр по врачам -->

@@ -22,6 +22,11 @@ function initializeModalWindows() {
     e.preventDefault();
     showModal("edit-client-btn");
   });
+
+  document.getElementById("add-employee-btn")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    showModal("add-employee-btn");
+  });
 }
 
 // Инициализация при загрузке страницы

@@ -1272,3 +1272,358 @@
  Админ
 2025-05-28 21:14:59 | INFO | GET /api/v1/applications/ status=200 user=Админ
  Админ
+2025-05-28 22:35:58 | INFO | GET / status=404 user=Админ
+ Админ
+2025-05-28 22:36:04 | INFO | GET /api/v1/applications/ status=200 user=Админ
+ Админ
+2025-05-28 22:36:07 | INFO | POST /logout/ status=302 user=anon
+2025-05-28 22:36:07 | INFO | GET /api/v1/login/ status=200 user=anon
+2025-05-28 22:36:12 | INFO | Пользователь admin вошел в систему
+2025-05-28 22:36:12 | INFO | POST /api/v1/login/ status=302 user=Админ
+ Админ
+2025-05-28 22:36:12 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:36:14 | INFO | GET /api/v1/analytics-money status=200 user=Админ
+ Админ
+2025-05-28 22:36:14 | INFO | GET /api/v1/style.css status=404 user=Админ
+ Админ
+2025-05-28 22:36:14 | INFO | GET /api/v1/modal-windows/style.css status=404 user=Админ
+ Админ
+2025-05-28 22:36:14 | INFO | GET /api/v1/P/static/crm/img/logo.svg status=404 user=Админ
+ Админ
+2025-05-28 22:37:54 | INFO | GET / status=404 user=Админ
+ Админ
+2025-05-28 22:38:00 | INFO | GET /api/v1/applications/ status=200 user=Админ
+ Админ
+2025-05-28 22:38:02 | INFO | POST /logout/ status=302 user=anon
+2025-05-28 22:38:02 | INFO | GET /api/v1/login/ status=200 user=anon
+2025-05-28 22:38:06 | INFO | Пользователь admin вошел в систему
+2025-05-28 22:38:06 | INFO | POST /api/v1/login/ status=302 user=Админ
+ Админ
+2025-05-28 22:38:06 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:38:09 | INFO | GET /api/v1/analytics-money status=200 user=Админ
+ Админ
+2025-05-28 22:38:26 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:38:30 | INFO | GET /api/v1/analytics-call status=200 user=Админ
+ Админ
+2025-05-28 22:38:34 | INFO | GET /api/v1/applications/ status=200 user=Админ
+ Админ
+2025-05-28 22:38:37 | INFO | GET /api/v1/analytics-money status=200 user=Админ
+ Админ
+2025-05-28 22:39:21 | INFO | GET /api/v1/analytics-money status=200 user=Админ
+ Админ
+2025-05-28 22:39:24 | INFO | GET / status=404 user=Админ
+ Админ
+2025-05-28 22:39:29 | INFO | GET /api/v1/applications/ status=200 user=Админ
+ Админ
+2025-05-28 22:39:31 | INFO | POST /logout/ status=302 user=anon
+2025-05-28 22:39:31 | INFO | GET /api/v1/login/ status=200 user=anon
+2025-05-28 22:39:35 | INFO | Пользователь admin вошел в систему
+2025-05-28 22:39:35 | INFO | POST /api/v1/login/ status=302 user=Админ
+ Админ
+2025-05-28 22:39:35 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:39:37 | INFO | GET /api/v1/analytics-money status=200 user=Админ
+ Админ
+2025-05-28 22:39:51 | INFO | GET / status=404 user=anon
+2025-05-28 22:39:56 | INFO | GET /api/v1/applications/ status=302 user=anon
+2025-05-28 22:39:56 | INFO | GET /api/v1/login/?next=/api/v1/applications/ status=200 user=anon
+2025-05-28 22:40:00 | INFO | Пользователь admin вошел в систему
+2025-05-28 22:40:00 | INFO | POST /api/v1/login/?next=/api/v1/applications/ status=302 user=Админ
+ Админ
+2025-05-28 22:40:00 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:40:03 | INFO | GET /api/v1/analytics-money status=200 user=Админ
+ Админ
+2025-05-28 22:41:16 | INFO | GET /api/v1/analytics-call status=200 user=Админ
+ Админ
+2025-05-28 22:41:19 | INFO | GET /api/v1/analytics-money status=200 user=Админ
+ Админ
+2025-05-28 22:41:21 | INFO | GET /api/v1/analytics-call status=200 user=Админ
+ Админ
+2025-05-28 22:41:49 | INFO | GET /api/v1/analytics-call status=200 user=anon
+2025-05-28 22:43:39 | INFO | GET /api/v1/employee status=302 user=anon
+2025-05-28 22:43:39 | INFO | GET /api/v1/login/?next=/api/v1/employee status=200 user=anon
+2025-05-28 22:43:44 | INFO | Пользователь admin вошел в систему
+2025-05-28 22:43:44 | INFO | POST /api/v1/login/?next=/api/v1/employee status=302 user=Админ
+ Админ
+2025-05-28 22:43:44 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:47:29 | INFO | GET /.well-known/appspecific/com.chrome.devtools.json status=404 user=Админ
+ Админ
+2025-05-28 22:48:10 | INFO | GET /api/v1/analytics-money status=200 user=Админ
+ Админ
+2025-05-28 22:48:12 | INFO | GET /favicon.ico status=404 user=Админ
+ Админ
+2025-05-28 22:50:20 | INFO | GET /modal/add-employee/ status=200 user=Админ
+ Админ
+2025-05-28 22:50:20 | INFO | GET /favicon.ico status=404 user=Админ
+ Админ
+2025-05-28 22:51:55 | INFO | GET /api/v1/employee status=302 user=anon
+2025-05-28 22:51:55 | INFO | GET /api/v1/login/?next=/api/v1/employee status=200 user=anon
+2025-05-28 22:52:00 | INFO | Пользователь admin вошел в систему
+2025-05-28 22:52:00 | INFO | POST /api/v1/login/?next=/api/v1/employee status=302 user=Админ
+ Админ
+2025-05-28 22:52:00 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:52:33 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:52:44 | INFO | GET /api/v1/employee status=302 user=anon
+2025-05-28 22:52:44 | INFO | GET /api/v1/login/?next=/api/v1/employee status=200 user=anon
+2025-05-28 22:52:48 | INFO | Пользователь admin вошел в систему
+2025-05-28 22:52:48 | INFO | POST /api/v1/login/?next=/api/v1/employee status=302 user=Админ
+ Админ
+2025-05-28 22:52:48 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:54:27 | INFO | GET / status=404 user=anon
+2025-05-28 22:54:31 | INFO | GET /api/v1/applications/ status=302 user=anon
+2025-05-28 22:54:31 | INFO | GET /api/v1/login/?next=/api/v1/applications/ status=200 user=anon
+2025-05-28 22:54:35 | INFO | Пользователь admin вошел в систему
+2025-05-28 22:54:35 | INFO | POST /api/v1/login/?next=/api/v1/applications/ status=302 user=Админ
+ Админ
+2025-05-28 22:54:35 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:54:37 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:54:37 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:54:38 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:54:38 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:54:39 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:54:39 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:54:40 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:54:40 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:54:41 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:54:41 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:54:41 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:54:41 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:54:42 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:54:42 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:54:42 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:55:16 | INFO | GET / status=404 user=anon
+2025-05-28 22:55:20 | INFO | GET /api/v1/applications/ status=302 user=anon
+2025-05-28 22:55:20 | INFO | GET /api/v1/login/?next=/api/v1/applications/ status=200 user=anon
+2025-05-28 22:55:24 | INFO | Пользователь admin вошел в систему
+2025-05-28 22:55:24 | INFO | POST /api/v1/login/?next=/api/v1/applications/ status=302 user=Админ
+ Админ
+2025-05-28 22:55:24 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:55:27 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:55:30 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:55:30 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:55:30 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:55:30 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:55:31 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:55:31 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:55:31 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:57:38 | INFO | GET /api/v1/employee status=302 user=anon
+2025-05-28 22:57:38 | INFO | GET /api/v1/login/?next=/api/v1/employee status=200 user=anon
+2025-05-28 22:57:43 | INFO | Пользователь admin вошел в систему
+2025-05-28 22:57:43 | INFO | POST /api/v1/login/?next=/api/v1/employee status=302 user=Админ
+ Админ
+2025-05-28 22:57:43 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:57:45 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:57:52 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:57:52 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:57:53 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:57:53 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:57:53 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:57:53 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:57:53 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:57:54 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:57:54 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:57:54 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:58:03 | INFO | GET /.well-known/appspecific/com.chrome.devtools.json status=404 user=Админ
+ Админ
+2025-05-28 22:58:11 | INFO | GET /.well-known/appspecific/com.chrome.devtools.json status=404 user=Админ
+ Админ
+2025-05-28 22:58:14 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:58:15 | INFO | GET /.well-known/appspecific/com.chrome.devtools.json status=404 user=Админ
+ Админ
+2025-05-28 22:58:27 | INFO | GET / status=404 user=Админ
+ Админ
+2025-05-28 22:58:27 | INFO | GET /favicon.ico status=404 user=Админ
+ Админ
+2025-05-28 22:58:32 | INFO | GET /api/v1/applications status=301 user=Админ
+ Админ
+2025-05-28 22:58:32 | INFO | GET /api/v1/applications/ status=200 user=Админ
+ Админ
+2025-05-28 22:58:34 | INFO | POST /logout/ status=302 user=anon
+2025-05-28 22:58:34 | INFO | GET /api/v1/login/ status=200 user=anon
+2025-05-28 22:58:39 | INFO | Пользователь admin вошел в систему
+2025-05-28 22:58:39 | INFO | POST /api/v1/login/ status=302 user=Админ
+ Админ
+2025-05-28 22:58:39 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:58:40 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:58:43 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:58:44 | INFO | GET /favicon.ico status=404 user=Админ
+ Админ
+2025-05-28 22:58:46 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:58:47 | INFO | GET /favicon.ico status=404 user=Админ
+ Админ
+2025-05-28 22:58:53 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:58:54 | INFO | GET /favicon.ico status=404 user=Админ
+ Админ
+2025-05-28 22:58:56 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:58:57 | INFO | GET /favicon.ico status=404 user=Админ
+ Админ
+2025-05-28 22:59:04 | INFO | GET / status=404 user=Админ
+ Админ
+2025-05-28 22:59:04 | INFO | GET /favicon.ico status=404 user=Админ
+ Админ
+2025-05-28 22:59:16 | INFO | GET /api/v1/applications/ status=200 user=Админ
+ Админ
+2025-05-28 22:59:17 | INFO | GET /favicon.ico status=404 user=Админ
+ Админ
+2025-05-28 22:59:22 | INFO | POST /logout/ status=302 user=anon
+2025-05-28 22:59:22 | INFO | GET /api/v1/login/ status=200 user=anon
+2025-05-28 22:59:22 | INFO | GET /favicon.ico status=404 user=anon
+2025-05-28 22:59:27 | INFO | Пользователь admin вошел в систему
+2025-05-28 22:59:27 | INFO | POST /api/v1/login/ status=302 user=Админ
+ Админ
+2025-05-28 22:59:27 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:59:28 | INFO | GET /favicon.ico status=404 user=Админ
+ Админ
+2025-05-28 22:59:32 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:59:33 | INFO | GET /favicon.ico status=404 user=Админ
+ Админ
+2025-05-28 22:59:50 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 22:59:51 | INFO | GET /favicon.ico status=404 user=Админ
+ Админ
+2025-05-28 23:00:20 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 23:00:21 | INFO | GET /favicon.ico status=404 user=Админ
+ Админ
+2025-05-28 23:00:21 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 23:00:22 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 23:00:23 | INFO | GET /favicon.ico status=404 user=Админ
+ Админ
+2025-05-28 23:00:33 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 23:00:34 | INFO | GET /favicon.ico status=404 user=Админ
+ Админ
+2025-05-28 23:02:15 | INFO | GET /modal/add-employee/ status=200 user=Админ
+ Админ
+2025-05-28 23:02:15 | INFO | GET /favicon.ico status=404 user=Админ
+ Админ
+2025-05-28 23:02:20 | INFO | GET /favicon.ico status=404 user=Админ
+ Админ
+2025-05-28 23:04:35 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 23:04:36 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 23:04:38 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 23:04:49 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 23:04:49 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 23:06:13 | INFO | GET /api/v1/employee status=302 user=anon
+2025-05-28 23:06:13 | INFO | GET /api/v1/login/?next=/api/v1/employee status=200 user=anon
+2025-05-28 23:06:13 | INFO | GET /favicon.ico status=404 user=anon
+2025-05-28 23:06:18 | INFO | Пользователь admin вошел в систему
+2025-05-28 23:06:18 | INFO | POST /api/v1/login/?next=/api/v1/employee status=302 user=Админ
+ Админ
+2025-05-28 23:06:18 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 23:06:20 | INFO | GET /modal/add-employee/ status=200 user=Админ
+ Админ
+2025-05-28 23:06:47 | INFO | GET /api/v1/applications/ status=200 user=Админ
+ Админ
+2025-05-28 23:08:04 | INFO | GET /api/v1/applications/ status=200 user=Админ
+ Админ
+2025-05-28 23:08:40 | INFO | GET /admin status=301 user=Админ
+ Админ
+2025-05-28 23:08:41 | INFO | GET /admin/ status=200 user=Админ
+ Админ
+2025-05-28 23:08:48 | INFO | GET /admin/crm/application/ status=200 user=Админ
+ Админ
+2025-05-28 23:08:48 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-28 23:08:56 | INFO | GET /admin/crm/application/add/ status=200 user=Админ
+ Админ
+2025-05-28 23:08:56 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-28 23:08:58 | INFO | GET /admin/crm/application/ status=200 user=Админ
+ Админ
+2025-05-28 23:09:04 | INFO | GET /admin/crm/role/ status=200 user=Админ
+ Админ
+2025-05-28 23:09:04 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-28 23:09:05 | INFO | GET /admin/crm/status/ status=200 user=Админ
+ Админ
+2025-05-28 23:09:05 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-28 23:09:06 | INFO | GET /admin/crm/specialization/ status=200 user=Админ
+ Админ
+2025-05-28 23:09:06 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-28 23:09:08 | INFO | GET /admin/crm/doctor/ status=200 user=Админ
+ Админ
+2025-05-28 23:09:08 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-28 23:09:27 | INFO | GET /admin/crm/specialization/ status=200 user=Админ
+ Админ
+2025-05-28 23:10:29 | INFO | GET /api/v1/applications/ status=302 user=anon
+2025-05-28 23:10:29 | INFO | GET /api/v1/login/?next=/api/v1/applications/ status=200 user=anon
+2025-05-28 23:10:35 | INFO | Пользователь admin вошел в систему
+2025-05-28 23:10:35 | INFO | POST /api/v1/login/?next=/api/v1/applications/ status=302 user=Админ
+ Админ
+2025-05-28 23:10:35 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-28 23:10:37 | INFO | GET /api/v1/applications/ status=200 user=Админ
+ Админ
+2025-05-28 23:14:55 | INFO | GET /api/v1/employee status=302 user=anon
+2025-05-28 23:14:55 | INFO | GET /api/v1/login/?next=/api/v1/employee status=200 user=anon
+2025-05-28 23:14:59 | INFO | Пользователь admin вошел в систему
+2025-05-28 23:14:59 | INFO | POST /api/v1/login/?next=/api/v1/employee status=302 user=Админ
+ Админ
+2025-05-28 23:15:00 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ

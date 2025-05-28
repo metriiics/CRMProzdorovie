@@ -324,3 +324,32 @@ header {
   background-color: #ccc;
   cursor: not-allowed;
 }
+
+/* Стили для переключателя аналитики */
+.analytics-switcher {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.analytics-btn {
+  flex: 1;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  background-color: white;
+  color: #00923a;
+  border: 1px solid #00923a;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.analytics-btn.active {
+  background-color: #00923a;
+  color: white;
+}
+
+.analytics-btn:hover:not(.active) {
+  background-color: #f4f4f4;
+}
