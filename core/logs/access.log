@@ -1066,3 +1066,209 @@
 2025-05-28 19:55:43 | INFO | GET / status=404 user=testuser
 2025-05-28 19:55:47 | INFO | GET /admin/ status=302 user=testuser
 2025-05-28 19:55:48 | INFO | GET /admin/login/?next=/admin/ status=500 user=testuser
+2025-05-28 20:13:41 | INFO | GET / status=404 user=testuser
+2025-05-28 20:13:47 | INFO | GET /admin/ status=302 user=testuser
+2025-05-28 20:13:47 | INFO | GET /admin/login/?next=/admin/ status=500 user=testuser
+2025-05-28 20:21:06 | INFO | GET / status=404 user=testuser
+2025-05-28 20:21:12 | INFO | GET /admin/ status=302 user=testuser
+2025-05-28 20:21:12 | INFO | GET /admin/login/?next=/admin/ status=500 user=testuser
+2025-05-28 20:25:35 | INFO | GET / status=404 user=testuser
+2025-05-28 20:25:39 | INFO | GET /admin/ status=302 user=testuser
+2025-05-28 20:25:39 | INFO | GET /admin/login/?next=/admin/ status=200 user=testuser
+2025-05-28 20:25:53 | INFO | POST /admin/login/?next=/admin/ status=302 user=admin
+2025-05-28 20:25:53 | INFO | GET /admin/ status=200 user=admin
+2025-05-28 20:34:52 | INFO | GET / status=404 user=admin
+2025-05-28 20:34:56 | INFO | GET /admin/ status=200 user=admin
+2025-05-28 20:35:04 | INFO | GET /admin/crm/doctor/ status=500 user=admin
+2025-05-28 20:35:10 | INFO | GET /admin/ status=200 user=admin
+2025-05-28 20:35:12 | INFO | GET /admin/crm/application/ status=200 user=admin
+2025-05-28 20:35:12 | INFO | GET /admin/jsi18n/ status=200 user=admin
+2025-05-28 20:35:17 | INFO | GET /admin/ status=200 user=admin
+2025-05-28 20:35:19 | INFO | GET /admin/crm/comment/ status=500 user=admin
+2025-05-28 20:35:20 | INFO | GET /admin/ status=200 user=admin
+2025-05-28 20:35:22 | INFO | GET /admin/crm/user/ status=500 user=admin
+2025-05-28 20:35:24 | INFO | GET /admin/ status=200 user=admin
+2025-05-28 20:35:25 | INFO | GET /admin/crm/role/ status=200 user=admin
+2025-05-28 20:35:26 | INFO | GET /admin/jsi18n/ status=200 user=admin
+2025-05-28 20:35:29 | INFO | GET /admin/ status=200 user=admin
+2025-05-28 20:35:30 | INFO | GET /admin/crm/specialization/ status=200 user=admin
+2025-05-28 20:35:30 | INFO | GET /admin/jsi18n/ status=200 user=admin
+2025-05-28 20:35:32 | INFO | GET /admin/ status=200 user=admin
+2025-05-28 20:35:33 | INFO | GET /admin/crm/status/ status=200 user=admin
+2025-05-28 20:35:33 | INFO | GET /admin/jsi18n/ status=200 user=admin
+2025-05-28 20:35:36 | INFO | GET /admin/ status=200 user=admin
+2025-05-28 20:37:14 | INFO | GET /admin/crm/role/ status=200 user=admin
+2025-05-28 20:37:14 | INFO | GET /admin/jsi18n/ status=200 user=admin
+2025-05-28 20:49:07 | INFO | GET /admin/ status=200 user=admin
+2025-05-28 20:49:09 | INFO | GET /admin/crm/role/ status=200 user=admin
+2025-05-28 20:49:09 | INFO | GET /admin/jsi18n/ status=200 user=admin
+2025-05-28 20:49:12 | INFO | GET /admin/crm/status/ status=200 user=admin
+2025-05-28 20:49:13 | INFO | GET /admin/jsi18n/ status=200 user=admin
+2025-05-28 20:49:25 | INFO | GET /admin/crm/role/ status=200 user=admin
+2025-05-28 20:49:26 | INFO | GET /admin/crm/status/ status=500 user=admin
+2025-05-28 20:49:28 | INFO | GET /admin/crm/role/ status=200 user=admin
+2025-05-28 20:49:29 | INFO | GET /admin/crm/status/ status=500 user=admin
+2025-05-28 20:49:50 | INFO | GET /admin/crm/role/ status=200 user=admin
+2025-05-28 20:49:52 | INFO | GET /admin/crm/status/ status=200 user=admin
+2025-05-28 20:49:52 | INFO | GET /admin/jsi18n/ status=200 user=admin
+2025-05-28 20:49:54 | INFO | GET /admin/crm/role/ status=200 user=admin
+2025-05-28 20:49:59 | INFO | GET /admin/crm/specialization/ status=200 user=admin
+2025-05-28 20:49:59 | INFO | GET /admin/jsi18n/ status=200 user=admin
+2025-05-28 20:50:09 | INFO | GET /admin/crm/doctor/ status=500 user=admin
+2025-05-28 20:50:25 | INFO | GET /admin/crm/specialization/ status=200 user=admin
+2025-05-28 20:50:28 | INFO | GET /admin/crm/doctor/ status=500 user=admin
+2025-05-28 20:50:56 | INFO | GET / status=404 user=admin
+2025-05-28 20:51:00 | INFO | GET /admin/ status=200 user=admin
+2025-05-28 20:51:16 | INFO | GET /admin/crm/doctor/ status=500 user=admin
+2025-05-28 20:52:33 | INFO | GET / status=404 user=admin
+2025-05-28 20:52:39 | INFO | GET /admin/ status=200 user=admin
+2025-05-28 20:52:42 | INFO | GET /admin/crm/doctor/ status=500 user=admin
+2025-05-28 20:52:50 | INFO | GET /admin/ status=200 user=admin
+2025-05-28 20:52:52 | INFO | GET /admin/crm/doctor/ status=500 user=admin
+2025-05-28 20:55:02 | INFO | GET / status=404 user=Админ
+ Админ
+2025-05-28 20:55:06 | INFO | GET /admin/ status=200 user=Админ
+ Админ
+2025-05-28 20:55:07 | INFO | GET /admin/crm/doctor/ status=500 user=Админ
+ Админ
+2025-05-28 20:55:09 | INFO | GET /admin/ status=200 user=Админ
+ Админ
+2025-05-28 20:55:12 | INFO | GET /admin/crm/client/ status=200 user=Админ
+ Админ
+2025-05-28 20:55:13 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-28 20:55:37 | INFO | GET /admin/crm/client/7910/change/ status=200 user=Админ
+ Админ
+2025-05-28 20:55:37 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-28 20:55:40 | INFO | GET /admin/crm/client/ status=200 user=Админ
+ Админ
+2025-05-28 20:55:48 | INFO | GET /admin/crm/user/ status=200 user=Админ
+ Админ
+2025-05-28 20:55:49 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-28 20:55:58 | INFO | GET /admin/crm/role/ status=200 user=Админ
+ Админ
+2025-05-28 20:55:58 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-28 20:55:59 | INFO | GET /admin/crm/specialization/ status=200 user=Админ
+ Админ
+2025-05-28 20:55:59 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-28 20:56:00 | INFO | GET /admin/crm/status/ status=200 user=Админ
+ Админ
+2025-05-28 20:56:00 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-28 20:56:02 | INFO | GET /admin/crm/comment/ status=200 user=Админ
+ Админ
+2025-05-28 20:56:02 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-28 20:56:10 | INFO | GET /admin/crm/doctor/ status=500 user=Админ
+ Админ
+2025-05-28 20:57:14 | INFO | GET / status=404 user=Админ
+ Админ
+2025-05-28 20:57:18 | INFO | GET /admin/ status=200 user=Админ
+ Админ
+2025-05-28 20:57:19 | INFO | GET /admin/crm/doctor/ status=200 user=Админ
+ Админ
+2025-05-28 20:57:20 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-28 20:57:36 | INFO | GET /admin/crm/doctor/52/change/ status=200 user=Админ
+ Админ
+2025-05-28 20:57:36 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-28 20:57:46 | INFO | GET /admin/crm/doctor/ status=200 user=Админ
+ Админ
+2025-05-28 20:57:50 | INFO | GET /admin/crm/user/ status=200 user=Админ
+ Админ
+2025-05-28 20:57:50 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-28 20:57:54 | INFO | GET /admin/crm/user/4/change/ status=200 user=Админ
+ Админ
+2025-05-28 20:57:55 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-28 20:57:58 | INFO | GET /admin/crm/user/ status=200 user=Админ
+ Админ
+2025-05-28 20:58:11 | INFO | GET /admin/crm/doctor/ status=200 user=Админ
+ Админ
+2025-05-28 20:58:11 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-28 20:58:12 | INFO | GET /admin/crm/application/ status=200 user=Админ
+ Админ
+2025-05-28 20:58:12 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-28 20:58:14 | INFO | GET /admin/crm/client/ status=200 user=Админ
+ Админ
+2025-05-28 20:58:14 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-28 20:58:17 | INFO | GET /admin/crm/role/ status=200 user=Админ
+ Админ
+2025-05-28 20:58:17 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-28 20:58:20 | INFO | GET /admin/crm/status/ status=200 user=Админ
+ Админ
+2025-05-28 20:58:20 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-28 20:58:26 | INFO | GET /admin/crm/role/ status=200 user=Админ
+ Админ
+2025-05-28 20:58:26 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-28 20:58:27 | INFO | GET /admin/crm/status/ status=200 user=Админ
+ Админ
+2025-05-28 20:58:27 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-28 20:58:29 | INFO | GET /admin/crm/status/add/ status=200 user=Админ
+ Админ
+2025-05-28 20:58:30 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-28 20:58:41 | INFO | POST /admin/crm/status/add/ status=500 user=Админ
+ Админ
+2025-05-28 21:05:13 | INFO | GET /admin/crm/status/add/ status=302 user=anon
+2025-05-28 21:05:14 | INFO | GET /admin/login/?next=/admin/crm/status/add/ status=200 user=anon
+2025-05-28 21:05:27 | INFO | GET / status=404 user=anon
+2025-05-28 21:05:31 | INFO | GET /api/v1/applications/ status=302 user=anon
+2025-05-28 21:05:31 | INFO | GET /api/v1/login/?next=/api/v1/applications/ status=200 user=anon
+2025-05-28 21:05:42 | INFO | Пользователь testuser вошел в систему
+2025-05-28 21:05:42 | INFO | POST /api/v1/login/?next=/api/v1/applications/ status=302 user=testuser
+2025-05-28 21:05:42 | INFO | GET /api/v1/applications/ status=200 user=testuser
+2025-05-28 21:06:02 | INFO | GET / status=404 user=testuser
+2025-05-28 21:06:05 | INFO | GET /admin/ status=302 user=testuser
+2025-05-28 21:06:05 | INFO | GET /admin/login/?next=/admin/ status=200 user=testuser
+2025-05-28 21:06:12 | INFO | POST /admin/login/?next=/admin/ status=302 user=Админ
+ Админ
+2025-05-28 21:06:12 | INFO | GET /admin/ status=200 user=Админ
+ Админ
+2025-05-28 21:06:15 | INFO | GET /admin/crm/status/ status=200 user=Админ
+ Админ
+2025-05-28 21:06:15 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-28 21:06:17 | INFO | GET /admin/crm/status/add/ status=200 user=Админ
+ Админ
+2025-05-28 21:06:17 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-28 21:06:23 | INFO | POST /admin/crm/status/add/ status=500 user=Админ
+ Админ
+2025-05-28 21:10:05 | INFO | GET / status=404 user=Админ
+ Админ
+2025-05-28 21:10:10 | INFO | GET /amdin status=404 user=Админ
+ Админ
+2025-05-28 21:10:13 | INFO | GET /admin/ status=200 user=Админ
+ Админ
+2025-05-28 21:10:15 | INFO | GET /admin/crm/status/ status=200 user=Админ
+ Админ
+2025-05-28 21:10:15 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-28 21:10:18 | INFO | GET /admin/crm/status/add/ status=200 user=Админ
+ Админ
+2025-05-28 21:10:19 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-28 21:10:38 | INFO | POST /admin/crm/status/add/ status=302 user=Админ
+ Админ
+2025-05-28 21:10:38 | INFO | GET /admin/crm/status/ status=200 user=Админ
+ Админ
+2025-05-28 21:10:38 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-28 21:14:54 | INFO | GET / status=404 user=Админ
+ Админ
+2025-05-28 21:14:59 | INFO | GET /api/v1/applications/ status=200 user=Админ
+ Админ

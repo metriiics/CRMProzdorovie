@@ -1,8 +1,11 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Group, Permission
 
 class Role(models.Model):
     name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         db_table = 'role'
@@ -29,6 +32,28 @@ class User(AbstractUser):
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
 
+    groups = models.ManyToManyField(
+        Group,
+        verbose_name='groups',
+        blank=True,
+        related_name="user_set",
+        related_query_name="user",
+        db_table="users_user_groups"
+    )
+    user_permissions = models.ManyToManyField(
+        Permission,
+        verbose_name='user permissions',
+        blank=True,
+        related_name="user_set",
+        related_query_name="user",
+        db_table="users_user_permissions"
+    )
+
+    def __str__(self):
+        if self.first_name and self.last_name:
+            return f"{self.last_name} {self.first_name}"
+        return str(self.username)  
+
     class Meta:
         db_table = 'users'
         verbose_name = 'Пользователь'
@@ -39,6 +64,9 @@ class User(AbstractUser):
 class Specialization(models.Model):
     name = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         db_table = 'specializations_doctor'
         verbose_name = 'Специализация врача'
@@ -48,6 +76,10 @@ class Specialization(models.Model):
 class Doctor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='doctor_profile')
     specialization = models.ForeignKey(Specialization, on_delete=models.CASCADE, db_column='specializations_id', related_name='doctors')
+
+    def __str__(self):
+            if self.user:
+                return f"Доктор: {self.user}"
 
     class Meta:
         db_table = 'doctor'
@@ -80,6 +112,9 @@ class Client(models.Model):
 
 class Status(models.Model):
     status = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.status
 
     class Meta:
         db_table = 'status'
