@@ -1,6 +1,8 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils import timezone
+from django.contrib.auth.forms import UserCreationForm
+from .models import Role, User
 import re
 
 class AddClientForm(forms.Form):
@@ -58,3 +60,50 @@ class CreateRecordForm(forms.Form):
         cleaned_data = super().clean()
         # Дополнительные проверки
         return cleaned_data
+    
+
+class CustomUserCreationForm(UserCreationForm):
+    role = forms.ModelChoiceField(
+        queryset=Role.objects.all(),
+        required=True,
+        label='Роль'
+    )
+    first_name = forms.CharField(required=True, label='Имя')
+    last_name = forms.CharField(required=True, label='Фамилия')
+    surname = forms.CharField(required=False, label='Отчество')
+    email = forms.EmailField(required=True, label='Email')
+    is_active = forms.BooleanField(
+        initial=True,
+        required=False,
+        label='Активный'
+    )
+    is_staff = forms.BooleanField(
+        required=False,
+        label='Персонал'
+    )
+    is_superuser = forms.BooleanField(
+        required=False,
+        label='Суперпользователь'
+    )
+
+    class Meta:
+        model = User
+        fields = (
+            'role',
+            'username',
+            'password1',
+            'password2',
+            'first_name',
+            'last_name',
+            'surname',
+            'email',
+            'is_active',
+            'is_staff',
+            'is_superuser'
+        )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['password1'].required = True
+        self.fields['password2'].required = True

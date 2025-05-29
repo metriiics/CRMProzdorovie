@@ -79,7 +79,7 @@ class Doctor(models.Model):
 
     def __str__(self):
             if self.user:
-                return f"Доктор: {self.user}"
+                return f"{self.user.last_name} {self.user.first_name} {self.user.surname} ({self.specialization})"
 
     class Meta:
         db_table = 'doctor'
@@ -95,6 +95,16 @@ class Client(models.Model):
     phone_number = models.CharField(max_length=20)
     created_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        parts = []
+        if self.last_name:
+            parts.append(self.last_name)
+        if self.first_name:
+            parts.append(self.first_name)
+        if self.surname:
+            parts.append(self.surname)
+        return " ".join(parts) if parts else "Клиент без имени"
 
     class Meta:
         db_table = 'clients'
@@ -129,6 +139,9 @@ class Application(models.Model):
     date_call = models.CharField(max_length=100, null=True)
     date_next_call = models.CharField(max_length=100, null=True)
     status = models.ForeignKey(Status, on_delete=models.CASCADE, related_name='applications')
+
+    def __str__(self):
+        return f"Заявка #{self.id} - {self.client} ({self.date_recording})"
 
     class Meta:
         db_table = 'applications'
