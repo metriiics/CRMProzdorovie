@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="{% static 'crm/css/styleModal.css' %}" />
  
     <!-- Скрипты -->
-    <script src="{% static 'crm/js/script.js' %}"></script>
+    <script src="{% static 'crm/js/scriptUpr.js' %}"></script>
     <script src="{% static 'crm/js/modal_loader.js' %}"></script>
   </head>
   <body>
@@ -137,20 +137,38 @@
           <thead>
             <tr>
               <th>
-                <a href="" id="sort-name">
-                  ФИО <img src="{% static 'crm/img/arrow_sort.svg' %}" alt="" class="arrow"/>
+                <a href="{{ sort_urls.fio }}" id="sort-name">
+                  ФИО 
+                  {% if current_sort.field == 'fio' %}
+                    <img src="{% static 'crm/img/arrow_sort.svg' %}" alt="" 
+                        class="arrow {% if current_sort.direction == 'desc' %}arrow-up{% endif %}"/>
+                  {% else %}
+                    <img src="{% static 'crm/img/arrow_sort.svg' %}" alt="" class="arrow"/>
+                  {% endif %}
                 </a>
               </th>
               <th>Username</th>
               <th>Email</th>
               <th>
-                <a href="" id="sort-role">
-                  Роль <img src="{% static 'crm/img/arrow_sort.svg' %}" alt="" class="arrow"/>
+                <a href="{{ sort_urls.role }}" id="sort-role">
+                  Роль 
+                  {% if current_sort.field == 'role' %}
+                    <img src="{% static 'crm/img/arrow_sort.svg' %}" alt="" 
+                        class="arrow {% if current_sort.direction == 'desc' %}arrow-up{% endif %}"/>
+                  {% else %}
+                    <img src="{% static 'crm/img/arrow_sort.svg' %}" alt="" class="arrow"/>
+                  {% endif %}
                 </a>
               </th>
               <th>
-                <a href="" id="sort-specialization">
-                  Специализация <img src="{% static 'crm/img/arrow_sort.svg' %}" alt="" class="arrow"/>
+                <a href="{{ sort_urls.specialization }}" id="sort-specialization">
+                  Специализация 
+                  {% if current_sort.field == 'specialization' %}
+                    <img src="{% static 'crm/img/arrow_sort.svg' %}" alt="" 
+                        class="arrow {% if current_sort.direction == 'desc' %}arrow-up{% endif %}"/>
+                  {% else %}
+                    <img src="{% static 'crm/img/arrow_sort.svg' %}" alt="" class="arrow"/>
+                  {% endif %}
                 </a>
               </th>
             </tr>
@@ -175,7 +193,8 @@
         <!-- Пагинация -->
         <div class="pagination">
           {% if page_obj.has_previous %}
-            <a href="?page={{ page_obj.previous_page_number }}" class="pagination-btn">Назад</a>
+            <a href="?page={{ page_obj.previous_page_number }}{% if current_sort.field %}&sort={{ current_sort.field }}&direction={{ current_sort.direction }}{% endif %}" 
+              class="pagination-btn">Назад</a>
           {% else %}
             <span class="pagination-btn disabled">Назад</span>
           {% endif %}
@@ -185,7 +204,8 @@
           </span>
           
           {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}" class="pagination-btn">Вперёд</a>
+            <a href="?page={{ page_obj.next_page_number }}{% if current_sort.field %}&sort={{ current_sort.field }}&direction={{ current_sort.direction }}{% endif %}" 
+              class="pagination-btn">Вперёд</a>
           {% else %}
             <span class="pagination-btn disabled">Вперёд</span>
           {% endif %}

@@ -438,7 +438,15 @@ class ModalViewCreateRecord(View):
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class EmployeeView(View):
+    def _get_fio(self, user):
+        """Вспомогательный метод для получения ФИО пользователя"""
+        return f"{user.last_name} {user.first_name} {user.surname or ''}".strip()
+    
     def get(self, request):
+        # Получаем параметры сортировки из GET-запроса
+        sort_field = request.GET.get('sort', 'fio')
+        sort_direction = request.GET.get('direction', 'asc')
+        
         # Получаем всех пользователей с связанными данными
         users = User.objects.select_related('role').prefetch_related(
             'doctor_profile__specialization'
@@ -461,25 +469,50 @@ class EmployeeView(View):
             }
             employees.append(employee_data)
         
+        # Сортируем данные
+        reverse_sort = sort_direction == 'desc'
+        try:
+            employees.sort(
+                key=lambda x: str(x.get(sort_field, '')).lower(), 
+                reverse=reverse_sort
+            )
+        except KeyError:
+            # Если поле для сортировки не существует, сортируем по ФИО
+            sort_field = 'fio'
+            employees.sort(
+                key=lambda x: str(x.get(sort_field, '')).lower(), 
+                reverse=reverse_sort
+            )
+        
         paginator = Paginator(employees, 30)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         
+        # Генерируем URL для сортировки
+        def get_sort_url(field):
+            if sort_field == field and sort_direction == 'asc':
+                new_direction = 'desc'
+            else:
+                new_direction = 'asc'
+            params = request.GET.copy()
+            params['sort'] = field
+            params['direction'] = new_direction
+            return '?' + params.urlencode()
+        
         context = {
             'employees': page_obj,
-            'page_obj': page_obj
+            'page_obj': page_obj,
+            'sort_urls': {
+                'fio': get_sort_url('fio'),
+                'role': get_sort_url('role'),
+                'specialization': get_sort_url('specialization'),
+            },
+            'current_sort': {
+                'field': sort_field,
+                'direction': sort_direction,
+            }
         }
         return render(request, "crm/workers.html", context)
-    
-    def _get_fio(self, user):
-        parts = []
-        if user.last_name:
-            parts.append(user.last_name)
-        if user.first_name:
-            parts.append(f"{user.first_name[0]}.")
-        if user.surname:
-            parts.append(f"{user.surname[0]}.")
-        return ' '.join(parts) if parts else "-"
     
 class AnalyticsCall(View):
     def get(self, request):

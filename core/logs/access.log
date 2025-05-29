@@ -2053,3 +2053,93 @@
  Админ
 2025-05-29 23:00:39 | INFO | GET /admin/jsi18n/ status=200 user=Админ
  Админ
+2025-05-29 23:39:02 | INFO | GET /api/v1/applications/ status=302 user=anon
+2025-05-29 23:39:02 | INFO | GET /api/v1/login/?next=/api/v1/applications/ status=200 user=anon
+2025-05-29 23:39:05 | INFO | Пользователь admin вошел в систему
+2025-05-29 23:39:05 | INFO | POST /api/v1/login/?next=/api/v1/applications/ status=302 user=Админ
+ Админ
+2025-05-29 23:39:05 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-29 23:46:08 | INFO | GET /api/v1/employee status=302 user=anon
+2025-05-29 23:46:08 | INFO | GET /api/v1/login/?next=/api/v1/employee status=200 user=anon
+2025-05-29 23:46:12 | INFO | Пользователь admin вошел в систему
+2025-05-29 23:46:12 | INFO | POST /api/v1/login/?next=/api/v1/employee status=302 user=Админ
+ Админ
+2025-05-29 23:46:12 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-29 23:46:15 | INFO | GET /modal/add-employee/ status=200 user=Админ
+ Админ
+2025-05-29 23:46:16 | INFO | GET /modal/edit-employee/ status=200 user=Админ
+ Админ
+2025-05-29 23:46:20 | INFO | GET /api/v1/records/ status=200 user=Админ
+ Админ
+2025-05-29 23:46:20 | INFO | GET /modal/change-record/ status=200 user=Админ
+ Админ
+2025-05-29 23:46:45 | INFO | GET /api/v1/records/ status=200 user=Админ
+ Админ
+2025-05-29 23:46:46 | INFO | GET /modal/change-record/ status=200 user=Админ
+ Админ
+2025-05-29 23:46:51 | INFO | GET /api/v1/records/ status=200 user=Админ
+ Админ
+2025-05-29 23:46:53 | INFO | GET /modal/change-record/ status=200 user=Админ
+ Админ
+2025-05-29 23:53:32 | INFO | GET /api/v1/employee status=302 user=anon
+2025-05-29 23:53:32 | INFO | GET /api/v1/login/?next=/api/v1/employee status=200 user=anon
+2025-05-29 23:53:36 | INFO | Пользователь admin вошел в систему
+2025-05-29 23:53:36 | INFO | POST /api/v1/login/?next=/api/v1/employee status=302 user=Админ
+ Админ
+2025-05-29 23:53:36 | INFO | GET /api/v1/employee status=500 user=Админ
+ Админ
+2025-05-29 23:56:06 | INFO | GET /api/v1/employee status=302 user=anon
+2025-05-29 23:56:06 | INFO | GET /api/v1/login/?next=/api/v1/employee status=200 user=anon
+2025-05-29 23:56:10 | INFO | Пользователь admin вошел в систему
+2025-05-29 23:56:10 | INFO | POST /api/v1/login/?next=/api/v1/employee status=302 user=Админ
+ Админ
+2025-05-29 23:56:10 | INFO | GET /api/v1/employee status=500 user=Админ
+ Админ
+2025-05-29 23:57:16 | INFO | GET /api/v1/employee status=302 user=anon
+2025-05-29 23:57:16 | INFO | GET /api/v1/login/?next=/api/v1/employee status=200 user=anon
+2025-05-29 23:57:20 | INFO | Пользователь admin вошел в систему
+2025-05-29 23:57:20 | INFO | POST /api/v1/login/?next=/api/v1/employee status=302 user=Админ
+ Админ
+2025-05-29 23:57:20 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-30 00:00:17 | INFO | GET /api/v1/employee status=302 user=anon
+2025-05-30 00:00:17 | INFO | GET /api/v1/login/?next=/api/v1/employee status=200 user=anon
+2025-05-30 00:00:21 | INFO | Пользователь admin вошел в систему
+2025-05-30 00:00:21 | INFO | POST /api/v1/login/?next=/api/v1/employee status=302 user=Админ
+ Админ
+2025-05-30 00:00:21 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-30 00:00:24 | INFO | GET /api/v1/employee?sort=role&direction=asc status=200 user=Админ
+ Админ
+2025-05-30 00:00:27 | INFO | GET /api/v1/employee?page=2&sort=role&direction=asc status=200 user=Админ
+ Админ
+2025-05-30 00:00:30 | INFO | GET /api/v1/employee?page=1&sort=role&direction=asc status=200 user=Админ
+ Админ
+2025-05-30 00:00:32 | INFO | GET /api/v1/employee?page=1&sort=role&direction=desc status=200 user=Админ
+ Админ
+2025-05-30 00:00:34 | INFO | GET /api/v1/employee?page=1&sort=role&direction=asc status=200 user=Админ
+ Админ
+2025-05-30 00:00:36 | INFO | GET /api/v1/employee?page=1&sort=specialization&direction=asc status=200 user=Админ
+ Админ
+2025-05-30 00:00:41 | INFO | GET /api/v1/employee?page=1&sort=fio&direction=asc status=200 user=Админ
+ Админ
+2025-05-30 00:00:44 | INFO | GET /api/v1/employee?page=2&sort=fio&direction=asc status=200 user=Админ
+ Админ
+2025-05-30 00:00:53 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-30 00:01:33 | INFO | GET /modal/edit-employee/ status=200 user=Админ
+ Админ
+2025-05-30 00:01:55 | INFO | GET /api/v1/records/ status=200 user=Админ
+ Админ
+2025-05-30 00:01:58 | INFO | GET /api/v1/records/?sort=client__last_name&dir=asc&page=1 status=200 user=Админ
+ Админ
+2025-05-30 00:02:00 | INFO | GET /modal/change-record/ status=200 user=Админ
+ Админ
+2025-05-30 00:02:12 | INFO | GET /api/v1/records/?sort=client__created_at&dir=asc&page=1 status=200 user=Админ
+ Админ
+2025-05-30 00:02:17 | INFO | GET /api/v1/records/ status=200 user=Админ
+ Админ
+2025-05-30 00:02:35 | INFO | GET /modal/change-record/ status=200 user=Админ
+ Админ
