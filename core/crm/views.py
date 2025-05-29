@@ -499,7 +499,90 @@ class ModalViewEditEmployee(View):
     
 class Records(View):
     def get(self, request):
-        return render(request, 'crm/records.html')
+        # параметры сортировки из GET-запроса
+        sort_field = request.GET.get('sort', 'id')
+        sort_direction = request.GET.get('dir', 'asc')
+
+        status_filter = request.GET.getlist('status')
+
+        # параметры фильтрации
+        doctor_filter = request.GET.getlist('doctor')  # список выбранных врачей
+        search_query = request.GET.get('search', '')  # параметр поиска
+        start_date = request.GET.get('start_date')  # Начальная дата
+        end_date = request.GET.get('end_date')  # Конечная дата
+        record_start_date = request.GET.get('record_start_date')  # Начальная дата записи
+        record_end_date = request.GET.get('record_end_date')  # Конечная дата записи
+        call_start_date = request.GET.get('call_start_date')  # Начальная дата звонка
+        call_end_date = request.GET.get('call_end_date')  # Конечная дата звонка
+
+        # порядок сортировки
+        if sort_direction == 'desc':
+            sort_field = f'-{sort_field}'
+
+        # main запрос
+        queryset = Application.objects.select_related(
+            'client',
+            'status',
+            'doctor',
+            'doctor__user',
+        ).prefetch_related(
+            Prefetch('comments', queryset=Comment.objects.select_related('manager'))
+        )
+
+        #  фильтры по датам
+        if start_date and end_date:
+            queryset = queryset.filter(client__created_at__range=[start_date, end_date])
+        if record_start_date and record_end_date:
+            queryset = queryset.filter(date_recording__range=[record_start_date, record_end_date])
+        if call_start_date and call_end_date:
+            queryset = queryset.filter(date_next_call__range=[call_start_date, call_end_date])
+
+        #  фильтры по врачам
+        if doctor_filter:
+            queryset = queryset.filter(doctor__user__last_name__in=doctor_filter)
+
+        if status_filter:
+            queryset = queryset.filter(status__status__in=status_filter)
+
+        #  фильтрацию по поисковому запросу
+        if search_query:
+            queryset = queryset.filter(
+                Q(client__last_name__icontains=search_query) |
+                Q(client__first_name__icontains=search_query) |
+                Q(client__surname__icontains=search_query)
+            )
+
+        # Сортировка
+        queryset = queryset.order_by(sort_field)
+
+        # Пагинация
+        paginator = Paginator(queryset, 30)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
+        #  список всех врачей 
+        doctors = Doctor.objects.select_related('user').filter(user__role_id=3).values_list('user__last_name', flat=True).distinct()
+
+        #  все статусы из базы данных
+        statuses = Status.objects.all().values_list('status', flat=True)
+
+        context = {
+            'page_obj': page_obj,
+            'current_sort': sort_field.lstrip('-'),
+            'current_direction': sort_direction,
+            'doctors': doctors,  
+            'statuses': statuses,
+            'selected_statuses': status_filter,
+            'search_query': search_query, 
+            'start_date': start_date,  
+            'end_date': end_date, 
+            'record_start_date': record_start_date,  
+            'record_end_date': record_end_date, 
+            'call_start_date': call_start_date, 
+            'call_end_date': call_end_date, 
+        }
+
+        return render(request, 'crm/records.html', context)
 
 class ModalViewShowRecord(View):
     def get(self, request):

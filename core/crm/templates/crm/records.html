@@ -1,4 +1,5 @@
 {% load static %}
+{% load pagination_tags %}
 
 <!DOCTYPE html>
 <html lang="ru">
@@ -58,9 +59,15 @@
           </li>
         </ul>
       </nav>
+
+      <!-- Скрытая форма для отправки POST запроса на логаут -->
+      <form id="logout-form" method="POST" action="{% url 'logout' %}" style="display:none;">
+        {% csrf_token %}
+      </form>
     </header>
 
     <!-- Основное содержимое -->
+  <div id="modal-overlay" class="modal-overlay" style="display:none;"></div>
     <div class="main-container">
       <!-- Блок фильтров -->
       <div class="filters" id="filters-container">
@@ -75,105 +82,100 @@
         <div class="filter-section">
           <div
             class="filter-header collapsed"
-            onclick="toggleSection('client-options')"
-          >
+            onclick="toggleSection('status-options')">
             Статус
           </div>
-          <ul class="filter-items collapsed" id="client-options">
-            <li class="filter-item">Оказана<input type="checkbox" /></li>
-            <li class="filter-item">Перенесена<input type="checkbox" /></li>
-            <li class="filter-item">Удалена<input type="checkbox" /></li>
-          </ul>
+          <div class="filter-content collapsed" id="status-options">
+            <ul class="filter-items">
+              {% for status in statuses %}
+                <li class="filter-item">
+                  {{ status }}
+                  <input
+                    type="checkbox"
+                    name="status"
+                    id="status-{{ status|slugify }}"
+                    {% if status in selected_statuses %}checked{% endif %}
+                  />
+                </li>
+              {% endfor %}
+            </ul>
+
+            <button class="show-all-btn" onclick="toggleShowAll('status-options', this)">
+              Показать все
+            </button>
+          </div>
         </div>
 
         <!-- Фильтр по врачам -->
-<div class="filter-section">
-  <div
-    class="filter-header collapsed"
-    onclick="toggleSection('doctor-options')"
-  >
-    Врач
-  </div>
-  <ul class="filter-items collapsed" id="doctor-options">
-    <div class="filter-search">
-      <input
-        type="text"
-        class="filter-search-input"
-        placeholder="Поиск по врачам..."
-        oninput="filterItems('doctor-options', this.value)"
-      />
-    </div>
-    <li class="filter-item">
-      Иванов<input type="checkbox" name="doctor" id="doctor-ivanov" />
-    </li>
-    <li class="filter-item">
-      Петров<input type="checkbox" name="doctor" id="doctor-petrov" />
-    </li>
-    <li class="filter-item">
-      Сидоров<input type="checkbox" name="doctor" id="doctor-sidorov" />
-    </li>
-    <li class="filter-item">
-      Сидоров<input type="checkbox" name="doctor" id="doctor-sidorov" />
-    </li>
-    <li class="filter-item">
-      Сидоров<input type="checkbox" name="doctor" id="doctor-sidorov" />
-    </li>
-    <li class="filter-item">
-      Сидоров<input type="checkbox" name="doctor" id="doctor-sidorov" />
-    </li>
-    <button class="show-all-btn" onclick="toggleShowAll('doctor-options', this)">
-      Показать все
-    </button>
-  </ul>
-</div>
+        <div class="filter-section">
+          <div class="filter-header collapsed" onclick="toggleSection('doctor-options')">
+            Врач
+          </div>
 
-<!-- Фильтр по услугам -->
-<div class="filter-section">
-  <div
-    class="filter-header collapsed"
-    onclick="toggleSection('service-options')"
-  >
-    Услуга
-  </div>
-  <ul class="filter-items collapsed" id="service-options">
-    <div class="filter-search">
-      <input
-        type="text"
-        class="filter-search-input"
-        placeholder="Поиск по услуге..."
-        oninput="filterItems('service-options', this.value)"
-      />
-    </div>
-    <li class="filter-item">
-      Массаж<input type="checkbox" name="service" id="service-massage" />
-    </li>
-    <li class="filter-item">
-      Консультация<input
-        type="checkbox"
-        name="service"
-        id="service-consultation"
-      />
-    </li>
-    <li class="filter-item">
-      Диагностика<input
-        type="checkbox"
-        name="service"
-        id="service-diagnostics"
-      />
-    </li>
-    <li class="filter-item">
-      Диагностика<input
-        type="checkbox"
-        name="service"
-        id="service-diagnostics"
-      />
-    </li>
-    
-    <button class="show-all-btn" onclick="toggleShowAll('service-options', this)">
-      Показать все
-    </button>
-  </ul>
-</div>
+          <div class="filter-content collapsed" id="doctor-options">
+            <div class="filter-search">
+              <input
+                type="text"
+                class="filter-search-input"
+                placeholder="Поиск по врачам..."
+                oninput="filterItems('doctor-options', this.value)"
+              />
+            </div>
+
+            <ul class="filter-items">
+              {% for doctor in doctors %}
+                <li class="filter-item">
+                  {{ doctor }}
+                  <input 
+                    type="checkbox" 
+                    name="doctor" 
+                    id="doctor-{{ doctor|slugify }}" 
+                    {% if doctor in request.GET.getlist|default:'' %}checked{% endif %}
+                    value="{{ doctor }}"
+                  />
+                </li>
+              {% endfor %}
+            </ul>
+
+            <button class="show-all-btn" onclick="toggleShowAll('doctor-options', this)">
+              Показать все
+            </button>
+          </div>
+        </div>
+        
+        <!-- Фильтр по услугам -->
+        <div class="filter-section">
+          <div class="filter-header collapsed" onclick="toggleSection('service-options')">
+            Услуга
+          </div>
+          <div class="filter-content collapsed" id="service-options">
+            <div class="filter-search">
+              <input
+                type="text"
+                class="filter-search-input"
+                placeholder="Поиск по услуге..."
+                oninput="filterItems('service-options', this.value)"
+              />
+            </div>
+            <ul class="filter-items">
+              <li class="filter-item">
+                Массаж<input type="checkbox" name="service" id="service-massage" />
+              </li>
+              <li class="filter-item">
+                Консультация<input type="checkbox" name="service" id="service-consultation" />
+              </li>
+              <li class="filter-item">
+                Диагностика<input type="checkbox" name="service" id="service-diagnostics" />
+              </li>
+              <li class="filter-item">
+                Диагностика<input type="checkbox" name="service" id="service-diagnostics" />
+              </li>
+            </ul>
+            <button class="show-all-btn" onclick="toggleShowAll('service-options', this)">
+              Показать все
+            </button>
+          </div>
+        </div>
 
         <!-- Фильтр по дате -->
         <div class="filter-section">
@@ -190,6 +192,7 @@
                 type="date"
                 class="filter-date-input"
                 id="start-date"
+                value="{{ start_date }}"
               />
             </div>
             <div class="filter-search">
@@ -198,71 +201,77 @@
                 type="date"
                 class="filter-date-input"
                 id="end-date"
+                value="{{ end_date }}"
               />
             </div>
           </div>
         </div>
 
         <!-- Фильтр по дате записи -->
-<div class="filter-section">
-  <div
-    class="filter-header collapsed"
-    onclick="toggleSection('record-date-options')"
-  >
-    Дата записи
-  </div>
-  <div class="filter-content collapsed" id="record-date-options">
-    <div class="filter-search">
-      <label for="record-start-date">Начальная дата:</label>
-      <input
-        type="date"
-        class="filter-date-input"
-        id="record-start-date"
-      />
-    </div>
-    <div class="filter-search">
-      <label for="record-end-date">Конечная дата:</label>
-      <input
-        type="date"
-        class="filter-date-input"
-        id="record-end-date"
-      />
-    </div>
-  </div>
-</div>
+        <div class="filter-section">
+          <div
+            class="filter-header collapsed"
+            onclick="toggleSection('record-date-options')"
+          >
+            Дата записи
+          </div>
+          <div class="filter-content collapsed" id="record-date-options">
+            <div class="filter-search">
+              <label for="record-start-date">Начальная дата:</label>
+              <input
+                type="date"
+                class="filter-date-input"
+                id="record-start-date"
+                value="{{ record_start_date }}"
+              />
+            </div>
+            <div class="filter-search">
+              <label for="record-end-date">Конечная дата:</label>
+              <input
+                type="date"
+                class="filter-date-input"
+                id="record-end-date"
+                value="{{ record_end_date }}"
+              />
+            </div>
+          </div>
+        </div>
 
-<!-- Фильтр по дате звонка -->
-<div class="filter-section">
-  <div
-    class="filter-header collapsed"
-    onclick="toggleSection('call-date-options')">
-    Дата зследующего звонка
-  </div>
-  <div class="filter-content collapsed" id="call-date-options">
-    <div class="filter-search">
-      <label for="call-start-date">Начальная дата:</label>
-      <input
-        type="date"
-        class="filter-date-input"
-        id="call-start-date"
-      />
+        <!-- Фильтр по дате звонка -->
+        <div class="filter-section">
+          <div
+            class="filter-header collapsed"
+            onclick="toggleSection('call-date-options')">
+            Дата следующего звонка
+          </div>
+          <div class="filter-content collapsed" id="call-date-options">
+            <div class="filter-search">
+              <label for="call-start-date">Начальная дата:</label>
+              <input
+                type="date"
+                class="filter-date-input"
+                id="call-start-date"
+                value="{{ call_start_date }}"
+              />
+            </div>
+            <div class="filter-search">
+              <label for="call-end-date">Конечная дата:</label>
+              <input
+                type="date"
+                class="filter-date-input"
+                id="call-end-date"
+                value="{{ call_end_date }}"
+              />
+            </div>
+          </div>
+
+        <div class="filter-buttons">
+          <button class="filter-apply-btn" onclick="applyFilters()">Применить</button>
+          <button class="filter-reset-btn" onclick="resetFilters()">Сбросить</button>
+        </div>  
     </div>
-    <div class="filter-search">
-      <label for="call-end-date">Конечная дата:</label>
-      <input
-        type="date"
-        class="filter-date-input"
-        id="call-end-date"
-      />
-    </div>
-  </div>
-  <div class="filter-buttons">
-      <button class="filter-apply-btn" onclick="applyFilters()">Применить</button>
-      <button class="filter-reset-btn" onclick="resetFilters()">Сбросить</button>
-  </div>  
-        
 </div>
-      </div>
+      
 
       <!-- Таблица с записями -->
       <div class="table">
@@ -270,86 +279,124 @@
           <thead>
             <tr>
               <th>
-                <a href="" id="sort-date"
-                  >Дата <img src="{% static 'crm/img/arrow_sort.svg' %}" alt="" class="arrow"
-                /></a>
+                <a href="?sort=client__created_at&dir={% if current_sort == 'client__created_at' and current_direction == 'asc' %}desc{% else %}asc{% endif %}&page=1" id="sort-date">
+                  Дата 
+                  <img src="{% static 'crm/img/arrow_sort.svg' %}" 
+                       alt="" 
+                       class="arrow {% if current_sort == 'client__created_at' %}{% if current_direction == 'asc' %}arrow-up{% else %}arrow-down{% endif %}{% endif %}"/>
+                </a>
               </th>
               <th>
-                <a href="" id="sort-name"
-                  >Имя<img src="{% static 'crm/img/arrow_sort.svg' %}" alt="" class="arrow"
-                /></a>
+                <a href="?sort=client__last_name&dir={% if current_sort == 'client__last_name' and current_direction == 'asc' %}desc{% else %}asc{% endif %}&page=1" id="sort-name">
+                  Имя
+                  <img src="{% static 'crm/img/arrow_sort.svg' %}" 
+                       alt="" 
+                       class="arrow {% if current_sort == 'client__last_name' %}{% if current_direction == 'asc' %}arrow-up{% else %}arrow-down{% endif %}{% endif %}"/>
+                </a>
               </th>
               <th>Номер</th>
               <th>
-                <a href="" id="sort-status"
-                  >Статус <img src="{% static 'crm/img/arrow_sort.svg' %}" alt="" class="arrow"
-                /></a>
+                <a href="?sort=status__status&dir={% if current_sort == 'status__status' and current_direction == 'asc' %}desc{% else %}asc{% endif %}&page=1" id="sort-status">
+                  Статус
+                  <img src="{% static 'crm/img/arrow_sort.svg' %}" 
+                       alt="" 
+                       class="arrow {% if current_sort == 'status__status' %}{% if current_direction == 'asc' %}arrow-up{% else %}arrow-down{% endif %}{% endif %}"/>
+                </a>
               </th>
               <th>
-                <a href="" id="sort-doctor"
-                  >Врач <img src="{% static 'crm/img/arrow_sort.svg' %}" alt="" class="arrow"
-                /></a>
+                <a href="?sort=doctor__user__last_name&dir={% if current_sort == 'doctor__user__last_name' and current_direction == 'asc' %}desc{% else %}asc{% endif %}&page=1" id="sort-doctor">
+                  Врач
+                  <img src="{% static 'crm/img/arrow_sort.svg' %}" 
+                       alt="" 
+                       class="arrow {% if current_sort == 'doctor__user__last_name' %}{% if current_direction == 'asc' %}arrow-up{% else %}arrow-down{% endif %}{% endif %}"/>
+                </a>
               </th>
               <th>
-                <a href="" id="sort-service"
-                  >Услуга <img src="{% static 'crm/img/arrow_sort.svg' %}" alt="" class="arrow"
-                /></a>
+                <a href="?sort=service__name&dir={% if current_sort == 'service__name' and current_direction == 'asc' %}desc{% else %}asc{% endif %}&page=1" id="sort-service">
+                  Услуга
+                  <img src="{% static 'crm/img/arrow_sort.svg' %}" 
+                       alt="" 
+                       class="arrow {% if current_sort == 'service__name' %}{% if current_direction == 'asc' %}arrow-up{% else %}arrow-down{% endif %}{% endif %}"/>
+                </a>
               </th>
               <th>Комментарий</th>
               <th>
-                <a href="" id="sort-record"
-                  >Запись <img src="{% static 'crm/img/arrow_sort.svg' %}"alt="" class="arrow"
-                /></a>
+                <a href="?sort=date_recording&dir={% if current_sort == 'date_recording' and current_direction == 'asc' %}desc{% else %}asc{% endif %}&page=1" id="sort-record">
+                  Запись 
+                  <img src="{% static 'crm/img/arrow_sort.svg' %}" 
+                       alt="" 
+                       class="arrow {% if current_sort == 'date_recording' %}{% if current_direction == 'asc' %}arrow-up{% else %}arrow-down{% endif %}{% endif %}"/>
+                </a>
               </th>
               <th>
-                <a href="" id="sort-next-call"
-                  >Следующий звонок
-                  <img src="{% static 'crm/img/arrow_sort.svg' %}" alt="" class="arrow"
-                /></a>
+                <a href="?sort=date_next_call&dir={% if current_sort == 'date_next_call' and current_direction == 'asc' %}desc{% else %}asc{% endif %}&page=1" id="sort-next-call">
+                  Следующий звонок
+                  <img src="{% static 'crm/img/arrow_sort.svg' %}" 
+                       alt="" 
+                       class="arrow {% if current_sort == 'date_next_call' %}{% if current_direction == 'asc' %}arrow-up{% else %}arrow-down{% endif %}{% endif %}"/>
+                </a>
               </th>
             </tr>
           </thead>
-          <tbody>
-            <tbody>
-              <tr class="record-row-show">
-                <td>24.05.2025</td>
-                <td>Кенешбеков И.Д.</td>
-                <td>+7 924 738 63 02</td>
-                <td>Перенесена</td>
-                <td>Найдина З.В.</td>
-                <td>Массаж</td>
-                <td>04.04 Валера<br />Какой-то крутой текст например...</td>
-                <td>12:28<br />04.04.2025</td>
-                <td>04.04.2025</td>
-              </tr>
-              <tbody>
-                <tr class="record-row-show">
-                  <td>24.05.2025</td>
-                  <td>Кенешбеков И.Д.</td>
-                  <td>+7 924 738 63 02</td>
-                  <td>Перенесена</td>
-                  <td>Найдина З.В.</td>
-                  <td>Массаж</td>
-                  <td>04.04 Валера<br />Какой-то крутой текст например...</td>
-                  <td>12:28<br />04.04.2025</td>
-                  <td>04.04.2025</td>
-                </tr>
+          <tbody id="record-container">
+            {% for app in page_obj %}
+            <tr class="record-row" data-record-id="{{ app.id }}">
+              <td>{{ app.client.created_at|date:"d.m.Y"|default:None }}</td>
+              <td>
+                {{ app.client.last_name }}
+                {% if app.client.first_name %}
+                  {{ app.client.first_name|slice:":1" }}.
+                {% endif %}
+                {% if app.client.surname %}
+                  {{ app.client.surname|slice:":1" }}.
+                {% endif %}
+              </td>
+              <td>{{ app.client.phone_number|default:"-" }}</td>
+              <td class="status-done">{{ app.status.status }}</td>
+              <td>
+                {% if app.doctor %}
+                  {{ app.doctor.user.last_name }}
+                  {% if app.doctor.user.first_name %}
+                    {{ app.doctor.user.first_name|slice:":1" }}.
+                  {% endif %}
+                {% else %}
+                  -
+                {% endif %}
+              </td>
+              <td>{{ app.service.name|default:None }}</td>
+              <td>
+                {% if app.comments.first %}
+                  {{ app.comments.first.created_at|date:"d.m" }} {{ app.comments.first.manager.user.last_name }}<br>
+                  {{ app.comments.first.comment|truncatechars:30 }}
+                {% else %}
+                  -
+                {% endif %}
+              </td>
+              <td>{{ app.date_recording|date:"d.m.Y"|default:None }}</td>
+              <td>{{ app.date_next_call|date:"d.m.Y"|default:None }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
         </table>
-
+      
         <!-- Пагинация -->
         <div class="pagination">
-          <button id="prevPage" class="pagination-btn" disabled>Назад</button>
-          <span id="pageIndicator">Стр. 1</span>
-          <button id="nextPage" class="pagination-btn">Вперёд</button>
+          {% if page_obj.has_previous %}
+            <a href="{% pagination_url request page_obj.previous_page_number %}" class="pagination-btn">Назад</a>
+          {% else %}
+            <button class="pagination-btn" disabled>Назад</button>
+          {% endif %}
+          
+          <span id="pageIndicator">Стр. {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+          
+          {% if page_obj.has_next %}
+            <a href="{% pagination_url request page_obj.next_page_number %}" class="pagination-btn">Вперёд</a>
+          {% else %}
+            <button class="pagination-btn" disabled>Вперёд</button>
+          {% endif %}
         </div>
-      </div>
-    </div>
-
-  </div>
-
-
 
   <!-- Основной скрипт -->
-  <script src="{% static 'crm/js/script_modal_workers.js' %}"></script>
+  <script src="{% static 'crm/js/scriptModal.js' %}"></script>
   </body>
 </html>

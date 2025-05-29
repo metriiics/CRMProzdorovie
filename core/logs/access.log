@@ -1744,3 +1744,97 @@
  Админ
 2025-05-29 21:44:57 | INFO | GET /api/v1/employee?page=1 status=200 user=Админ
  Админ
+2025-05-29 22:06:14 | INFO | GET /api/v1/applications/ status=200 user=Админ
+ Админ
+2025-05-29 22:06:16 | INFO | POST /logout/ status=302 user=anon
+2025-05-29 22:06:16 | INFO | GET /api/v1/login/ status=200 user=anon
+2025-05-29 22:06:22 | INFO | Неудачная попытка входа: username=admin
+2025-05-29 22:06:22 | INFO | POST /api/v1/login/ status=200 user=anon
+2025-05-29 22:06:27 | INFO | Неудачная попытка входа: username=admin
+2025-05-29 22:06:27 | INFO | POST /api/v1/login/ status=200 user=anon
+2025-05-29 22:06:36 | INFO | Пользователь admin вошел в систему
+2025-05-29 22:06:36 | INFO | POST /api/v1/login/ status=302 user=Админ
+ Админ
+2025-05-29 22:06:37 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-29 22:08:37 | INFO | GET /api/v1/employee status=302 user=anon
+2025-05-29 22:08:37 | INFO | GET /api/v1/login/?next=/api/v1/employee status=200 user=anon
+2025-05-29 22:08:42 | INFO | Пользователь admin вошел в систему
+2025-05-29 22:08:42 | INFO | POST /api/v1/login/?next=/api/v1/employee status=302 user=Админ
+ Админ
+2025-05-29 22:08:42 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-29 22:08:47 | INFO | GET /api/v1/records/ status=200 user=Админ
+ Админ
+2025-05-29 22:12:27 | INFO | GET / status=404 user=anon
+2025-05-29 22:12:36 | INFO | GET /api/v1/applications/ status=302 user=anon
+2025-05-29 22:12:36 | INFO | GET /api/v1/login/?next=/api/v1/applications/ status=200 user=anon
+2025-05-29 22:12:41 | INFO | Пользователь admin вошел в систему
+2025-05-29 22:12:41 | INFO | POST /api/v1/login/?next=/api/v1/applications/ status=302 user=Админ
+ Админ
+2025-05-29 22:12:41 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-29 22:12:44 | INFO | GET /api/v1/records/ status=200 user=Админ
+ Админ
+2025-05-29 22:13:34 | INFO | GET /api/v1/analytics-money status=200 user=Админ
+ Админ
+2025-05-29 22:13:37 | INFO | GET /api/v1/analytics-call status=200 user=Админ
+ Админ
+2025-05-29 22:13:38 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-05-29 22:13:43 | INFO | GET /modal/edit-employee/ status=200 user=Админ
+ Админ
+2025-05-29 22:13:48 | INFO | GET /api/v1/employee?page=2 status=200 user=Админ
+ Админ
+2025-05-29 22:13:59 | INFO | GET /admin status=301 user=Админ
+ Админ
+2025-05-29 22:13:59 | INFO | GET /admin/ status=200 user=Админ
+ Админ
+2025-05-29 22:14:05 | INFO | GET /admin/crm/doctor/ status=200 user=Админ
+ Админ
+2025-05-29 22:14:05 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-29 22:14:14 | INFO | GET /admin/crm/doctor/52/change/ status=200 user=Админ
+ Админ
+2025-05-29 22:14:15 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-29 22:14:17 | INFO | GET /admin/crm/doctor/ status=200 user=Админ
+ Админ
+2025-05-29 22:15:02 | INFO | GET /admin/crm/application/ status=200 user=Админ
+ Админ
+2025-05-29 22:15:02 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-29 22:15:36 | INFO | GET /admin/crm/status/ status=200 user=Админ
+ Админ
+2025-05-29 22:15:36 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-29 22:15:39 | INFO | GET /admin/crm/specialization/ status=200 user=Админ
+ Админ
+2025-05-29 22:15:39 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-29 22:15:41 | INFO | GET /admin/crm/role/ status=200 user=Админ
+ Админ
+2025-05-29 22:15:41 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-29 22:15:42 | INFO | GET /admin/crm/user/ status=200 user=Админ
+ Админ
+2025-05-29 22:15:42 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-29 22:17:39 | INFO | GET /admin/crm/comment/ status=200 user=Админ
+ Админ
+2025-05-29 22:17:39 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-29 22:17:44 | INFO | GET /admin/crm/client/ status=200 user=Админ
+ Админ
+2025-05-29 22:17:44 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-29 22:17:55 | INFO | GET /admin/crm/application/ status=200 user=Админ
+ Админ
+2025-05-29 22:17:55 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-29 22:17:59 | INFO | GET /admin/crm/application/10301/change/ status=200 user=Админ
+ Админ
+2025-05-29 22:17:59 | INFO | GET /admin/jsi18n/ status=200 user=Админ
+ Админ
+2025-05-29 22:18:02 | INFO | GET /admin/crm/application/ status=200 user=Админ
+ Админ
