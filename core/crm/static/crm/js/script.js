@@ -27,6 +27,17 @@ function initializeModalWindows() {
     e.preventDefault();
     showModal("add-employee-btn");
   });
+
+  document.querySelectorAll(".employee-row").forEach((row) => {
+    row.addEventListener("click", () => {
+      showModal("change-employee-btn"); 
+    });
+  });
+  document.querySelectorAll(".record-row-show").forEach((row) => {
+    row.addEventListener("click", () => {
+      showModal("show-record-btn"); 
+    });
+  });
 }
 
 // Инициализация при загрузке страницы

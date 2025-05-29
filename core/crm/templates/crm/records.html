@@ -1,0 +1,355 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Создать запись</title>
+
+    <!-- Стили -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{% static 'crm/css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'crm/css/styleModal.css' %}" />
+ 
+    <!-- Скрипты -->
+    <script src="{% static 'crm/js/script.js' %}"></script>
+    <script src="{% static 'crm/js/modal_loader.js' %}"></script>
+  </head>
+  <body>
+    <!-- Шапка -->
+    <header>
+      <img
+        class="logo"
+        src="{% static 'crm/img/logo.svg' %}"
+        alt="Медицинский центр ProЗдоровье"
+      />
+
+      <nav class="navbar">
+        <ul class="links">
+          <li>
+            <a href="" id="add-employee-btn">
+            <img src="{% static 'crm/img/add.svg' %}" alt="" />Новый сотрудник
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'analytics_money' %}">
+              <img src="{% static 'crm/img/create.svg' %}" alt="" />Отчет
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'analytics_call' %}">
+              <img src="{% static 'crm/img/create.svg' %}" alt="" />Отчет по звонкам
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'records' %}"> <img src="{% static 'crm/img/add.svg' %}" alt="" />Записи </a>
+          </li>
+          <li>
+            <a href="{% url 'employee-list' %}">
+              <img src="{% static 'crm/img/edit.svg' %}" alt="" />Сотрудники
+            </a>
+          </li>
+          <li>
+            <a href="#" id="logout-link">Выйти</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Основное содержимое -->
+    <div class="main-container">
+      <!-- Блок фильтров -->
+      <div class="filters" id="filters-container">
+        <div class="filter-label">Фильтры</div>
+
+        <!-- Поиск по фильтрам -->
+        <div class="filter-search">
+          <input type="text" id="filter-search-input" placeholder="Поиск..." />
+        </div>
+
+        <!-- Фильтр по статусу -->
+        <div class="filter-section">
+          <div
+            class="filter-header collapsed"
+            onclick="toggleSection('client-options')"
+          >
+            Статус
+          </div>
+          <ul class="filter-items collapsed" id="client-options">
+            <li class="filter-item">Оказана<input type="checkbox" /></li>
+            <li class="filter-item">Перенесена<input type="checkbox" /></li>
+            <li class="filter-item">Удалена<input type="checkbox" /></li>
+          </ul>
+        </div>
+
+        <!-- Фильтр по врачам -->
+<div class="filter-section">
+  <div
+    class="filter-header collapsed"
+    onclick="toggleSection('doctor-options')"
+  >
+    Врач
+  </div>
+  <ul class="filter-items collapsed" id="doctor-options">
+    <div class="filter-search">
+      <input
+        type="text"
+        class="filter-search-input"
+        placeholder="Поиск по врачам..."
+        oninput="filterItems('doctor-options', this.value)"
+      />
+    </div>
+    <li class="filter-item">
+      Иванов<input type="checkbox" name="doctor" id="doctor-ivanov" />
+    </li>
+    <li class="filter-item">
+      Петров<input type="checkbox" name="doctor" id="doctor-petrov" />
+    </li>
+    <li class="filter-item">
+      Сидоров<input type="checkbox" name="doctor" id="doctor-sidorov" />
+    </li>
+    <li class="filter-item">
+      Сидоров<input type="checkbox" name="doctor" id="doctor-sidorov" />
+    </li>
+    <li class="filter-item">
+      Сидоров<input type="checkbox" name="doctor" id="doctor-sidorov" />
+    </li>
+    <li class="filter-item">
+      Сидоров<input type="checkbox" name="doctor" id="doctor-sidorov" />
+    </li>
+    <button class="show-all-btn" onclick="toggleShowAll('doctor-options', this)">
+      Показать все
+    </button>
+  </ul>
+</div>
+
+<!-- Фильтр по услугам -->
+<div class="filter-section">
+  <div
+    class="filter-header collapsed"
+    onclick="toggleSection('service-options')"
+  >
+    Услуга
+  </div>
+  <ul class="filter-items collapsed" id="service-options">
+    <div class="filter-search">
+      <input
+        type="text"
+        class="filter-search-input"
+        placeholder="Поиск по услуге..."
+        oninput="filterItems('service-options', this.value)"
+      />
+    </div>
+    <li class="filter-item">
+      Массаж<input type="checkbox" name="service" id="service-massage" />
+    </li>
+    <li class="filter-item">
+      Консультация<input
+        type="checkbox"
+        name="service"
+        id="service-consultation"
+      />
+    </li>
+    <li class="filter-item">
+      Диагностика<input
+        type="checkbox"
+        name="service"
+        id="service-diagnostics"
+      />
+    </li>
+    <li class="filter-item">
+      Диагностика<input
+        type="checkbox"
+        name="service"
+        id="service-diagnostics"
+      />
+    </li>
+    
+    <button class="show-all-btn" onclick="toggleShowAll('service-options', this)">
+      Показать все
+    </button>
+  </ul>
+</div>
+
+        <!-- Фильтр по дате -->
+        <div class="filter-section">
+          <div
+            class="filter-header collapsed"
+            onclick="toggleSection('date-range-options')"
+          >
+            Дата
+          </div>
+          <div class="filter-content collapsed" id="date-range-options">
+            <div class="filter-search">
+              <label for="start-date">Начальная дата:</label>
+              <input
+                type="date"
+                class="filter-date-input"
+                id="start-date"
+              />
+            </div>
+            <div class="filter-search">
+              <label for="end-date">Конечная дата:</label>
+              <input
+                type="date"
+                class="filter-date-input"
+                id="end-date"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Фильтр по дате записи -->
+<div class="filter-section">
+  <div
+    class="filter-header collapsed"
+    onclick="toggleSection('record-date-options')"
+  >
+    Дата записи
+  </div>
+  <div class="filter-content collapsed" id="record-date-options">
+    <div class="filter-search">
+      <label for="record-start-date">Начальная дата:</label>
+      <input
+        type="date"
+        class="filter-date-input"
+        id="record-start-date"
+      />
+    </div>
+    <div class="filter-search">
+      <label for="record-end-date">Конечная дата:</label>
+      <input
+        type="date"
+        class="filter-date-input"
+        id="record-end-date"
+      />
+    </div>
+  </div>
+</div>
+
+<!-- Фильтр по дате звонка -->
+<div class="filter-section">
+  <div
+    class="filter-header collapsed"
+    onclick="toggleSection('call-date-options')">
+    Дата зследующего звонка
+  </div>
+  <div class="filter-content collapsed" id="call-date-options">
+    <div class="filter-search">
+      <label for="call-start-date">Начальная дата:</label>
+      <input
+        type="date"
+        class="filter-date-input"
+        id="call-start-date"
+      />
+    </div>
+    <div class="filter-search">
+      <label for="call-end-date">Конечная дата:</label>
+      <input
+        type="date"
+        class="filter-date-input"
+        id="call-end-date"
+      />
+    </div>
+  </div>
+  <div class="filter-buttons">
+      <button class="filter-apply-btn" onclick="applyFilters()">Применить</button>
+      <button class="filter-reset-btn" onclick="resetFilters()">Сбросить</button>
+  </div>  
+        
+</div>
+      </div>
+
+      <!-- Таблица с записями -->
+      <div class="table">
+        <table>
+          <thead>
+            <tr>
+              <th>
+                <a href="" id="sort-date"
+                  >Дата <img src="{% static 'crm/img/arrow_sort.svg' %}" alt="" class="arrow"
+                /></a>
+              </th>
+              <th>
+                <a href="" id="sort-name"
+                  >Имя<img src="{% static 'crm/img/arrow_sort.svg' %}" alt="" class="arrow"
+                /></a>
+              </th>
+              <th>Номер</th>
+              <th>
+                <a href="" id="sort-status"
+                  >Статус <img src="{% static 'crm/img/arrow_sort.svg' %}" alt="" class="arrow"
+                /></a>
+              </th>
+              <th>
+                <a href="" id="sort-doctor"
+                  >Врач <img src="{% static 'crm/img/arrow_sort.svg' %}" alt="" class="arrow"
+                /></a>
+              </th>
+              <th>
+                <a href="" id="sort-service"
+                  >Услуга <img src="{% static 'crm/img/arrow_sort.svg' %}" alt="" class="arrow"
+                /></a>
+              </th>
+              <th>Комментарий</th>
+              <th>
+                <a href="" id="sort-record"
+                  >Запись <img src="{% static 'crm/img/arrow_sort.svg' %}"alt="" class="arrow"
+                /></a>
+              </th>
+              <th>
+                <a href="" id="sort-next-call"
+                  >Следующий звонок
+                  <img src="{% static 'crm/img/arrow_sort.svg' %}" alt="" class="arrow"
+                /></a>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tbody>
+              <tr class="record-row-show">
+                <td>24.05.2025</td>
+                <td>Кенешбеков И.Д.</td>
+                <td>+7 924 738 63 02</td>
+                <td>Перенесена</td>
+                <td>Найдина З.В.</td>
+                <td>Массаж</td>
+                <td>04.04 Валера<br />Какой-то крутой текст например...</td>
+                <td>12:28<br />04.04.2025</td>
+                <td>04.04.2025</td>
+              </tr>
+              <tbody>
+                <tr class="record-row-show">
+                  <td>24.05.2025</td>
+                  <td>Кенешбеков И.Д.</td>
+                  <td>+7 924 738 63 02</td>
+                  <td>Перенесена</td>
+                  <td>Найдина З.В.</td>
+                  <td>Массаж</td>
+                  <td>04.04 Валера<br />Какой-то крутой текст например...</td>
+                  <td>12:28<br />04.04.2025</td>
+                  <td>04.04.2025</td>
+                </tr>
+        </table>
+
+        <!-- Пагинация -->
+        <div class="pagination">
+          <button id="prevPage" class="pagination-btn" disabled>Назад</button>
+          <span id="pageIndicator">Стр. 1</span>
+          <button id="nextPage" class="pagination-btn">Вперёд</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+
+  <!-- Основной скрипт -->
+  <script src="{% static 'crm/js/script_modal_workers.js' %}"></script>
+  </body>
+</html>

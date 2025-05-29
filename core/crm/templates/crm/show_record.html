@@ -1,0 +1,93 @@
+<div class="modal">
+  <!-- Кнопка закрытия -->
+  <span class="close-btn">&times;</span>
+
+  <!-- Заголовок -->
+  <h1>Просмотр записи</h1>
+
+  <!-- Поиск клиента -->
+  <div class="search-container">
+    <label for="phone">Клиент</label>
+    <input type="text" class="search-input" readonly />
+    <div class="suggestions">
+      <div class="suggestion-item">Кенешбеков Иван Дмитриевич</div>
+      <div class="suggestion-item">Иванов Петр Сергеевич</div>
+      <div class="suggestion-item">Сидорова Анна Владимировна</div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="phone">Номер телефона</label>
+    <input
+      id="phone"
+      type="text"
+      class="search-input"
+      readonly
+      value="Тут подтягивается номер"
+    />
+  </div>
+
+  <!-- Поиск врача -->
+  <div class="search-container">
+    <label for="phone">Врач</label>
+    <input type="text" class="search-input" readonly/>
+  </div>
+
+  <!-- Поиск услуги -->
+  <div class="search-container">
+    <label for="phone">Услуга</label>
+    <input type="text" class="search-input" readonly />
+  </div>
+
+  <div class="date-time-container">
+    <div class="form-group">
+      <label for="service-date">Дата</label>
+      <input id="service-date" type="date" class="search-input" readonly/>
+    </div>
+
+    <div class="form-group">
+      <label for="service-time">Время</label>
+      <select id="service-time" class="search-input">
+        <option value="12:00">12:00</option>
+        <option value="12:30">12:30</option>
+        <option value="13:00">13:00</option>
+        <option value="13:30">13:30</option>
+        <option value="14:00">14:00</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="callback-date">Звонок</label>
+      <input id="callback-date" type="date" class="search-input" readonly />
+    </div>
+  </div>
+
+<!-- Способ оплаты и сумма -->
+<div class="payment-container">
+  <div class="form-group">
+    <label for="payment-method">Способ оплаты</label>
+    <select id="payment-method" class="search-input">
+      <option value="cash">Наличные</option>
+      <option value="card">Безналичный</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="payment-amount">Сумма</label>
+    <input 
+      id="payment-amount" 
+      type="text" 
+      class="search-input" 
+      readonly
+    />
+  </div>
+</div>  
+
+
+  <!-- Комментарии -->
+  <div class="comments-container">
+    <div class="comments-scroll">
+      <div class="comment">04.04 Валера Какой-то крутой текст например</div>
+    </div>
+  </div>
+</div>

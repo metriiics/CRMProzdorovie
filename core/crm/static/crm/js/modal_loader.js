@@ -4,7 +4,8 @@ const modalMap = {
   "edit-client-btn": "/modal/change-client/",
   "change-record-btn": "/modal/change-record/",
   "add-employee-btn": "/modal/add-employee/",
- // "": "modal/edit-employee/"
+  "change-employee-btn": "/modal/edit-employee/",
+  "show-record-btn": "/modal/show-record/"
 };
 
 const loadedModals = {};

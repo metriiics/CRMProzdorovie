@@ -496,3 +496,11 @@ class ModalViewAddEmployee(View):
 class ModalViewEditEmployee(View):
     def get(self, request):
         return render(request, 'crm/change_employee.html')
+    
+class Records(View):
+    def get(self, request):
+        return render(request, 'crm/records.html')
+
+class ModalViewShowRecord(View):
+    def get(self, request):
+        return render(request, 'crm/show_record.html')

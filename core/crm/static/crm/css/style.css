@@ -353,3 +353,22 @@ header {
 .analytics-btn:hover:not(.active) {
   background-color: #f4f4f4;
 }
+
+.employee-row {
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.employee-row:hover {
+  background-color: #b0b0b0;
+}
+
+.record-row-show {
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.record-row-show:hover {
+  background-color: #b0b0b0;
+}
+

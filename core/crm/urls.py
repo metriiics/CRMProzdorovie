@@ -2,7 +2,8 @@ from django.urls import path, include, re_path
 from .views import (LoginView, ApplicationsView, SearchDoctorAPIView, SearchClientAPIView, 
                     ModalViewAddClient, ModalViewChangeClient, ModalViewChangeRecord, 
                     ModalViewCreateRecord, RecordDataAPIView, StatusSearchView,
-                    EmployeeView, AnalyticsMoney, AnalyticsCall, ModalViewAddEmployee, ModalViewEditEmployee)
+                    EmployeeView, AnalyticsMoney, AnalyticsCall, ModalViewAddEmployee, ModalViewEditEmployee,
+                    Records, ModalViewShowRecord)
 
 from django.contrib.auth.views import LogoutView
 
@@ -23,7 +24,9 @@ urlpatterns = [
     path('api/v1/analytics-call', AnalyticsCall.as_view(), name='analytics_call'),
     path('api/v1/analytics-money', AnalyticsMoney.as_view(), name='analytics_money'),
     path('modal/add-employee/', ModalViewAddEmployee.as_view(), name='add_employee_modal'),
-    path('modal/edit-employee/', ModalViewEditEmployee.as_view(), name='edit_employee_modal'),
+    path('modal/edit-employee/', ModalViewEditEmployee.as_view(), name='change_employee_modal'),
+    path('modal/show-record/', ModalViewShowRecord.as_view(), name='show_record'),
+    path('api/v1/records/', Records.as_view(), name='records'),
 ]
 
 
