@@ -239,6 +239,7 @@ header {
   padding: 8px 0;
   font-size: 14px;
   display: flex;
+  flex-direction: row-reverse;
   justify-content: space-between;
   align-items: center;
 }

@@ -33,6 +33,7 @@ function initializeModalWindows() {
       showModal("change-employee-btn"); 
     });
   });
+  
   document.querySelectorAll(".record-row-show").forEach((row) => {
     row.addEventListener("click", () => {
       showModal("show-record-btn"); 

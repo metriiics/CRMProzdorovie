@@ -31,6 +31,12 @@ function initializeModalWindows() {
       showModal("change-employee-btn"); // Убедитесь, что здесь указан "change-record"
     });
   });
+
+  document.querySelectorAll(".record-row-show").forEach((row) => {
+    row.addEventListener("click", () => {
+      showModal("show-record-btn"); 
+    });
+  });
 }
 
 // Инициализация при загрузке страницы
@@ -152,10 +158,25 @@ function toggleShowAll(sectionId, button) {
   }
 }
 
+function filterItems(listId, searchValue) {
+  const list = document.getElementById(listId);
+  const items = list.querySelectorAll('.filter-item');
+  const value = searchValue.trim().toLowerCase();
+  items.forEach(item => {
+    if (item.textContent.toLowerCase().includes(value)) {
+      item.style.display = '';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
+
+
 // Вызов инициализации при загрузке страницы
 document.addEventListener("DOMContentLoaded", () => {
   initializeFilters();
 });
+
 // ==============================================
 // РАБОТА С КАЛЕНДАРЯМИ
 // ==============================================

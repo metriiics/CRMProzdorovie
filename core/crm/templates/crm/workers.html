@@ -71,64 +71,61 @@
       <div class="filters" id="filters-container">
         <div class="filter-label">Фильтры</div>
 
-        <!-- Поиск по фильтрам -->
-        <div class="filter-search">
-          <input type="text" id="filter-search-input" placeholder="Поиск..." />
-        </div>
+        <form method="get" id="filter-form">
+          <!-- Поиск -->
+          <div class="filter-search">
+            {{ filter.form.search }}
+          </div>
 
         <!-- Фильтр по роли -->
         <div class="filter-section">
-          <div
-            class="filter-header collapsed"
-            onclick="toggleSection('role-options')"
-          >
+          <div class="filter-header collapsed" onclick="toggleSection('role-options')">
             Роль
           </div>
           <ul class="filter-items collapsed" id="role-options">
-            <li class="filter-item">Администратор<input type="checkbox" name="role" id="role-admin" /></li>
-            <li class="filter-item">Врач<input type="checkbox" name="role" id="role-doctor" /></li>
-            <li class="filter-item">Управляющий<input type="checkbox" name="role" id="role-manager" /></li>
+            <div class="filter-search">
+              <input type="text"
+                    class="filter-search-input"
+                    placeholder="Поиск по роли..."
+                    oninput="filterItems('role-options', this.value)">
+            </div>
+            {% for choice in filter.form.role %}
+              <li class="filter-item">
+                {{ choice.tag }} {{ choice.choice_label }}
+              </li>
+            {% endfor %}
+            <button type="button" class="show-all-btn" onclick="toggleShowAll('role-options', this)">
+              Показать все
+            </button>
           </ul>
         </div>
 
         <!-- Фильтр по специализации -->
         <div class="filter-section">
-          <div
-            class="filter-header collapsed"
-            onclick="toggleSection('specialization-options')"
-          >
-            Специализация
-          </div>
-          <ul class="filter-items collapsed" id="specialization-options">
-            <div class="filter-search">
-              <input
-                type="text"
-                class="filter-search-input"
-                placeholder="Поиск по специализации..."
-                oninput="filterItems('specialization-options', this.value)"
-              />
+            <div class="filter-header collapsed" onclick="toggleSection('specialization-options')">
+              Специализация
             </div>
-            <li class="filter-item">
-              Терапевт<input type="checkbox" name="specialization" id="specialization-therapist" />
-            </li>
-            <li class="filter-item">
-              Хирург<input type="checkbox" name="specialization" id="specialization-surgeon" />
-            </li>
-            <li class="filter-item">
-              Невролог<input type="checkbox" name="specialization" id="specialization-neurologist" />
-            </li>
-            <li class="filter-item">
-              Кардиолог<input type="checkbox" name="specialization" id="specialization-cardiologist" />
-            </li>
-            <button class="show-all-btn" onclick="toggleShowAll('specialization-options', this)">
-              Показать все
-            </button>
-          </ul>
-          <div class="filter-buttons">
-            <button class="filter-apply-btn" onclick="applyFilters()">Применить</button>
-            <button class="filter-reset-btn" onclick="resetFilters()">Сбросить</button>
-          </div>  
-        </div>
+            <ul class="filter-items collapsed" id="specialization-options">
+              <div class="filter-search">
+                <input type="text" class="filter-search-input" 
+                      placeholder="Поиск по специализации..."
+                      oninput="filterItems('specialization-options', this.value)">
+              </div>
+              {% for choice in filter.form.specialization %}
+                <li class="filter-item">
+                  {{ choice.tag }} {{ choice.choice_label }}
+                </li>
+              {% endfor %}
+              <button type="button" class="show-all-btn" onclick="toggleShowAll('specialization-options', this)">
+                Показать все
+              </button>
+            </ul>
+            <div class="filter-buttons">
+              <button type="submit" class="filter-apply-btn">Применить</button>
+              <a href="?" class="filter-reset-btn">Сбросить</a>
+            </div>
+          </div>
+        </form>
       </div>
 
       <!-- Таблица с сотрудниками -->

@@ -15,6 +15,8 @@ from django.http import JsonResponse
 from django.utils import timezone
 from .forms import AddClientForm, CreateRecordForm, ChangeClientForm
 from loguru import logger
+from django_filters.views import FilterView
+from .filters import EmployeeFilter
 
 
 class LoginView(APIView):
@@ -443,17 +445,20 @@ class EmployeeView(View):
         return f"{user.last_name} {user.first_name} {user.surname or ''}".strip()
     
     def get(self, request):
+        # Инициализируем фильтр
+        employee_filter = EmployeeFilter(request.GET, queryset=User.objects.all())
+        
+        # Получаем отфильтрованный queryset
+        filtered_users = employee_filter.qs.select_related('role').prefetch_related(
+            'doctor_profile__specialization'
+        )
+        
         # Получаем параметры сортировки из GET-запроса
         sort_field = request.GET.get('sort', 'fio')
         sort_direction = request.GET.get('direction', 'asc')
         
-        # Получаем всех пользователей с связанными данными
-        users = User.objects.select_related('role').prefetch_related(
-            'doctor_profile__specialization'
-        ).all()
-
         employees = []
-        for user in users:
+        for user in filtered_users:
             # Определяем специализацию только для врачей
             specialization = "-"
             if hasattr(user, 'doctor_profile') and user.role and user.role.name.lower() == 'врач':
@@ -510,7 +515,9 @@ class EmployeeView(View):
             'current_sort': {
                 'field': sort_field,
                 'direction': sort_direction,
-            }
+            },
+            'filter': employee_filter,  # Добавляем фильтр в контекст
+            'applied_filters': request.GET  # Для отображения примененных фильтров
         }
         return render(request, "crm/workers.html", context)
     

@@ -20,7 +20,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
-    'crm.apps.CrmConfig'
+    'crm.apps.CrmConfig',
+    'django_filters'
 ]
 
 REST_FRAMEWORK = {
