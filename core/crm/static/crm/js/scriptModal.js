@@ -545,6 +545,33 @@ function initModalHandlers() {
     });
   }
 
+      // 4. Обработчик закрытия модального окна
+  function setupCloseHandler() {
+    document.querySelectorAll(".close-btn").forEach(btn => {
+      btn.addEventListener("click", function() {
+        const modal = this.closest(".modal");
+        if (modal) {
+          modal.style.display = "none";
+
+          // Очищаем все динамические данные
+          const form = modal.querySelector("form");
+          if (form) form.reset();
+
+          // Очищаем поисковые подсказки
+          modal.querySelectorAll(".suggestions").forEach(s => {
+            s.innerHTML = '';
+            s.style.display = 'none';
+          });
+
+          // Очищаем поля поиска
+          modal.querySelectorAll(".search-input").forEach(i => {
+            i.value = '';
+          });
+        }
+      });
+    });
+  }
+
   // Обработчики для комментариев
   function setupCommentHandlers() {
     const commentInput = document.getElementById("comment-input");
