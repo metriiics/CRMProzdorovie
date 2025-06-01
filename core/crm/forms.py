@@ -107,3 +107,11 @@ class CustomUserCreationForm(UserCreationForm):
 
         self.fields['password1'].required = True
         self.fields['password2'].required = True
+
+class AddEmployeeForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['surname', 'first_name', 'last_name', 'email', 'username', 'password', 'role']
+        widgets = {
+            'password': forms.PasswordInput(),
+        }

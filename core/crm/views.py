@@ -2,10 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from rest_framework import status
-from .models import Client, Application, Comment, Doctor, Status, User
+from .models import Client, Application, Comment, Doctor, Status, User, Role, Specialization
 from django.core.paginator import Paginator
 from django.db.models import Q, Prefetch, Case, When, IntegerField
 from .serializers import CombineSerializer, ClientSerializer, StatusSerializer
@@ -13,7 +14,7 @@ from django.views import View
 from django.contrib import messages
 from django.http import JsonResponse
 from django.utils import timezone
-from .forms import AddClientForm, CreateRecordForm, ChangeClientForm
+from .forms import AddClientForm, CreateRecordForm, ChangeClientForm, AddEmployeeForm
 from loguru import logger
 from django_filters.views import FilterView
 from .filters import EmployeeFilter
@@ -531,7 +532,22 @@ class AnalyticsMoney(View):
 
 class ModalViewAddEmployee(View):
     def get(self, request):
-        return render(request, 'crm/add_employee.html')
+        roles = Role.objects.all()
+        specializations = Specialization.objects.all()
+        return render(request, 'crm/add_employee.html', {
+            'roles': roles,
+            'specializations': specializations,
+        })
+
+    def post(self, request):
+        form = AddEmployeeForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.password = make_password(form.cleaned_data['password'])  # хешируем пароль
+            user.save()
+            return JsonResponse({'success': True, 'message': 'Сотрудник добавлен'})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})
     
 class ModalViewEditEmployee(View):
     def get(self, request):

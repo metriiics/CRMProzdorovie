@@ -1,85 +1,73 @@
 <div class="modal">
-  <!-- Кнопка закрытия -->
-  <span class="close-btn">&times;</span>
+  <!-- ... -->
+  
+  <form id="add-employee-form" method="post" action="{ url 'add_employee_modal' }" novalidate>
+    {% csrf_token %}
 
-  <!-- Заголовок -->
-  <h1>Добавить сотрудника</h1>
+    <div class="form-group">
+      <label for="employee-last_name">Фамилия</label>
+      <input id="employee-last_name" type="text" class="search-input" name="last_name" />
+      <div class="field-error" id="error-last_name" style="color: red"></div>
+    </div>
 
-  <!-- Поля ввода данных сотрудника -->
-  <div class="form-group">
-    <label for="employee-surname">Фамилия</label>
-    <input id="employee-surname" type="text" class="search-input" />
-  </div>
+    <div class="form-group">
+      <label for="employee-first_name">Имя</label>
+      <input id="employee-first_name" type="text" class="search-input" name="first_name" />
+      <div class="field-error" id="error-first_name" style="color: red"></div>
+    </div>
 
-  <div class="form-group">
-    <label for="employee-name">Имя</label>
-    <input id="employee-name" type="text" class="search-input" />
-  </div>
+    <div class="form-group">
+      <label for="employee-surname">Отчество</label>
+      <input id="employee-surname" type="text" class="search-input" name="surname" />
+      <div class="field-error" id="error-surname" style="color: red"></div>
+    </div>
 
-  <div class="form-group">
-    <label for="employee-patronymic">Отчество</label>
-    <input id="employee-patronymic" type="text" class="search-input" />
-  </div>
+    <div class="form-group">
+      <label for="employee-email">Email</label>
+      <input id="employee-email" type="text" class="search-input" name="email" />
+      <div class="field-error" id="error-email" style="color: red"></div>
+    </div>
 
-  <div class="form-group">
-    <label for="employee-email">Email</label>
-    <input id="employee-email" type="text" class="search-input" />
-  </div>
+    <div class="form-group">
+      <label for="employee-username">Username</label>
+      <input id="employee-username" type="text" class="search-input" name="username" />
+      <div class="field-error" id="error-username" style="color: red"></div>
+    </div>
 
-  <div class="form-group">
-    <label for="employee-username">Username</label>
-    <input id="employee-username" type="text" class="search-input" />
-  </div>
+    <div class="form-group">
+      <label for="employee-password">Пароль</label>
+      <input id="employee-password" type="password" class="search-input" name="password" />
+      <div class="field-error" id="error-password" style="color: red"></div>
+    </div>
 
-  <div class="form-group">
-    <label for="employee-password">Пароль</label>
-    <input id="employee-password" type="password" class="search-input" />
-  </div>
-
-  <div class="form-group">
-    <label for="employee-role">Роль</label>
-    <select id="employee-role" class="search-input">
-      <option value="">Выберите роль</option>
-      <option value="doctor">Врач</option>
-      <option value="admin">Администратор</option>
-      <option value="manager">Управляющий</option>
-    </select>
-  </div>
+    <div class="form-group">
+      <label for="employee-role">Роль</label>
+      <select id="employee-role" class="search-input" name="role">
+        <option value="">Выберите роль</option>
+        {% for role in roles %}
+          <option value="{{ role.id }}">{{ role.name }}</option>
+        {% endfor %}
+      </select>
+      <div class="field-error" id="error-role" style="color: red"></div>
+    </div>
 
     <div class="form-group" id="add-specialization-group" style="display: none;">
       <label for="add-specialization">Специализация</label>
       <select id="add-specialization" name="specialization" class="search-input">
         <option value="">Выберите специализацию</option>
-        <option value="Терапевт">Терапевт</option>
-        <option value="Хирург">Хирург</option>
-        <option value="Кардиолог">Кардиолог</option>
-        <option value="Невролог">Невролог</option>
-        <option value="Офтальмолог">Офтальмолог</option>
-        <option value="Отоларинголог">Отоларинголог</option>
-        <option value="Дерматолог">Дерматолог</option>
-        <option value="Педиатр">Педиатр</option>
-        <option value="Гинеколог">Гинеколог</option>
-        <option value="Уролог">Уролог</option>
+        {% for spec in specializations %}
+          <option value="{{ spec.id }}">{{ spec.name }}</option>
+        {% endfor %}
       </select>
     </div>
+  </form>
 
   <!-- Кнопки действий -->
   <div class="button-container">
     <div class="success-message" style="display: none">
       Сотрудник успешно сохранен
     </div>
+    <div class="error-message" style="display: none; color: red; margin-bottom: 10px;"></div>
     <button class="save-btn">Сохранить</button>
-    <span class="delete-link">Отмена</span>
-  </div>
-
-  <!-- Модальное окно подтверждения удаления -->
-  <div class="confirmation-modal">
-    <div class="confirmation-content">
-      <p>Вы уверены, что хотите отменить действия?</p>
-      <div class="confirmation-buttons">
-        <button class="confirmation-btn confirm-btn">Да</button>
-        <button class="confirmation-btn cancel-btn">Нет</button>
-      </div>
-    </div>
   </div>
 </div>

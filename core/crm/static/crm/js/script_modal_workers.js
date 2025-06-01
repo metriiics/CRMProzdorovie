@@ -3,10 +3,10 @@ function toggleSpecialization(roleSelectId, specializationGroupId) {
     const specializationGroup = document.getElementById(specializationGroupId);
 
     if (roleSelect && specializationGroup) {
-        specializationGroup.style.display = roleSelect.value === "doctor" ? "block" : "none";
+        specializationGroup.style.display = roleSelect.value === "3" ? "block" : "none";
         const specializationField = specializationGroup.querySelector('select');
         if (specializationField) {
-            specializationField.required = roleSelect.value === "doctor";
+            specializationField.required = roleSelect.value === "3";
         }
     }
 }
@@ -71,17 +71,93 @@ function initModalHandlers() {
     document.addEventListener("click", (e) => {
       if (e.target.classList.contains("save-btn")) {
         e.preventDefault();
+        const data = {
+            last_name: document.getElementById("employee-last_name").value,
+            first_name: document.getElementById("employee-first_name").value,
+            surname: document.getElementById("employee-surname").value,
+            email: document.getElementById("employee-email").value,
+            username: document.getElementById("employee-username").value,
+            password: document.getElementById("employee-password").value,
+            role: document.getElementById("employee-role").value,
+            csrfmiddlewaretoken: document.querySelector('[name=csrfmiddlewaretoken]').value
+          };
+        // Очищаем все поля с ошибками
+        ['surname', 'first_name', 'last_name', 'email', 'username', 'password', 'role', 'specialization'].forEach(field => {
+          const errDiv = document.getElementById('error-' + field);
+          if (errDiv) errDiv.textContent = '';
+        });
+
         const modal = e.target.closest(".modal");
-        if (modal) {
-          const successMessage = modal.querySelector(".success-message");
-          if (successMessage) {
-            successMessage.style.display = "block";
-            successMessage.classList.add("show");
-            setTimeout(() => {
-              successMessage.classList.remove("show");
-            }, 2000);
+        const errorMessage = modal.querySelector(".error-message");
+        const successMessage = modal.querySelector(".success-message");
+        errorMessage.style.display = "none";
+        errorMessage.textContent = "";
+
+        fetch('/modal/add-employee/', {
+          method: 'POST',
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: new URLSearchParams(data)
+        })
+        .then(response => response.json())
+        .then(result => {
+          if (result.success) {
+            if (successMessage) {
+              successMessage.textContent = result.message;
+              successMessage.style.display = "block";
+              successMessage.classList.add("show");
+
+              if (errorMessage) {
+                errorMessage.style.display = "none";
+                errorMessage.textContent = "";
+              }
+
+              setTimeout(() => {
+                successMessage.classList.remove("show");
+                modal.style.display = "none";
+                successMessage.style.display = "none";
+              }, 2000);
+            }
+          } else {
+            // Если есть ошибки, показываем их под полями или в общем блоке
+            if (result.errors) {
+              for (const [field, messages] of Object.entries(result.errors)) {
+                const errDiv = document.getElementById('error-' + field);
+                if (errDiv) {
+                  errDiv.textContent = messages.join(', ');
+                } else {
+                  // Если поле ошибки не найдено, выводим в общий блок
+                  if (errorMessage) {
+                    errorMessage.innerHTML += `<div>${messages.join(', ')}</div>`;
+                    errorMessage.style.display = "block";
+                  } else {
+                    alert(messages.join('\n'));
+                  }
+                }
+              }
+            } else {
+              if (errorMessage) {
+                errorMessage.textContent = "Произошла неизвестная ошибка";
+                errorMessage.style.display = "block";
+              } else {
+                alert("Произошла неизвестная ошибка");
+              }
+            }
           }
-        }
+        })
+        .catch(error => {
+          console.error("Ошибка при отправке:", error);
+          if (errorMessage) {
+            errorMessage.textContent = "Произошла ошибка при отправке данных. Попробуйте позже.";
+            errorMessage.style.display = "block";
+          } else {
+            alert("Произошла ошибка при отправке данных. Попробуйте позже.");
+          }
+        });
+
+        return; // чтобы дальше событие не обрабатывалось
       }
 
       // Для кнопки "Отмена" или "Удалить клиента"
