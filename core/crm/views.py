@@ -551,7 +551,12 @@ class ModalViewAddEmployee(View):
     
 class ModalViewEditEmployee(View):
     def get(self, request):
-        return render(request, 'crm/change_employee.html')
+        roles = Role.objects.all()
+        specializations = Specialization.objects.all()
+        return render(request, 'crm/change_employee.html', {
+            'roles': roles,
+            'specializations': specializations,
+        })
     
 class Records(View):
     def get(self, request):

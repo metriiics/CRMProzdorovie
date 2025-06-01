@@ -2572,3 +2572,41 @@
  Админ
 2025-06-01 20:27:26 | INFO | POST /modal/add-employee/ status=200 user=Админ
  Админ
+2025-06-01 21:36:41 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-06-01 21:36:42 | INFO | GET /modal/edit-employee/ status=200 user=Админ
+ Админ
+2025-06-01 21:36:44 | INFO | GET /modal/add-employee/ status=200 user=Админ
+ Админ
+2025-06-01 21:37:13 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-06-01 21:37:14 | INFO | GET /modal/add-employee/ status=200 user=Админ
+ Админ
+2025-06-01 21:37:20 | INFO | GET /modal/edit-employee/ status=200 user=Админ
+ Админ
+2025-06-01 21:38:23 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-06-01 21:38:24 | INFO | GET /modal/add-employee/ status=200 user=Админ
+ Админ
+2025-06-01 21:38:29 | INFO | POST /modal/add-employee/ status=200 user=Админ
+ Админ
+2025-06-01 21:38:35 | INFO | GET /modal/edit-employee/ status=200 user=Админ
+ Админ
+2025-06-01 21:41:05 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-06-01 21:41:06 | INFO | GET /modal/edit-employee/ status=200 user=Админ
+ Админ
+2025-06-01 21:43:16 | INFO | GET /api/v1/analytics-money status=200 user=Админ
+ Админ
+2025-06-01 21:43:18 | INFO | GET /modal/add-employee/ status=200 user=Админ
+ Админ
+2025-06-01 21:43:37 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-06-01 21:43:40 | INFO | GET /api/v1/analytics-call status=200 user=Админ
+ Админ
+2025-06-01 21:43:42 | INFO | GET /modal/add-employee/ status=200 user=Админ
+ Админ
+2025-06-01 21:43:44 | INFO | GET /api/v1/analytics-money status=200 user=Админ
+ Админ
+2025-06-01 21:43:45 | INFO | GET /modal/add-employee/ status=200 user=Админ
+ Админ

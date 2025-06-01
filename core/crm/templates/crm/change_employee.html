@@ -37,28 +37,23 @@
     </div>
 
     <div class="form-group">
-      <label for="role">Роль</label>
-      <select id="role" name="role" class="search-input" required>
-        <option value="admin">Администратор</option>
-        <option value="doctor">Врач</option>
-        <option value="manager">Управляющий</option>
+      <label for="employee-role">Роль</label>
+      <select id="employee-role" class="search-input" name="role">
+        <option value="">Выберите роль</option>
+        {% for role in roles %}
+          <option value="{{ role.id }}">{{ role.name }}</option>
+        {% endfor %}
       </select>
+      <div class="field-error" id="error-role" style="color: red"></div>
     </div>
 
-    <div class="form-group" id="change-specialization-group" style="display: none;">
-      <label for="change-specialization">Специализация</label>
-      <select id="change-specialization" name="specialization" class="search-input">
+    <div class="form-group" id="add-specialization-group" style="display: none;">
+      <label for="add-specialization">Специализация</label>
+      <select id="add-specialization" name="specialization" class="search-input">
         <option value="">Выберите специализацию</option>
-        <option value="Терапевт">Терапевт</option>
-        <option value="Хирург">Хирург</option>
-        <option value="Кардиолог">Кардиолог</option>
-        <option value="Невролог">Невролог</option>
-        <option value="Офтальмолог">Офтальмолог</option>
-        <option value="Отоларинголог">Отоларинголог</option>
-        <option value="Дерматолог">Дерматолог</option>
-        <option value="Педиатр">Педиатр</option>
-        <option value="Гинеколог">Гинеколог</option>
-        <option value="Уролог">Уролог</option>
+        {% for spec in specializations %}
+          <option value="{{ spec.id }}">{{ spec.name }}</option>
+        {% endfor %}
       </select>
     </div>
 
