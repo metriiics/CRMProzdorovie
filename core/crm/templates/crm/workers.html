@@ -90,7 +90,7 @@
                     oninput="filterItems('role-options', this.value)">
             </div>
             {% for choice in filter.form.role %}
-              <li class="filter-item">
+              <li class="filter-item filter-item-reverse">
                 {{ choice.tag }} {{ choice.choice_label }}
               </li>
             {% endfor %}
@@ -112,7 +112,7 @@
                       oninput="filterItems('specialization-options', this.value)">
               </div>
               {% for choice in filter.form.specialization %}
-                <li class="filter-item">
+                <li class="filter-item filter-item-reverse">
                   {{ choice.tag }} {{ choice.choice_label }}
                 </li>
               {% endfor %}
