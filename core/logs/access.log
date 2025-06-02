@@ -4193,3 +4193,21 @@
  Админ
 2025-06-03 06:13:27 | INFO | GET /.well-known/appspecific/com.chrome.devtools.json status=404 user=Админ
  Админ
+2025-06-03 06:19:19 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-06-03 06:19:22 | INFO | GET / status=404 user=Админ
+ Админ
+2025-06-03 06:21:34 | INFO | GET / status=302 user=anon
+2025-06-03 06:21:34 | INFO | GET /api/v1/login/ status=200 user=anon
+2025-06-03 06:21:38 | INFO | Пользователь admin вошел в систему
+2025-06-03 06:21:38 | INFO | POST /api/v1/login/ status=302 user=Админ
+ Админ
+2025-06-03 06:21:38 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-06-03 06:21:42 | INFO | POST /logout/ status=302 user=anon
+2025-06-03 06:21:42 | INFO | GET /api/v1/login/ status=200 user=anon
+2025-06-03 06:21:46 | INFO | GET / status=302 user=anon
+2025-06-03 06:21:46 | INFO | GET /api/v1/login/ status=200 user=anon
+2025-06-03 06:21:51 | INFO | Пользователь testuser вошел в систему
+2025-06-03 06:21:51 | INFO | POST /api/v1/login/ status=302 user=testuser
+2025-06-03 06:21:51 | INFO | GET /api/v1/applications/ status=200 user=testuser
