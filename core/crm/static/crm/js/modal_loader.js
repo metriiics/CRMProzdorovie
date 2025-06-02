@@ -55,6 +55,12 @@ function showModal(modalId) {
     });
   });
 
+  // Показываем overlay
+  const overlay = document.getElementById('modal-overlay');
+  if (overlay) {
+    overlay.style.display = 'block';
+  }
+
   loadModal(modalId).then((success) => {
     if (!success) return;
 
@@ -79,6 +85,7 @@ function showModal(modalId) {
     if (closeBtn && !closeBtn._listenerAdded) {
       closeBtn.addEventListener("click", () => {
         modal.style.display = "none";
+        if (overlay) overlay.style.display = 'none';
         // Очищаем форму при закрытии
         const form = modal.querySelector("form");
         if (form) form.reset();

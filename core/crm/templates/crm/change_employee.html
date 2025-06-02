@@ -7,7 +7,7 @@
 
   <!-- Форма для изменения данных сотрудника -->
   <form id="change-employee-form" method="POST" action="{% url 'change_employee_modal' %}">
- 
+    {% csrf_token %}
     <input type="hidden" id="employee-id" name="employee_id">
 
   <!-- Поля ввода данных сотрудника -->
@@ -59,22 +59,8 @@
 
   <!-- Кнопки действий -->
   <div class="button-container">
-      <div class="success-message" style="display: none">
-        Сотрудник успешно сохранен
-      </div>
+    <div id="success-message" class="success-message" style="display: none"></div>
     <div id="error-message" class="error-message" style="display: none"></div>
-    <button type="submit" class="save-btn">Сохранить изменения</button>
-    <span class="delete-link">Удалить сотрудника</span>
-  </div>
-
-  <!-- Модальное окно подтверждения удаления -->
-  <div class="confirmation-modal">
-    <div class="confirmation-content">
-      <p>Вы уверены, что хотите удалить сотрудника?</p>
-      <div class="confirmation-buttons">
-        <button class="confirmation-btn confirm-btn">Да</button>
-        <button class="confirmation-btn cancel-btn">Нет</button>
-      </div>
-    </div>
+    <button type="submit" class="save-employee-button">Сохранить изменения</button>
   </div>
 </div>

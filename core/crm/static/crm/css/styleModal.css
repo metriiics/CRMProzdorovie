@@ -18,6 +18,18 @@
   z-index: 1000; /* Убедитесь, что модалка поверх других элементов */
 }
 
+/* Стили для фона модалок */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 999; /* overlay ниже модального окна */
+  display: none; /* по умолчанию скрыт */
+}
+
 .close-btn {
   position: absolute;
   top: 20px;
@@ -183,6 +195,23 @@ textarea {
 }
 
 .save-btn:hover {
+  background-color: #007a32;
+}
+
+.save-employee-button {
+  margin-top: 20px;
+  background-color: #00923a;
+  color: white;
+  padding: 10px 30px;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.save-employee-button:hover {
   background-color: #007a32;
 }
 

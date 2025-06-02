@@ -184,6 +184,7 @@ function initModalHandlers() {
           setTimeout(() => {
             const modal = form.closest('.modal');
             if (modal) modal.style.display = 'none';
+            location.reload();
           }, 1500);
         } else {
           showErrorMessage(data.message || 'Ошибка при сохранении клиента');
@@ -319,9 +320,9 @@ function initModalHandlers() {
               form.reset();
               
               setTimeout(() => {
-                  const modal = form.closest('.modal');
-                  if (modal) modal.style.display = 'none';
-                  if (typeof refreshRecords === 'function') refreshRecords();
+                const modal = form.closest('.modal');
+                if (modal) modal.style.display = 'none';
+                location.reload();
               }, 1500);
           } else {
               throw new Error(data.message || 'Ошибка при создании записи');
@@ -472,7 +473,7 @@ function initModalHandlers() {
                 setTimeout(() => {
                     const modal = form.closest('.modal');
                     if (modal) modal.style.display = 'none';
-                    if (typeof refreshRecords === 'function') refreshRecords();
+                    location.reload();
                 }, 1500);
             } else {
                 throw new Error(data.message || 'Ошибка при изменении записи');
@@ -519,6 +520,7 @@ function initModalHandlers() {
           setTimeout(() => {
             const modal = form.closest('.modal');
             if (modal) modal.style.display = 'none';
+            location.reload();
           }, 1500);
         } else {
           showErrorMessage(data.message || 'Ошибка при изменении клиента');

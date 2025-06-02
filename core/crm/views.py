@@ -558,6 +558,33 @@ class ModalViewEditEmployee(View):
             'specializations': specializations,
         })
     
+    def post(self, request):
+        try:
+            data = request.POST
+            employee_id = data.get('employee_id')
+            employee = get_object_or_404(User, id=employee_id)
+
+            employee.first_name = data.get('first_name', '')
+            employee.last_name = data.get('last_name', '')
+            employee.surname = data.get('surname', '')
+            employee.username = data.get('username', '')
+            employee.email = data.get('email', '')
+
+            role_id = data.get('role')
+            if role_id:
+                employee.role_id = role_id
+
+            specialization_id = data.get('specialization')
+            if specialization_id:
+                employee.specialization_id = specialization_id
+            else:
+                employee.specialization = None
+
+            employee.save()
+            return JsonResponse({'success': True, 'message': 'Сотрудник успешно сохранен',})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)}, status=400)
+    
 class Records(View):
     def get(self, request):
         # параметры сортировки из GET-запроса

@@ -83,7 +83,10 @@ function initModalHandlers() {
         .then(data => {
           console.log('Response data:', data);
           if (data && data.id) {
-            fillModalFields(data);
+            console.log('Нажатие на сотрудника', employeeId);
+            setTimeout(() => {
+              fillModalFields(data);
+            }, 150);
           } else {
             alert('Ошибка загрузки данных сотрудника');
           }
@@ -97,6 +100,8 @@ function initModalHandlers() {
   }
 
   function fillModalFields(employee) {
+    console.log('Заполнение формы:', employee);
+    console.log('Поле id:', document.getElementById('employee-id'));
     document.getElementById('employee-id').value = employee.id || '';
     document.getElementById('last_name').value = employee.last_name || '';
     document.getElementById('first_name').value = employee.first_name || '';
@@ -108,6 +113,74 @@ function initModalHandlers() {
     document.getElementById('add-specialization').value = employee.specialization ? employee.specialization.id : '';
   }
 
+  function setupEditEmployeeHandler() {
+    const form = document.getElementById('change-employee-form');
+    if (!form) return;
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const originalText = submitBtn.textContent;
+
+      submitBtn.textContent = 'Сохранение...';
+      submitBtn.disabled = true;
+
+      const successBox = document.querySelector('success-message');
+      const errorBox = document.getElementById('error-message');
+
+      if (successBox) successBox.style.display = 'none';
+      if (errorBox) {
+        errorBox.style.display = 'none';
+        errorBox.textContent = '';
+      }
+
+      try {
+        const formData = new FormData(form);
+
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value,
+            'X-Requested-With': 'XMLHttpRequest'
+          }
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Ошибка сервера');
+        }
+
+        if (data.success) {
+          if (successBox) {
+            successBox.style.display = 'block';
+            successBox.textContent = 'Сотрудник успешно сохранён';
+          }
+
+          // Через 1.5 секунды можно закрыть модальное окно или обновить список
+          setTimeout(() => {
+            const modal = form.closest('.modal');
+            if (modal) modal.style.display = 'none';
+
+            location.reload();
+          }, 1500);
+        } else {
+          throw new Error(data.error || 'Ошибка при сохранении сотрудника');
+        }
+      } catch (error) {
+        console.error('Ошибка:', error);
+        if (errorBox) {
+          errorBox.textContent = error.message;
+          errorBox.style.display = 'block';
+        }
+      } finally {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      }
+    });
+  }
 
   // 3. Обработчики кнопок сохранения/удаления
   function setupActionButtons() {
@@ -161,6 +234,7 @@ function initModalHandlers() {
                 successMessage.classList.remove("show");
                 modal.style.display = "none";
                 successMessage.style.display = "none";
+                location.reload();
               }, 2000);
             }
           } else {
@@ -320,6 +394,7 @@ function initModalHandlers() {
   setupCloseHandler();
   setupDeleteHandlers();
   setupEmployeeRowHandlers();
+  setupEditEmployeeHandler();
 }
 
 
