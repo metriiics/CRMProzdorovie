@@ -2,9 +2,17 @@ from .models import User, Client, Status, Role, Doctor, Application, Specializat
 from rest_framework import serializers
 
 class UserSerializer(serializers.ModelSerializer):
+    specialization = serializers.SerializerMethodField()
+    
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'surname']
+        fields = ['id', 'first_name', 'last_name', 'surname', 'username', 'email', 'role', 'specialization']
+
+    def get_specialization(self, obj):
+        # Проверяем есть ли у пользователя профиль врача
+        if hasattr(obj, 'doctor_profile') and obj.doctor_profile.specialization:
+            return SpecializationSerializer(obj.doctor_profile.specialization).data
+        return None
 
 class ClientSerializer(serializers.ModelSerializer):
     fio = serializers.SerializerMethodField()

@@ -9,7 +9,7 @@ from rest_framework import status
 from .models import Client, Application, Comment, Doctor, Status, User, Role, Specialization
 from django.core.paginator import Paginator
 from django.db.models import Q, Prefetch, Case, When, IntegerField
-from .serializers import CombineSerializer, ClientSerializer, StatusSerializer
+from .serializers import CombineSerializer, ClientSerializer, StatusSerializer, UserSerializer
 from django.views import View
 from django.contrib import messages
 from django.http import JsonResponse
@@ -648,3 +648,11 @@ class Records(View):
 class ModalViewShowRecord(View):
     def get(self, request):
         return render(request, 'crm/show_record.html')
+    
+class EmployeeDetailAPIView(APIView):
+    def get(self, request):
+        employee_id = request.GET.get('employee_id')
+
+        employee = get_object_or_404(User, id=employee_id)
+        serializer = UserSerializer(employee)
+        return Response(serializer.data, status=status.HTTP_200_OK)

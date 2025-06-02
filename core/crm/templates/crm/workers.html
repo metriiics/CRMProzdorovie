@@ -172,7 +172,7 @@
           </thead>
           <tbody>
             {% for employee in employees %}
-            <tr class="employee-row {% if not employee.is_active %}inactive{% endif %}">
+            <tr class="employee-row" data-employee-id="{{ employee.id }}">
               <td>{{ employee.fio }}</td>
               <td>{{ employee.username|default:None }}</td>
               <td>{{ employee.email|default:None }}</td>

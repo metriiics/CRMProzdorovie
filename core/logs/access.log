@@ -3076,3 +3076,145 @@
 2025-06-03 03:23:43 | INFO | GET /search-doctor/?query=XT status=200 user=anon
 2025-06-03 03:23:45 | INFO | GET /search-doctor/?query=%D0%A7%D0%B5 status=200 user=anon
 2025-06-03 03:23:47 | INFO | POST /modal/change-record/ status=200 user=testuser
+2025-06-03 03:29:00 | INFO | GET /api/v1/applications status=301 user=anon
+2025-06-03 03:29:00 | INFO | GET /api/v1/applications/ status=302 user=anon
+2025-06-03 03:29:00 | INFO | GET /api/v1/login/?next=/api/v1/applications/ status=200 user=anon
+2025-06-03 03:29:05 | INFO | Пользователь admin вошел в систему
+2025-06-03 03:29:05 | INFO | POST /api/v1/login/?next=/api/v1/applications/ status=302 user=Админ
+ Админ
+2025-06-03 03:29:05 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-06-03 03:29:07 | INFO | GET /modal/edit-employee/ status=200 user=Админ
+ Админ
+2025-06-03 03:40:54 | INFO | GET /api/v1/employee-data//?employee_id=1 status=404 user=anon
+2025-06-03 03:41:04 | INFO | GET /api/v1/employee-data/?employee_id=1 status=500 user=anon
+2025-06-03 03:42:42 | INFO | GET /api/v1/employee-data/?employee_id=1 status=500 user=anon
+2025-06-03 03:43:20 | INFO | GET /api/v1/employee-data/?employee_id=4 status=500 user=anon
+2025-06-03 03:44:15 | INFO | GET /api/v1/employee-data/?employee_id=4 status=500 user=anon
+2025-06-03 03:46:39 | INFO | GET /api/v1/employee-data/?employee_id=4 status=200 user=anon
+2025-06-03 03:52:38 | INFO | GET /api/v1/employee status=302 user=anon
+2025-06-03 03:52:38 | INFO | GET /api/v1/login/?next=/api/v1/employee status=200 user=anon
+2025-06-03 03:52:43 | INFO | Пользователь admin вошел в систему
+2025-06-03 03:52:43 | INFO | POST /api/v1/login/?next=/api/v1/employee status=302 user=Админ
+ Админ
+2025-06-03 03:52:43 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-06-03 03:52:44 | INFO | GET /modal/edit-employee/ status=200 user=Админ
+ Админ
+2025-06-03 03:52:46 | INFO | GET /api/v1/api/v1/employee-data/?employee_id=18/ status=404 user=Админ
+ Админ
+2025-06-03 03:52:49 | INFO | GET /api/v1/api/v1/employee-data/?employee_id=18/ status=404 user=Админ
+ Админ
+2025-06-03 03:52:49 | INFO | GET /api/v1/api/v1/employee-data/?employee_id=18/ status=404 user=Админ
+ Админ
+2025-06-03 03:52:58 | INFO | GET /.well-known/appspecific/com.chrome.devtools.json status=404 user=Админ
+ Админ
+2025-06-03 03:53:01 | INFO | GET /api/v1/api/v1/employee-data/?employee_id=19/ status=404 user=Админ
+ Админ
+2025-06-03 03:53:01 | INFO | GET /api/v1/api/v1/employee-data/?employee_id=19/ status=404 user=Админ
+ Админ
+2025-06-03 03:53:01 | INFO | GET /api/v1/api/v1/employee-data/?employee_id=19/ status=404 user=Админ
+ Админ
+2025-06-03 03:53:30 | INFO | GET /api/v1/employee status=302 user=anon
+2025-06-03 03:53:30 | INFO | GET /api/v1/login/?next=/api/v1/employee status=200 user=anon
+2025-06-03 03:53:34 | INFO | Пользователь admin вошел в систему
+2025-06-03 03:53:34 | INFO | POST /api/v1/login/?next=/api/v1/employee status=302 user=Админ
+ Админ
+2025-06-03 03:53:34 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-06-03 03:53:36 | INFO | GET /modal/edit-employee/ status=200 user=Админ
+ Админ
+2025-06-03 03:53:39 | INFO | GET /api/v1/employee-data/?employee_id=17/ status=500 user=anon
+2025-06-03 03:53:41 | INFO | GET /api/v1/employee-data/?employee_id=25/ status=500 user=anon
+2025-06-03 03:53:41 | INFO | GET /api/v1/employee-data/?employee_id=25/ status=500 user=anon
+2025-06-03 03:54:51 | INFO | GET /api/v1/employee status=302 user=anon
+2025-06-03 03:54:51 | INFO | GET /api/v1/login/?next=/api/v1/employee status=200 user=anon
+2025-06-03 03:54:55 | INFO | Пользователь admin вошел в систему
+2025-06-03 03:54:55 | INFO | POST /api/v1/login/?next=/api/v1/employee status=302 user=Админ
+ Админ
+2025-06-03 03:54:55 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-06-03 03:54:58 | INFO | GET /modal/edit-employee/ status=200 user=Админ
+ Админ
+2025-06-03 03:55:00 | INFO | GET /api/v1/employee-data/?employee_id=35 status=200 user=anon
+2025-06-03 03:55:09 | INFO | GET /api/v1/employee-data/?employee_id=35 status=200 user=anon
+2025-06-03 03:55:10 | INFO | GET /api/v1/employee-data/?employee_id=35 status=200 user=anon
+2025-06-03 03:55:15 | INFO | GET /.well-known/appspecific/com.chrome.devtools.json status=404 user=Админ
+ Админ
+2025-06-03 03:55:16 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-06-03 03:55:16 | INFO | GET /.well-known/appspecific/com.chrome.devtools.json status=404 user=Админ
+ Админ
+2025-06-03 03:55:18 | INFO | GET /modal/edit-employee/ status=200 user=Админ
+ Админ
+2025-06-03 03:55:25 | INFO | GET /api/v1/employee-data/?employee_id=19 status=200 user=anon
+2025-06-03 03:55:31 | INFO | GET /api/v1/employee-data/?employee_id=17 status=200 user=anon
+2025-06-03 03:55:31 | INFO | GET /api/v1/employee-data/?employee_id=17 status=200 user=anon
+2025-06-03 03:55:39 | INFO | GET /api/v1/employee-data/?employee_id=17 status=200 user=anon
+2025-06-03 03:55:39 | INFO | GET /api/v1/employee-data/?employee_id=17 status=200 user=anon
+2025-06-03 03:55:39 | INFO | GET /api/v1/employee-data/?employee_id=17 status=200 user=anon
+2025-06-03 03:55:55 | INFO | GET /api/v1/employee-data/?employee_id=18 status=200 user=anon
+2025-06-03 03:55:55 | INFO | GET /api/v1/employee-data/?employee_id=18 status=200 user=anon
+2025-06-03 03:55:55 | INFO | GET /api/v1/employee-data/?employee_id=18 status=200 user=anon
+2025-06-03 03:55:55 | INFO | GET /api/v1/employee-data/?employee_id=18 status=200 user=anon
+2025-06-03 03:58:12 | INFO | GET /api/v1/employee status=302 user=anon
+2025-06-03 03:58:12 | INFO | GET /api/v1/login/?next=/api/v1/employee status=200 user=anon
+2025-06-03 03:58:19 | INFO | Пользователь admin вошел в систему
+2025-06-03 03:58:19 | INFO | POST /api/v1/login/?next=/api/v1/employee status=302 user=Админ
+ Админ
+2025-06-03 03:58:19 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-06-03 03:58:23 | INFO | GET /.well-known/appspecific/com.chrome.devtools.json status=404 user=Админ
+ Админ
+2025-06-03 03:58:24 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-06-03 03:58:24 | INFO | GET /.well-known/appspecific/com.chrome.devtools.json status=404 user=Админ
+ Админ
+2025-06-03 03:58:28 | INFO | GET /modal/edit-employee/ status=200 user=Админ
+ Админ
+2025-06-03 03:58:30 | INFO | GET /api/v1/employee-data/?employee_id=17 status=200 user=anon
+2025-06-03 03:58:49 | INFO | GET /api/v1/employee-data/?employee_id=17 status=200 user=anon
+2025-06-03 03:58:49 | INFO | GET /api/v1/employee-data/?employee_id=17 status=200 user=anon
+2025-06-03 03:58:56 | INFO | GET /api/v1/employee-data/?employee_id=1 status=200 user=anon
+2025-06-03 03:58:56 | INFO | GET /api/v1/employee-data/?employee_id=1 status=200 user=anon
+2025-06-03 03:58:57 | INFO | GET /api/v1/employee-data/?employee_id=1 status=200 user=anon
+2025-06-03 04:00:54 | INFO | GET /api/v1/employee status=302 user=anon
+2025-06-03 04:00:54 | INFO | GET /api/v1/login/?next=/api/v1/employee status=200 user=anon
+2025-06-03 04:00:59 | INFO | Пользователь admin вошел в систему
+2025-06-03 04:00:59 | INFO | POST /api/v1/login/?next=/api/v1/employee status=302 user=Админ
+ Админ
+2025-06-03 04:00:59 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-06-03 04:01:01 | INFO | GET /modal/edit-employee/ status=200 user=Админ
+ Админ
+2025-06-03 04:01:04 | INFO | GET /api/v1/employee-data/?employee_id=18 status=200 user=anon
+2025-06-03 04:03:29 | INFO | GET /api/v1/employee status=302 user=anon
+2025-06-03 04:03:29 | INFO | GET /api/v1/login/?next=/api/v1/employee status=200 user=anon
+2025-06-03 04:03:38 | INFO | Пользователь admin вошел в систему
+2025-06-03 04:03:38 | INFO | POST /api/v1/login/?next=/api/v1/employee status=302 user=Админ
+ Админ
+2025-06-03 04:03:38 | INFO | GET /api/v1/employee status=200 user=Админ
+ Админ
+2025-06-03 04:03:44 | INFO | GET /modal/edit-employee/ status=200 user=Админ
+ Админ
+2025-06-03 04:03:47 | INFO | GET /api/v1/employee-data/?employee_id=18 status=200 user=anon
+2025-06-03 04:03:49 | INFO | GET /api/v1/employee-data/?employee_id=54 status=200 user=anon
+2025-06-03 04:03:49 | INFO | GET /api/v1/employee-data/?employee_id=54 status=200 user=anon
+2025-06-03 04:03:52 | INFO | GET /api/v1/employee-data/?employee_id=55 status=200 user=anon
+2025-06-03 04:03:52 | INFO | GET /api/v1/employee-data/?employee_id=55 status=200 user=anon
+2025-06-03 04:03:52 | INFO | GET /api/v1/employee-data/?employee_id=55 status=200 user=anon
+2025-06-03 04:03:54 | INFO | GET /api/v1/employee-data/?employee_id=35 status=200 user=anon
+2025-06-03 04:03:54 | INFO | GET /api/v1/employee-data/?employee_id=35 status=200 user=anon
+2025-06-03 04:03:54 | INFO | GET /api/v1/employee-data/?employee_id=35 status=200 user=anon
+2025-06-03 04:03:54 | INFO | GET /api/v1/employee-data/?employee_id=35 status=200 user=anon
+2025-06-03 04:03:59 | INFO | GET /api/v1/employee-data/?employee_id=57 status=200 user=anon
+2025-06-03 04:03:59 | INFO | GET /api/v1/employee-data/?employee_id=57 status=200 user=anon
+2025-06-03 04:03:59 | INFO | GET /api/v1/employee-data/?employee_id=57 status=200 user=anon
+2025-06-03 04:03:59 | INFO | GET /api/v1/employee-data/?employee_id=57 status=200 user=anon
+2025-06-03 04:04:00 | INFO | GET /api/v1/employee-data/?employee_id=57 status=200 user=anon
+2025-06-03 04:06:29 | INFO | GET /api/v1/employee-data/?employee_id=22 status=200 user=anon
+2025-06-03 04:06:29 | INFO | GET /api/v1/employee-data/?employee_id=22 status=200 user=anon
+2025-06-03 04:06:30 | INFO | GET /api/v1/employee-data/?employee_id=22 status=200 user=anon
+2025-06-03 04:06:30 | INFO | GET /api/v1/employee-data/?employee_id=22 status=200 user=anon
+2025-06-03 04:06:30 | INFO | GET /api/v1/employee-data/?employee_id=22 status=200 user=anon
+2025-06-03 04:06:30 | INFO | GET /api/v1/employee-data/?employee_id=22 status=200 user=anon

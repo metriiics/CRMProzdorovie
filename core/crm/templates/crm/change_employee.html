@@ -1,4 +1,4 @@
-<div class="modal" id="change-employee-modal">
+<div class="modal">
   <!-- Кнопка закрытия -->
   <span class="close-btn">&times;</span>
 
@@ -6,67 +6,66 @@
   <h1>Изменить сотрудника</h1>
 
   <!-- Форма для изменения данных сотрудника -->
-  <form id="change-employee-form" method="post" action="{% url 'change_employee_modal' %}">
+  <form id="change-employee-form" method="POST" action="{% url 'change_employee_modal' %}">
  
     <input type="hidden" id="employee-id" name="employee_id">
 
-    <!-- Поля ввода данных сотрудника -->
-    <div class="form-group">
-      <label for="last_name">Фамилия</label>
-      <input id="last_name" name="last_name" type="text" class="search-input" required />
-    </div>
+  <!-- Поля ввода данных сотрудника -->
+  <div class="form-group">
+    <label for="last_name">Фамилия</label>
+    <input id="last_name" name="last_name" type="text" class="search-input" required />
+  </div>
 
-    <div class="form-group">
-      <label for="first_name">Имя</label>
-      <input id="first_name" name="first_name" type="text" class="search-input" required />
-    </div>
+  <div class="form-group">
+    <label for="first_name">Имя</label>
+    <input id="first_name" name="first_name" type="text" class="search-input" required />
+  </div>
 
-    <div class="form-group">
-      <label for="surname">Отчество</label>
-      <input id="surname" name="surname" type="text" class="search-input" />
-    </div>
+  <div class="form-group">
+    <label for="surname">Отчество</label>
+    <input id="surname" name="surname" type="text" class="search-input" />
+  </div>
 
-    <div class="form-group">
-      <label for="username">Логин</label>
-      <input id="username" name="username" type="text" class="search-input" required readonly/>
-    </div>
+  <div class="form-group">
+    <label for="username">Логин</label>
+    <input id="username" name="username" type="text" class="search-input" required readonly/>
+  </div>
 
-    <div class="form-group">
-      <label for="email">Email</label>
-      <input id="email" name="email" type="email" class="search-input" required />
-    </div>
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input id="email" name="email" type="email" class="search-input" required />
+  </div>
 
-    <div class="form-group">
-      <label for="employee-role">Роль</label>
-      <select id="employee-role" class="search-input" name="role">
-        <option value="">Выберите роль</option>
-        {% for role in roles %}
-          <option value="{{ role.id }}">{{ role.name }}</option>
-        {% endfor %}
-      </select>
-      <div class="field-error" id="error-role" style="color: red"></div>
-    </div>
+  <div class="form-group">
+    <label for="employee-role">Роль</label>
+    <select id="employee-role" class="search-input" name="role">
+      <option value="">Выберите роль</option>
+      {% for role in roles %}
+        <option value="{{ role.id }}">{{ role.name }}</option>
+      {% endfor %}
+    </select>
+    <div class="field-error" id="error-role" style="color: red"></div>
+  </div>
 
-    <div class="form-group" id="add-specialization-group" style="display: none;">
-      <label for="add-specialization">Специализация</label>
-      <select id="add-specialization" name="specialization" class="search-input">
-        <option value="">Выберите специализацию</option>
-        {% for spec in specializations %}
-          <option value="{{ spec.id }}">{{ spec.name }}</option>
-        {% endfor %}
-      </select>
-    </div>
+  <div class="form-group" id="add-specialization-group" style="display: none;">
+    <label for="add-specialization">Специализация</label>
+    <select id="add-specialization" name="specialization" class="search-input">
+      <option value="">Выберите специализацию</option>
+      {% for spec in specializations %}
+        <option value="{{ spec.id }}">{{ spec.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
 
-    <!-- Кнопки действий -->
-    <div class="button-container">
-        <div class="success-message" style="display: none">
-          Сотрудник успешно сохранен
-        </div>
-      <div id="error-message" class="error-message" style="display: none"></div>
-      <button type="submit" class="save-btn">Сохранить изменения</button>
-      <span class="delete-link">Удалить сотрудника</span>
-    </div>
-  </form>
+  <!-- Кнопки действий -->
+  <div class="button-container">
+      <div class="success-message" style="display: none">
+        Сотрудник успешно сохранен
+      </div>
+    <div id="error-message" class="error-message" style="display: none"></div>
+    <button type="submit" class="save-btn">Сохранить изменения</button>
+    <span class="delete-link">Удалить сотрудника</span>
+  </div>
 
   <!-- Модальное окно подтверждения удаления -->
   <div class="confirmation-modal">

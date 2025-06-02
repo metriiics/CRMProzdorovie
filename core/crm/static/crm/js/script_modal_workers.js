@@ -66,6 +66,49 @@ function initModalHandlers() {
     }
   }
 
+  function setupEmployeeRowHandlers() {
+    document.querySelectorAll('.employee-row').forEach(row => {
+      row.addEventListener('click', () => {
+        const employeeId = row.dataset.employeeId;
+        if (!employeeId) return;
+
+        fetch(`/api/v1/employee-data/?employee_id=${employeeId}`, {
+          method: 'GET',
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'application/json',
+          },
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Response data:', data);
+          if (data && data.id) {
+            fillModalFields(data);
+          } else {
+            alert('Ошибка загрузки данных сотрудника');
+          }
+        })
+        .catch(err => {
+          console.error('Ошибка запроса:', err);
+          alert('Ошибка запроса к серверу');
+        });
+      });
+    });
+  }
+
+  function fillModalFields(employee) {
+    document.getElementById('employee-id').value = employee.id || '';
+    document.getElementById('last_name').value = employee.last_name || '';
+    document.getElementById('first_name').value = employee.first_name || '';
+    document.getElementById('surname').value = employee.surname || '';
+    document.getElementById('username').value = employee.username || '';
+    document.getElementById('email').value = employee.email || '';
+    document.getElementById('employee-role').value = employee.role || '';
+    toggleSpecialization('employee-role', 'add-specialization-group');
+    document.getElementById('add-specialization').value = employee.specialization ? employee.specialization.id : '';
+  }
+
+
   // 3. Обработчики кнопок сохранения/удаления
   function setupActionButtons() {
     document.addEventListener("click", (e) => {
