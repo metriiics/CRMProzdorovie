@@ -49,11 +49,16 @@
   <!-- Статус клиента -->
   <div class="search-container">
     <label for="client-status-search">Статус</label>
-      <select id="service-time" class="search-input" name="service_time" required>
-        <option value="choose">Выберите статус</option>
-        <option value="active">Активный</option>
-        <option value="inactive">Неактивный</option>
-      </select>
+    <input 
+      id="client-status-search" 
+      type="text" 
+      class="search-input" 
+      placeholder="Выберите статус..." 
+      autocomplete="off"
+    />
+    <div class="suggestions">
+    </div>
+    <input type="hidden" id="client-status" name="client_status" value="">
   </div>
   <!--Time-->
   <div class="date-time-container">

@@ -36,7 +36,7 @@ class ChangeClientForm(forms.Form):
 class CreateRecordForm(forms.Form):
     client_id = forms.IntegerField(required=True, error_messages={'required': 'Не выбран клиент'})
     doctor_id = forms.IntegerField(required=True, error_messages={'required': 'Не выбран врач'})
-    client_status = forms.IntegerField(required=True, error_messages={'required': 'Не указан статус'})
+    client_status = forms.IntegerField(required=False)
     service_date = forms.DateField(required=True, error_messages={'required': 'Не указана дата услуги'})
     callback_date = forms.DateField(required=True)
     comment = forms.CharField(required=False, max_length=500)
