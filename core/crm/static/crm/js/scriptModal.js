@@ -336,26 +336,14 @@ function initModalHandlers() {
     });
   }
 
-  let isModalLoading = false;
-
   function setupChangeRecordHandlers() {
-    document.removeEventListener('modal-loaded', handleModalLoaded);
-    
-    // Добавляем новый обработчик
-    document.addEventListener('modal-loaded', handleModalLoaded);
-  }
-
-  function handleModalLoaded(e) {
-    if (isModalLoading) return;
-    
-    if (e.detail.modalId === 'change-record-btn-modal' && window.currentRecordId) {
-        isModalLoading = true;
-        loadRecordData(window.currentRecordId)
-            .finally(() => {
-                isModalLoading = false;
-            });
-    }
-    setupChangeRecordForm();
+    // Обработчик будет срабатывать после загрузки модального окна
+    document.addEventListener('modal-loaded', function(e) {
+      if (e.detail.modalId === 'change-record-btn-modal' && window.currentRecordId) {
+        loadRecordData(window.currentRecordId);
+      }
+      setupChangeRecordForm();
+    });
   }
   
     // Загрузка данных записи при открытии модального окна
