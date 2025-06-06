@@ -8,6 +8,8 @@
 ![Docker](https://img.shields.io/badge/Container-Docker-informational?style=flat&logo=docker&color=2496ED)
 ![Linux](https://img.shields.io/badge/System-Linux-informational?style=flat&logo=linux&color=FCC624)
 ![Django](https://img.shields.io/badge/Framework-Django-informational?style=flat&logo=django&color=092E20)
+![PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL-informational?style=flat&logo=postgresql&color=316192)
+
 
 <p align="center">
       <img src="Project Logo Url" width="726">
