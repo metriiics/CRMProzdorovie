@@ -14,21 +14,9 @@
 ![REST API](https://img.shields.io/badge/API-REST-informational?style=flat&logo=rest-api&color=61DAFB)
 
 
-
-
-<p align="center">
-      <img src="Project Logo Url" width="726">
-</p>
-
-<p align="center">
-   <img src="" alt="Unity Version">
-   <img src="" alt="Game Version">
-   <img src="" alt="License">
-</p>
-
 ## About
 
-About Text Here
+CRMProzdorovie is a powerful Customer Relationship Management system designed to streamline client management, sales processes, and marketing automation. It offers features such as contact management, sales funnel tracking, automated marketing campaigns, and comprehensive analytics to help businesses improve customer engagement and increase revenue.
 
 ## Documentation
 
