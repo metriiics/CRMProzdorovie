@@ -28,24 +28,3 @@ Documentation Here
 - [Delevoper Name](GitHub Profile Link)
 
 ## License
-
-
-
-## Технологии
-
-- Python 3.9
-- Docker
-- PostgreSQL
-
-## Вклад
-
-Пожалуйста, прочитайте [CONTRIBUTING.md](CONTRIBUTING.md) для информации о том, как внести вклад.
-
-## Лицензия
-
-Этот проект лицензирован под MIT License — подробности в файле LICENSE.
-
----
-
-![Статус сборки](https://img.shields.io/badge/build-passing-brightgreen)
-![Лицензия](https://img.shields.io/badge/license-MIT-blue)
