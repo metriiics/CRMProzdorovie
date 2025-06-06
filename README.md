@@ -16,7 +16,7 @@
 
 ## About
 
-CRMProzdorovie is a powerful Customer Relationship Management system designed to streamline client management, sales processes, and marketing automation. It offers features such as contact management, sales funnel tracking, automated marketing campaigns, and comprehensive analytics to help businesses improve customer engagement and increase revenue.
+CRM Prozdorovie is a customized Customer Relationship Management system developed specifically for the Prozdorovie clinic to enhance the efficiency of the company’s managers. The system streamlines client management, sales workflows, and marketing automation. Key features include contact management, sales funnel tracking, automated marketing campaigns, and detailed analytics — all aimed at improving customer engagement and optimizing business performance.
 
 ## Database Structure
 
@@ -25,19 +25,3 @@ Below is the diagram of the database structure used in CRMProzdorovie:
 <p align="center">
   <img src="docs/dbstract.png" alt="Database Structure" width="800">
 </p>
-
-
-## Documentation
-
-Documentation Here
-
-## Distribute
-
-- [Service Name](Page Link)
-
-
-## Developers
-
-- [Delevoper Name](GitHub Profile Link)
-
-## License
