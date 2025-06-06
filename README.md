@@ -11,6 +11,7 @@
 ![Django](https://img.shields.io/badge/Framework-Django-informational?style=flat&logo=django&color=092E20)
 ![PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL-informational?style=flat&logo=postgresql&color=316192)
 ![Nginx](https://img.shields.io/badge/-NGINX-009639?style=flat&logo=nginx&logoColor=white)
+![REST API](https://img.shields.io/badge/API-REST-informational?style=flat&logo=rest-api&color=61DAFB)
 
 
 
