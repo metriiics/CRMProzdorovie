@@ -171,9 +171,20 @@ function filterItems(listId, searchValue) {
   });
 }
 
+function initializeResetButtons() {
+  document.querySelectorAll('.filter-reset-btn').forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      // Просто перенаправляем на текущую страницу без параметров
+      window.location.href = window.location.pathname;
+    });
+  });
+}
+
 
 // Вызов инициализации при загрузке страницы
 document.addEventListener("DOMContentLoaded", () => {
+  initializeResetButtons();
   initializeFilters();
 });
 

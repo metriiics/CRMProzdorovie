@@ -6,9 +6,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-e(z@9++xr293@izfb&^t%v9yw%c@^q0s!g__)%v%6p8p#+52nv'
 
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*', '195.133.194.211']
 
 
 INSTALLED_APPS = [
@@ -77,7 +77,7 @@ DATABASES = {
         'NAME': 'Crm_syst',
         'USER': 'postgres',
         'PASSWORD': '320330',
-        'HOST': 'localhost',
+        'HOST': 'db',
         'PORT': '5432',
     }
 }
@@ -111,7 +111,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 STATIC_ROOT = BASE_DIR / 'static'
 
