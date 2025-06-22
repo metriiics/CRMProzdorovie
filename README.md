@@ -23,5 +23,5 @@ CRM Prozdorovie is a customized Customer Relationship Management system develope
 Below is the diagram of the database structure used in CRMProzdorovie:
 
 <p align="center">
-  <img src="docs/dbstract.png" alt="Database Structure" width="800">
+  <img src="docs/dbstract.png" alt="Database Structure" width="800"> 
 </p>
